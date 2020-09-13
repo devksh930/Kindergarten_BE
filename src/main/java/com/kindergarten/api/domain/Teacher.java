@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "parent")
-public class Parent {
+@Table(name = "teacher")
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,4 +31,5 @@ public class Parent {
     @NotNull
     @Email
     private String email;
+
 }
