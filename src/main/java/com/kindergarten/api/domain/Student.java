@@ -17,4 +17,8 @@ public class Student {
     private String name;
 
     private int age;
+
+    @ManyToOne
+    @JoinColumn(name = "PARENT_ID")
+    private Parent parent;
 }

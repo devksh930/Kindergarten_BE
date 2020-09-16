@@ -32,4 +32,8 @@ public class Teacher {
     @Email
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "KINDERGATENT_ID")
+    private KinderGarten kinderGarten;
+
 }

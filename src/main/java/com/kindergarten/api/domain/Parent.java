@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +32,11 @@ public class Parent {
     @NotNull
     @Email
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "KINDERGATENT_ID")
+    private KinderGarten kinderGarten;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Student> student;
 }

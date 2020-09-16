@@ -8,11 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "kindergarten")
+@Table(name = "KINDERGARTEN")
 public class KinderGarten {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +38,10 @@ public class KinderGarten {
 
     private String operatingTime;
 
+    @OneToMany(mappedBy = "kinderGarten")
+    private List<Parent> parent;
+
+    @OneToMany(mappedBy = "kinderGarten")
+    private List<Teacher> teacher;
 
 }
