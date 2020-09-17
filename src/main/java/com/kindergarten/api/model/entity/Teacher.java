@@ -1,4 +1,4 @@
-package com.kindergarten.api.domain;
+package com.kindergarten.api.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "parent")
-public class Parent {
+@Table(name = "teacher")
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +36,4 @@ public class Parent {
     @JoinColumn(name = "KINDERGATENT_ID")
     private KinderGarten kinderGarten;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Student> student;
 }

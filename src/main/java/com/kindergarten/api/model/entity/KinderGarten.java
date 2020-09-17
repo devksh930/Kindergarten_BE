@@ -1,14 +1,12 @@
-package com.kindergarten.api.domain;
+package com.kindergarten.api.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -38,10 +36,5 @@ public class KinderGarten {
 
     private String operatingTime;
 
-    @OneToMany(mappedBy = "kinderGarten")
-    private List<Parent> parent;
-
-    @OneToMany(mappedBy = "kinderGarten")
-    private List<Teacher> teacher;
 
 }
