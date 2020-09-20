@@ -4,22 +4,20 @@ import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.entitiy.Salt;
-import com.kindergarten.api.security.repository.SaltRepository;
 import com.kindergarten.api.security.service.SaltUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Member;
+import java.util.Optional;
 
 @Service
 @Slf4j
-public class AuthServiceImpl implements AuthService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SaltRepository saltRepository;
+
     @Autowired
     private SaltUtil saltUtil;
 
@@ -27,34 +25,56 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void signUpParent(User user) {
+
         user.setRole(UserRole.ROLE_USER);
         String password = user.getPassword();
         String salt = saltUtil.genSalt();
-        log.info(salt);
         user.setSalt(new Salt(salt));
         user.setPassword(saltUtil.encodedPassword(salt, password));
         userRepository.save(user);
+        log.debug("학부모 회원가입");
     }
 
     @Override
+    @Transactional
     public void signUpTeacher(User user) {
+        user.setRole(UserRole.ROLE_NOT_PERMITTED_TEACHER);
+        String password = user.getPassword();
+        String salt = saltUtil.genSalt();
+        user.setSalt(new Salt(salt));
+        user.setPassword(saltUtil.encodedPassword(salt, password));
 
+        userRepository.save(user);
+        log.debug("선생님 회원가입");
     }
 
+
     @Override
+    @Transactional
     public void signUpDirector(User user) {
 
+        user.setRole(UserRole.ROLE_NOT_PERMITTED_DIRECTOR);
+        String password = user.getPassword();
+        String salt = saltUtil.genSalt();
+        user.setSalt(new Salt(salt));
+        user.setPassword(saltUtil.encodedPassword(salt, password));
+
+        userRepository.save(user);
+        log.debug("원장님 회원가입");
+
     }
 
+
     @Override
+    @Transactional
     public User loginUser(String userid, String password) throws Exception {
-        User user = userRepository.findByUserid(userid);
-        if (user == null) throw new Exception("유저가 존재하지 않습니다");
-        String salt = user.getSalt().getSalt();
+        Optional<User> user = userRepository.findByUserid(userid);
+        if (user.isEmpty()) throw new Exception("유저가 존재하지 않습니다");
+        String salt = user.get().getSalt().getSalt();
         password = saltUtil.encodedPassword(salt, password);
-        if (!user.getPassword().equals(password)) {
+        if (!user.get().getPassword().equals(password)) {
             throw new Exception("비밀번호가 틀립니다");
         }
-        return user;
+        return user.get();
     }
 }
