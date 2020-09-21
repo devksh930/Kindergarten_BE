@@ -2,7 +2,6 @@ package com.kindergarten.api.service;
 
 import com.kindergarten.api.model.entity.User;
 
-import java.lang.reflect.Member;
 
 public interface UserService {
     void signUpParent(User user);

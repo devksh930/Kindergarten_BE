@@ -1,5 +1,6 @@
 package com.kindergarten.api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kindergarten.api.security.entitiy.Salt;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class User {
     @Column(unique = true)
     private String userid;
 
+    @JsonIgnore
     @NotNull
     private String password;
 
@@ -40,10 +42,12 @@ public class User {
     @Email
     private String email;
 
+    @JsonIgnore
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "salt_id")
     private Salt salt;

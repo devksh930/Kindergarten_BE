@@ -1,6 +1,5 @@
 package com.kindergarten.api.controller;
 
-import com.kindergarten.api.model.dto.KinderGartenDTO;
 import com.kindergarten.api.model.entity.KinderGarten;
 import com.kindergarten.api.service.KinderGartenService;
 import org.springframework.beans.factory.annotation.Autowired;

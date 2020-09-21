@@ -27,8 +27,8 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .groupName(version)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.kindergarten.api.v1"))
-                .paths(PathSelectors.ant("/v1/api/**"))
+                .apis(RequestHandlerSelectors.basePackage("com.kindergarten.api"))
+                .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .apiInfo(apiInfo(title, version));
 
