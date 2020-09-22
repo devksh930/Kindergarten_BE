@@ -32,5 +32,3 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/java/com/kindergarten/api/security/
-/src/main/java/com/kindergarten/api/service/
