@@ -1,4 +1,4 @@
-package com.kindergarten.api.security.service;
+package com.kindergarten.api.security;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

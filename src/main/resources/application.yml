@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    secret:
   h2:
     console:
       enabled: true
@@ -9,3 +11,6 @@ spring:
     password:
   jpa:
     show-sql: true
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8

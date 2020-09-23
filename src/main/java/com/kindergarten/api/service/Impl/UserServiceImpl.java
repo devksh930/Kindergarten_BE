@@ -1,10 +1,11 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.service.Impl;
 
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.entitiy.Salt;
-import com.kindergarten.api.security.service.SaltUtil;
+import com.kindergarten.api.security.SaltUtil;
+import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

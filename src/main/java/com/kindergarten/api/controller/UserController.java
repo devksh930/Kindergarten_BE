@@ -1,17 +1,20 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CUserExistException;
+import com.kindergarten.api.common.result.ListResult;
+import com.kindergarten.api.common.result.ResponseService;
+import com.kindergarten.api.common.result.SingleResult;
+import com.kindergarten.api.model.entity.KinderGarten;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.request.SignUpRequest;
+import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
@@ -30,11 +33,20 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ResponseService responseService;
+
+    @GetMapping("/list")
+    public ListResult<User> findAll() {
+
+        return responseService.getListResult(userRepository.findAll());
+    }
+
     @PostMapping("/parent")//회원가입
-    public ResponseEntity<?> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup : {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new RuntimeException("이미 존재하는 id 입니다.");
+            throw new CUserExistException();
         }
         User user = User.builder()
                 .userid(signUpRequest.getUserid())
@@ -50,14 +62,14 @@ public class UserController {
         msg.put("user_id", user.getUserid());
         msg.put("msg", "회원가입에 성공했습니다.");
 
-        return new ResponseEntity(msg, HttpStatus.CREATED);
+        return responseService.getSingleResult(user);
     }
 
     @PostMapping("/teacher")//회원가입
     public ResponseEntity<?> teacherSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup : {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new RuntimeException("이미 존재하는 id 입니다.");
+            throw new CUserExistException();
         }
         User user = User.builder()
                 .userid(signUpRequest.getUserid())
@@ -79,7 +91,7 @@ public class UserController {
     public ResponseEntity<?> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup : {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new RuntimeException("이미 존재하는 id 입니다.");
+            throw new CUserExistException();
         }
         User user = User.builder()
                 .userid(signUpRequest.getUserid())
