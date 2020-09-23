@@ -1,9 +1,11 @@
-package com.kindergarten.api.entity;
+package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -16,9 +18,17 @@ public class Student {
 
     private String name;
 
-    private int age;
+    @DateTimeFormat(pattern = "yyyyMMdd")
+    private LocalDateTime birthday;
 
     @ManyToOne
-    @JoinColumn(name = "PARENT_ID")
-    private Parent parent;
+    @JoinColumn(name = "KINDERGATENT_ID")
+    private KinderGarten kinderGarten;
+
+    //    승인확인
+    private boolean access;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }

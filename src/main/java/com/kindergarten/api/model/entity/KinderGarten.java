@@ -1,4 +1,4 @@
-package com.kindergarten.api.entity;
+package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
