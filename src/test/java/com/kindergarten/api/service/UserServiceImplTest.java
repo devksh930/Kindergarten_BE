@@ -5,7 +5,6 @@ import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -90,7 +89,7 @@ public class UserServiceImplTest {
 
     @Test
     public void loginUser() throws Exception {
-
+// given
         User inituser = User.builder()
                 .userid("user1")
                 .password("password")
@@ -98,9 +97,9 @@ public class UserServiceImplTest {
                 .phone("010-1234-1234")
                 .email("test@test.com").build();
         userService.signUpParent(inituser);
-
+//        when
         User user = userService.loginUser("user1", "password");
-
+//        then
         Assertions.assertThat(inituser.getUserid()).isEqualTo(user.getUserid());
     }
 }

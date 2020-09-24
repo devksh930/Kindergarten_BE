@@ -1,7 +1,6 @@
 package com.kindergarten.api.repository;
 
 import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.entity.UserRole;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,6 +93,7 @@ public class UserRepositoryTest {
 
         //지운후 User List
         List<User> afterDelete = userRepository.findAll();
+//        then
         Assertions.assertThat(afterDelete.size()).isEqualTo(1);
 
 

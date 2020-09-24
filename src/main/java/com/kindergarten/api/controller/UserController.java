@@ -4,22 +4,16 @@ import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
-import com.kindergarten.api.model.entity.KinderGarten;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.request.SignUpRequest;
-import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,7 +38,7 @@ public class UserController {
 
     @PostMapping("/parent")//회원가입
     public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        log.debug("REST request to signup : {}", signUpRequest.getUserid());
+        log.debug("REST request to signup USER : {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
             throw new CUserExistException();
         }
@@ -58,16 +52,12 @@ public class UserController {
 
         userService.signUpParent(user);
 
-        Map<String, Object> msg = new HashMap<>();
-        msg.put("user_id", user.getUserid());
-        msg.put("msg", "회원가입에 성공했습니다.");
-
         return responseService.getSingleResult(user);
     }
 
     @PostMapping("/teacher")//회원가입
-    public ResponseEntity<?> teacherSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
-        log.debug("REST request to signup : {}", signUpRequest.getUserid());
+    public SingleResult<User> teacherSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
+        log.debug("REST request to signup TEACHER: {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
             throw new CUserExistException();
         }
@@ -78,18 +68,16 @@ public class UserController {
                 .email(signUpRequest.getEmail())
                 .phone(signUpRequest.getPhone())
                 .build();
+
         userService.signUpTeacher(user);
 
-        Map<String, Object> msg = new HashMap<>();
-        msg.put("user_id", user.getUserid());
-        msg.put("msg", "회원가입에 성공했습니다.");
 
-        return new ResponseEntity(msg, HttpStatus.CREATED);
+        return responseService.getSingleResult(user);
     }
 
     @PostMapping("/director")//회원가입
-    public ResponseEntity<?> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
-        log.debug("REST request to signup : {}", signUpRequest.getUserid());
+    public SingleResult<User> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
+        log.debug("REST request to signup DIRECTORz: {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
             throw new CUserExistException();
         }
@@ -101,11 +89,7 @@ public class UserController {
                 .phone(signUpRequest.getPhone())
                 .build();
 
-        Map<String, Object> msg = new HashMap<>();
-        msg.put("user_id", user.getUserid());
-        msg.put("msg", "회원가입에 성공했습니다.");
-
-        return new ResponseEntity(msg, HttpStatus.CREATED);
+        return responseService.getSingleResult(user);
     }
 
 }
