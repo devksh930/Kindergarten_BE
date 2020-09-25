@@ -51,7 +51,7 @@ public class UserControllerTest {
     @Test
     public void 회원가입_성공() throws Exception {
         //given
-        final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01029159718", "test@test.com");
+        final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01012341234", "test@test.com");
 //        when
         final ResultActions resultActions = mockMvc.perform(post("/api/users/parent")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +70,7 @@ public class UserControllerTest {
     @Test
     public void 회원가입_중복회원_실패() throws Exception {
         //given
-        final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01029159718", "test@test.com");
+        final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01012341234", "test@test.com");
         mockMvc.perform(post("/api/users/parent")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)));
@@ -85,7 +85,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(409))
                 .andExpect(jsonPath("$.msg").exists());
-
     }
 
 }

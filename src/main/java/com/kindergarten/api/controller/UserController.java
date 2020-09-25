@@ -19,6 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 @EnableSwagger2
 @Slf4j
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -37,7 +38,11 @@ public class UserController {
     }
 
     @PostMapping("/parent")//회원가입
+
     public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        System.out.println("======================");
+        System.out.println(signUpRequest.toString());
+        System.out.println("======================");
         log.debug("REST request to signup USER : {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
             throw new CUserExistException();
