@@ -3,7 +3,6 @@ package com.kindergarten.api.common.exception;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,14 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CUserExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult communicationException(HttpServletRequest request, CUserExistException e) {
+    public CommonResult userExistException(HttpServletRequest request, CUserExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("existingUser.code")), getMessage("existingUser.msg"));
+    }
+
+    @ExceptionHandler(CUserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult userNotfoundException(HttpServletRequest request, CUserExistException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("notFoundUser.code")), getMessage("notFoundUser.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회

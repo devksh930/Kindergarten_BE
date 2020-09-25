@@ -1,3 +1,6 @@
 existingUser:
   code: "409"
   msg: "이미 가입한 회원입니다. 로그인을 해주십시오."
+notFoundUser:
+  code: "404"
+  msg: "존재하지않는 계정입니다."

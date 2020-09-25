@@ -34,22 +34,6 @@ public class SwaggerConfig {
 
     }
 
-    @Bean
-    public Docket apiV2() {
-        version = "V2";
-        title = "devksh930 API " + version;
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .useDefaultResponseMessages(false)
-                .groupName(version)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.kindergarten.api.v2"))
-                .paths(PathSelectors.ant("/v2/api/**"))
-                .build()
-                .apiInfo(apiInfo(title, version));
-
-    }
-
     private ApiInfo apiInfo(String title, String version) {
         return new ApiInfo(
                 title,
