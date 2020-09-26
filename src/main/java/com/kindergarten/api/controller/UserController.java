@@ -82,7 +82,7 @@ public class UserController {
 
     @PostMapping("/director")//회원가입
     public SingleResult<User> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
-        log.debug("REST request to signup DIRECTORz: {}", signUpRequest.getUserid());
+        log.debug("REST request to signup DIRECTOR: {}", signUpRequest.getUserid());
         if (userRepository.existsByUserid(signUpRequest.getUserid())) {
             throw new CUserExistException();
         }
