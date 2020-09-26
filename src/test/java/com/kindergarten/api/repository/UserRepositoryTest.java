@@ -56,8 +56,8 @@ public class UserRepositoryTest {
         Optional<User> updateuser = userRepository.findByUserid("user1");
         updateuser.get().setName(changeName);
         userRepository.save(updateuser.get());
-
         Optional<User> findUser = userRepository.findByUserid("user1");
+
         //then
         Assertions.assertThat(findUser.get().getName()).isEqualTo(changeName);
     }
@@ -93,7 +93,7 @@ public class UserRepositoryTest {
 
         //지운후 User List
         List<User> afterDelete = userRepository.findAll();
-//        then
+        //then
         Assertions.assertThat(afterDelete.size()).isEqualTo(1);
 
 
