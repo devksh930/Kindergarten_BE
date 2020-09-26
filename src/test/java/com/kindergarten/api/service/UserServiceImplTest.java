@@ -33,12 +33,11 @@ public class UserServiceImplTest {
                 .name("테스트")
                 .phone("010-1234-1234")
                 .email("test@test.com").build();
-        //        when
+        //when
 
         userService.signUpParent(inituser);
         Optional<User> finduser = userRepository.findByUserid("user1");
-        //        then
-
+        //then
         Assertions.assertThat(finduser.get().getRole()).isEqualTo(UserRole.ROLE_USER);
         Assertions.assertThat(finduser.get().getName()).isEqualTo(inituser.getName());
 
@@ -55,13 +54,12 @@ public class UserServiceImplTest {
                 .name("테스트")
                 .phone("010-1234-1234")
                 .email("test@test.com").build();
-        //        when
 
+        //when
         userService.signUpTeacher(inituser);
         Optional<User> userid = userRepository.findByUserid("user1");
 
-        //        then
-
+        //then
         Assertions.assertThat(userid.get().getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_TEACHER);
     }
 
@@ -75,21 +73,19 @@ public class UserServiceImplTest {
                 .name("테스트")
                 .phone("010-1234-1234")
                 .email("test@test.com").build();
-        //        when
 
+        //when
         userService.signUpDirector(inituser);
         Optional<User> userid = userRepository.findByUserid("user1");
 
-
-        //        then
-
+        //then
         Assertions.assertThat(userid.get().getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_DIRECTOR);
     }
 
 
     @Test
     public void loginUser() throws Exception {
-// given
+        // given
         User inituser = User.builder()
                 .userid("user1")
                 .password("password")
@@ -97,9 +93,10 @@ public class UserServiceImplTest {
                 .phone("010-1234-1234")
                 .email("test@test.com").build();
         userService.signUpParent(inituser);
-//        when
+
+        //when
         User user = userService.loginUser("user1", "password");
-//        then
+        //then
         Assertions.assertThat(inituser.getUserid()).isEqualTo(user.getUserid());
     }
 }

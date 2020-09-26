@@ -39,7 +39,7 @@ public class UserControllerTest {
 
     @Before
     public void setup() {
-//mock mvc 한글 깨짐 처리
+        //mock mvc 한글 깨짐 처리
         this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
@@ -52,12 +52,13 @@ public class UserControllerTest {
     public void 회원가입_성공() throws Exception {
         //given
         final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01012341234", "test@test.com");
-//        when
+
+        //when
         final ResultActions resultActions = mockMvc.perform(post("/api/users/parent")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)));
 
-//      then
+        //then
         resultActions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
@@ -69,17 +70,20 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입_중복회원_실패() throws Exception {
+
         //given
         final SignUpRequest dto = new SignUpRequest("test", "password", "이름", "01012341234", "test@test.com");
         mockMvc.perform(post("/api/users/parent")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)));
-//        when
+
+        //when
         final ResultActions resultActions2 = mockMvc.perform(post("/api/users/parent")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andDo(print());
-//      then
+
+        //then
         resultActions2
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
