@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
 
 
     @Override
@@ -19,15 +20,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                // 토큰을 활용하는 경우 모든 요청에 대해 접근이 가능하도록 함
-                .anyRequest().permitAll()
+        http.authorizeRequests().antMatchers("/h2").permitAll()
                 .and()
-                // session을 가지지 않는
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                // formlogin 비활성화
-                .formLogin()
-                .disable();
+                .csrf().disable()
+                .headers().frameOptions().disable();
+//                // 토큰을 활용하는 경우 모든 요청에 대해 접근이 가능하도록 함
+//                .anyRequest().permitAll()
+//                .and()
+//                // session을 가지지 않는
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                // formlogin 비활성화
+//                .formLogin()
+//                .disable();
+
     }
 }
