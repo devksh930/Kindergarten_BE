@@ -1,4 +1,4 @@
-package com.kindergarten.api.security;
+package com.kindergarten.api.security.util;
 
 import com.kindergarten.api.model.entity.User;
 import io.jsonwebtoken.Claims;

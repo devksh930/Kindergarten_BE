@@ -1,10 +1,11 @@
 package com.kindergarten.api.service.Impl;
 
+import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.entitiy.Salt;
-import com.kindergarten.api.security.SaltUtil;
+import com.kindergarten.api.security.util.SaltUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User loginUser(String userid, String password) throws Exception {
         Optional<User> user = userRepository.findByUserid(userid);
-        if (user.isEmpty()) throw new Exception("유저가 존재하지 않습니다");
+        if (user.isEmpty()) throw new CUserNotFoundException();
         String salt = user.get().getSalt().getSalt();
         password = saltUtil.encodedPassword(salt, password);
         if (!user.get().getPassword().equals(password)) {

@@ -1,5 +1,6 @@
-package com.kindergarten.api.security;
+package com.kindergarten.api.security.util;
 
+import com.kindergarten.api.security.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +17,7 @@ public class CookieUtil {
         return token;
     }
 
-    public Cookie getKooki(HttpServletRequest request, String cookieName) {
+    public Cookie getCookie(HttpServletRequest request, String cookieName) {
         final Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;
