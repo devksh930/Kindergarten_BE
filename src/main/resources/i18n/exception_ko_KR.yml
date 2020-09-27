@@ -1,6 +1,9 @@
 existingUser:
   code: "409"
-  msg: "이미 가입한 회원입니다. 로그인을 해주십시오."
+  msg: "해당 아이디는 가입한 회원입니다."
 notFoundUser:
   code: "404"
   msg: "존재하지않는 계정입니다."
+incorrectPassword:
+  code: "404"
+  msg: "계정이 존재하지 않거나 이메일 또는 비밀번호가 정확하지 않습니다."

@@ -9,10 +9,9 @@ import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.request.SignUpRequest;
 import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.CookieUtil;
-import com.kindergarten.api.security.JwtUtil;
+import com.kindergarten.api.security.util.CookieUtil;
+import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.service.UserService;
-import io.swagger.models.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/users")
@@ -63,9 +61,8 @@ public class UserController {
         if (!existId) {
             singleResult = responseService.getSingleResult("존재하지않는 ID입니다");
         } else {
-            singleResult = responseService.getSingleResult("존재하는 ID입니다");
+            throw new CUserExistException();
         }
-
         return singleResult;
     }
 
@@ -137,7 +134,7 @@ public class UserController {
             final String refreshJwt = jwtUtil.generateRefreshToken(loginUser);
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-            return new LoginResponse("succens", "로그인성공", token);
+            return new LoginResponse("success", "로그인성공", token);
         } catch (Exception e) {
             e.printStackTrace();
             return new LoginResponse("error", "실패", e.getMessage());

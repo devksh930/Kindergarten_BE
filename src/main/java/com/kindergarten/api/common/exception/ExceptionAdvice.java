@@ -28,8 +28,14 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CommonResult userNotfoundException(HttpServletRequest request, CUserExistException e) {
+    public CommonResult userNotfoundException(HttpServletRequest request, CUserNotFoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("notFoundUser.code")), getMessage("notFoundUser.msg"));
+    }
+
+    @ExceptionHandler(CUserIncorrectPasswordException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult userIncorrectPasswordException(HttpServletRequest request, CUserIncorrectPasswordException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("incorrectPassword.code")), getMessage("incorrectPassword.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회
