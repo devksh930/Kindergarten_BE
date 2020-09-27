@@ -22,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/users")
@@ -51,8 +52,24 @@ public class UserController {
         return responseService.getListResult(userRepository.findAll());
     }
 
-    @PostMapping("/parent")//회원가입
+    @GetMapping("/existid/{userid}")
+    public SingleResult existuserId(@PathVariable String userid) {
+        Boolean existId = userRepository.existsByUserid(userid);
+        log.debug("==============================================");
+        log.debug(userid);
+        log.debug(String.valueOf(existId));
+        log.debug("==============================================");
+        SingleResult<Object> singleResult;
+        if (!existId) {
+            singleResult = responseService.getSingleResult("존재하지않는 ID입니다");
+        } else {
+            singleResult = responseService.getSingleResult("존재하는 ID입니다");
+        }
 
+        return singleResult;
+    }
+
+    @PostMapping("/parent")//회원가입
     public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         System.out.println("======================");
         System.out.println(signUpRequest.toString());
