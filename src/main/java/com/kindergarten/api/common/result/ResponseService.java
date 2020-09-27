@@ -60,7 +60,6 @@ public class ResponseService {
     }
 
     // 결과 모델에 api 요청 성공 데이터를 세팅
-
     private void setSuccessResult(CommonResult result) {
         result.setSuccess(true);
         result.setCode(CommonResponse.SUCCESS.getCode());
