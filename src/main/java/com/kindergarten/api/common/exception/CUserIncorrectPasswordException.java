@@ -10,7 +10,6 @@ public class CUserIncorrectPasswordException extends RuntimeException {
     }
 
     public CUserIncorrectPasswordException() {
-
         super();
     }
 }
