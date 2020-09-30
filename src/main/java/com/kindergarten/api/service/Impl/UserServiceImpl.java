@@ -108,16 +108,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User loginUser(String userid, String password) throws Exception {
 
-        Optional<User> user = userRepository.findByUserid(userid);
+        User user = userRepository.findByUserid(userid);
 
-        if (user.isEmpty()) throw new CUserNotFoundException();
-        String salt = user.get().getSalt().getSalt();
+        if (user == null) throw new CUserNotFoundException();
+        String salt = user.getSalt().getSalt();
         password = saltUtil.encodedPassword(salt, password);
 
 
-        if (!user.get().getPassword().equals(password)) {
+        if (!user.getPassword().equals(password)) {
             throw new CUserIncorrectPasswordException();
         }
-        return user.get();
+        return user;
     }
 }

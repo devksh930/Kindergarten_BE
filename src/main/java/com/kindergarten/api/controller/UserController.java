@@ -11,6 +11,7 @@ import com.kindergarten.api.model.request.SignUpRequest;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
+import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -47,6 +48,8 @@ public class UserController {
 
     @Autowired
     private CookieUtil cookieUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @GetMapping("/list")
     public ListResult<User> findAll() {
@@ -110,6 +113,9 @@ public class UserController {
             final String refreshJwt = jwtUtil.generateRefreshToken(loginUser);
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
+            redisUtil.setDataExpire(refreshJwt, user.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            response.addCookie(accessToken);
+            response.addCookie(refreshToken);
             return new LoginResponse("success", "로그인성공", token);
         } catch (Exception e) {
             e.printStackTrace();

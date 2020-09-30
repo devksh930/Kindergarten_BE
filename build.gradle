@@ -37,6 +37,8 @@ dependencies {
     compile "io.jsonwebtoken:jjwt-impl:0.11.1"
     compile "io.jsonwebtoken:jjwt-jackson:0.11.1"
 
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+
     compile "org.modelmapper:modelmapper:2.3.5"
 
     runtimeOnly 'com.h2database:h2'

@@ -3,19 +3,19 @@ package com.kindergarten.api.model.request;
 import lombok.*;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class SignUpRequest {
-    @NotBlank
+    @NotEmpty
     private String userid;
-    @NotBlank
+    @NotEmpty
     private String password;
-    @NotBlank
+    @NotEmpty
     private String name;
-    @NotBlank
+    @NotEmpty
     private String phone;
     @Email
     private String email;
