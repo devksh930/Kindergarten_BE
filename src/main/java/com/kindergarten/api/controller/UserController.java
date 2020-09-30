@@ -13,6 +13,7 @@ import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -28,6 +29,9 @@ import javax.validation.Valid;
 @Slf4j
 @CrossOrigin(origins = "*")
 public class UserController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private UserService userService;
@@ -52,36 +56,22 @@ public class UserController {
 
     @GetMapping("/existid/{userid}")
     public SingleResult existuserId(@PathVariable String userid) {
-        Boolean existId = userRepository.existsByUserid(userid);
         log.debug("==============================================");
         log.debug(userid);
-        log.debug(String.valueOf(existId));
         log.debug("==============================================");
-        SingleResult<Object> singleResult;
-        if (!existId) {
-            singleResult = responseService.getSingleResult("존재하지않는 ID입니다");
-        } else {
-            throw new CUserExistException();
-        }
+
+        SingleResult singleResult;
+
+        singleResult = userService.existUserId(userid);
+
         return singleResult;
     }
 
     @PostMapping("/parent")//회원가입
     public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        System.out.println("======================");
-        System.out.println(signUpRequest.toString());
-        System.out.println("======================");
         log.debug("REST request to signup USER : {}", signUpRequest.getUserid());
-        if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new CUserExistException();
-        }
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
+
+        User user = modelMapper.map(signUpRequest, User.class);
 
         userService.signUpParent(user);
 
@@ -91,18 +81,10 @@ public class UserController {
     @PostMapping("/teacher")//회원가입
     public SingleResult<User> teacherSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup TEACHER: {}", signUpRequest.getUserid());
-        if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new CUserExistException();
-        }
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
 
-        userService.signUpTeacher(user);
+        User user = modelMapper.map(signUpRequest, User.class);
+
+        userService.signUpParent(user);
 
 
         return responseService.getSingleResult(user);
@@ -111,21 +93,15 @@ public class UserController {
     @PostMapping("/director")//회원가입
     public SingleResult<User> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup DIRECTOR: {}", signUpRequest.getUserid());
-        if (userRepository.existsByUserid(signUpRequest.getUserid())) {
-            throw new CUserExistException();
-        }
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
+
+        User user = modelMapper.map(signUpRequest, User.class);
+
+        userService.signUpParent(user);
 
         return responseService.getSingleResult(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")//로그인
     public LoginResponse login(@RequestBody RequestLoginUser user,
                                HttpServletRequest request, HttpServletResponse response) {
         try {

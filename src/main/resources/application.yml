@@ -4,3 +4,7 @@ spring:
 
 jwt:
   secret: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
