@@ -82,14 +82,11 @@ public class UserServiceImpl implements UserService {
             user.setPassword(saltUtil.encodedPassword(salt, password));
 
             userRepository.save(user);
-
             log.debug("원장님 회원가입");
         } else {
             log.debug("원장님 회원가입 실패");
             throw new CUserExistException();
-
         }
-
     }
 
     @Override
@@ -116,6 +113,7 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) throw new CUserNotFoundException();
         String salt = user.get().getSalt().getSalt();
         password = saltUtil.encodedPassword(salt, password);
+
 
         if (!user.get().getPassword().equals(password)) {
             throw new CUserIncorrectPasswordException();

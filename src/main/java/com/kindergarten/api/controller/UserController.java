@@ -61,6 +61,7 @@ public class UserController {
         log.debug("==============================================");
 
         SingleResult singleResult;
+
         singleResult = userService.existUserId(userid);
 
         return singleResult;
@@ -68,18 +69,9 @@ public class UserController {
 
     @PostMapping("/parent")//회원가입
     public SingleResult<User> userSignUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        System.out.println("======================");
-        System.out.println(signUpRequest.toString());
-        System.out.println("======================");
         log.debug("REST request to signup USER : {}", signUpRequest.getUserid());
 
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
+        User user = modelMapper.map(signUpRequest, User.class);
 
         userService.signUpParent(user);
 
@@ -89,15 +81,10 @@ public class UserController {
     @PostMapping("/teacher")//회원가입
     public SingleResult<User> teacherSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
         log.debug("REST request to signup TEACHER: {}", signUpRequest.getUserid());
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
 
-        userService.signUpTeacher(user);
+        User user = modelMapper.map(signUpRequest, User.class);
+
+        userService.signUpParent(user);
 
 
         return responseService.getSingleResult(user);
@@ -105,13 +92,11 @@ public class UserController {
 
     @PostMapping("/director")//회원가입
     public SingleResult<User> directorSignup(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User user = User.builder()
-                .userid(signUpRequest.getUserid())
-                .name(signUpRequest.getName())
-                .password(signUpRequest.getPassword())
-                .email(signUpRequest.getEmail())
-                .phone(signUpRequest.getPhone())
-                .build();
+        log.debug("REST request to signup DIRECTOR: {}", signUpRequest.getUserid());
+
+        User user = modelMapper.map(signUpRequest, User.class);
+
+        userService.signUpParent(user);
 
         return responseService.getSingleResult(user);
     }
