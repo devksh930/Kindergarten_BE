@@ -33,11 +33,11 @@ public class UserRepositoryTest {
         userRepository.save(inituser);
 
         //when
-        Optional<User> findUser = userRepository.findByUserid(inituser.getUserid());
+        User findUser = userRepository.findByUserid(inituser.getUserid());
 
         //then
-        Assertions.assertThat(findUser.get().getUserid()).isEqualTo(inituser.getUserid());
-        Assertions.assertThat(findUser.get().getName()).isEqualTo(inituser.getName());
+        Assertions.assertThat(findUser.getUserid()).isEqualTo(inituser.getUserid());
+        Assertions.assertThat(findUser.getName()).isEqualTo(inituser.getName());
     }
 
     @Test
@@ -53,13 +53,13 @@ public class UserRepositoryTest {
 
         //when
         String changeName = "이름변경";
-        Optional<User> updateuser = userRepository.findByUserid("user1");
-        updateuser.get().setName(changeName);
-        userRepository.save(updateuser.get());
-        Optional<User> findUser = userRepository.findByUserid("user1");
+        User updateuser = userRepository.findByUserid("user1");
+        updateuser.setName(changeName);
+        userRepository.save(updateuser);
+        User findUser = userRepository.findByUserid("user1");
 
         //then
-        Assertions.assertThat(findUser.get().getName()).isEqualTo(changeName);
+        Assertions.assertThat(findUser.getName()).isEqualTo(changeName);
     }
 
     @Test
@@ -88,8 +88,8 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(beforeDelete.size()).isEqualTo(2);
 
-        Optional<User> user = userRepository.findByUserid("user1");
-        userRepository.deleteById(user.get().getId());
+        User user = userRepository.findByUserid("user1");
+        userRepository.deleteById(user.getId());
 
         //지운후 User List
         List<User> afterDelete = userRepository.findAll();

@@ -36,10 +36,10 @@ public class UserServiceImplTest {
         //when
 
         userService.signUpParent(inituser);
-        Optional<User> finduser = userRepository.findByUserid("user1");
+        User finduser = userRepository.findByUserid("user1");
         //then
-        Assertions.assertThat(finduser.get().getRole()).isEqualTo(UserRole.ROLE_USER);
-        Assertions.assertThat(finduser.get().getName()).isEqualTo(inituser.getName());
+        Assertions.assertThat(finduser.getRole()).isEqualTo(UserRole.ROLE_USER);
+        Assertions.assertThat(finduser.getName()).isEqualTo(inituser.getName());
 
     }
 
@@ -57,10 +57,10 @@ public class UserServiceImplTest {
 
         //when
         userService.signUpTeacher(inituser);
-        Optional<User> userid = userRepository.findByUserid("user1");
+        User userid = userRepository.findByUserid("user1");
 
         //then
-        Assertions.assertThat(userid.get().getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_TEACHER);
+        Assertions.assertThat(userid.getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_TEACHER);
     }
 
     @Test
@@ -76,10 +76,10 @@ public class UserServiceImplTest {
 
         //when
         userService.signUpDirector(inituser);
-        Optional<User> userid = userRepository.findByUserid("user1");
+        User userid = userRepository.findByUserid("user1");
 
         //then
-        Assertions.assertThat(userid.get().getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_DIRECTOR);
+        Assertions.assertThat(userid.getRole()).isEqualTo(UserRole.ROLE_NOT_PERMITTED_DIRECTOR);
     }
 
 

@@ -9,6 +9,7 @@ import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.entitiy.Salt;
+import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.security.util.SaltUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SaltUtil saltUtil;
 
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     @Transactional
@@ -90,11 +93,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isPasswordUuidValidate(String key) {
+        String userId = redisUtil.getData(key);
+        if (userId.equals("")) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public SingleResult existUserId(String userid) {
         Boolean existsByUserid = userRepository.existsByUserid(userid);
         ResponseService responseService = new ResponseService();
         SingleResult<Object> singleResult;
-        if (existsByUserid) {
+        if (!existsByUserid) {
             singleResult = responseService.getSingleResult("중복되지않은 아이디 입니다.");
         } else {
             throw new CUserExistException();

@@ -11,7 +11,10 @@ public interface UserService {
 
     void signUpDirector(User user);
 
+    boolean isPasswordUuidValidate(String ke);
+
     SingleResult existUserId(String userid);
 
     User loginUser(String id, String password) throws Exception;
+
 }
