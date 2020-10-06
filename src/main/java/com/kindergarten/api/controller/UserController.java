@@ -1,9 +1,8 @@
 package com.kindergarten.api.controller;
 
-import com.kindergarten.api.common.exception.CUserExistException;
-import com.kindergarten.api.common.reqeust.RequestLoginUser;
-import com.kindergarten.api.common.result.ListResult;
+import com.kindergarten.api.model.request.RequestLoginUser;
 import com.kindergarten.api.common.response.LoginResponse;
+import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.entity.User;
@@ -13,12 +12,8 @@ import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -26,8 +21,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")

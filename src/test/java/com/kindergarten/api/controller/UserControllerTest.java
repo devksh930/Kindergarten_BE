@@ -1,15 +1,13 @@
 package com.kindergarten.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kindergarten.api.common.reqeust.RequestLoginUser;
+import com.kindergarten.api.model.request.RequestLoginUser;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.request.SignUpRequest;
 import com.kindergarten.api.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.kindergarten.api.common.reqeust;
+package com.kindergarten.api.model.request;
 
 import lombok.Getter;
 import lombok.Setter;

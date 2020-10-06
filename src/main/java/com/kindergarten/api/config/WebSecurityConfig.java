@@ -1,10 +1,8 @@
-package com.kindergarten.api.security.config;
+package com.kindergarten.api.config;
 
-import com.kindergarten.api.common.exception.CAccessDeniedHandler;
-import com.kindergarten.api.common.exception.CAuthenticationEntryPoint;
+import com.kindergarten.api.security.CAccessDeniedHandler;
+import com.kindergarten.api.security.CAuthenticationEntryPoint;
 import com.kindergarten.api.security.JwtRequestFilter;
-import com.kindergarten.api.service.Impl.UserDetailsServiceImpl;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,15 +20,9 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
-    private final CAuthenticationEntryPoint cAuthenticationEntryPoint;
-    private final CAccessDeniedHandler cAccessDeniedHandler;
-    private final UserDetailsServiceImpl userDetailsService;
 
-    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter, CAuthenticationEntryPoint cAuthenticationEntryPoint, CAccessDeniedHandler cAccessDeniedHandler, UserDetailsServiceImpl userDetailsService) {
+    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
-        this.cAuthenticationEntryPoint = cAuthenticationEntryPoint;
-        this.cAccessDeniedHandler = cAccessDeniedHandler;
-        this.userDetailsService = userDetailsService;
     }
 
 
@@ -41,9 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic()
-                .authenticationEntryPoint(cAuthenticationEntryPoint)
+                .authenticationEntryPoint(new CAuthenticationEntryPoint())
                 .and()
-                .exceptionHandling().accessDeniedHandler(cAccessDeniedHandler)
+                .exceptionHandling().accessDeniedHandler(new CAccessDeniedHandler())
 
                 .and()
                 .authorizeRequests()
@@ -66,11 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/h2/**");
-    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -89,4 +76,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/h2/**");
+    }
+
 }

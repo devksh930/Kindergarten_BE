@@ -8,7 +8,7 @@ import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.entitiy.Salt;
+import com.kindergarten.api.security.salt.Salt;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.security.util.SaltUtil;
 import com.kindergarten.api.service.UserService;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -100,6 +99,7 @@ public class UserServiceImpl implements UserService {
         }
         return true;
     }
+
 
     @Override
     public SingleResult existUserId(String userid) {

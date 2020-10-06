@@ -4,7 +4,7 @@ import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
-import com.kindergarten.api.service.Impl.UserDetailsServiceImpl;
+import com.kindergarten.api.security.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUid = null;
-        
+
         try {
             if (jwtToken != null) {
                 jwt = jwtToken.getValue();
@@ -55,10 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 if (jwtUtil.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                   log.debug("=========================");
-                   log.debug(userDetails.getUsername());
-                   log.debug(userDetails.getAuthorities().toString());
-                   log.debug("=========================");
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }

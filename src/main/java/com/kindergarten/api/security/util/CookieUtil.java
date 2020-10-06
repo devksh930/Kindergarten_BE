@@ -1,6 +1,5 @@
 package com.kindergarten.api.security.util;
 
-import com.kindergarten.api.security.util.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;

@@ -11,7 +11,7 @@ public interface UserService {
 
     void signUpDirector(User user);
 
-    boolean isPasswordUuidValidate(String ke);
+    boolean isPasswordUuidValidate(String key);
 
     SingleResult existUserId(String userid);
 

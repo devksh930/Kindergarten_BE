@@ -1,7 +1,7 @@
 package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kindergarten.api.security.entitiy.Salt;
+import com.kindergarten.api.security.salt.Salt;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

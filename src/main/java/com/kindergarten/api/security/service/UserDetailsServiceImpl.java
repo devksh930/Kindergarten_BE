@@ -1,15 +1,12 @@
-package com.kindergarten.api.service.Impl;
+package com.kindergarten.api.security.service;
 
 import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
