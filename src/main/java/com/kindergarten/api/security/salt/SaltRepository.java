@@ -1,6 +1,4 @@
-package com.kindergarten.api.security.repository;
-
-import com.kindergarten.api.security.entitiy.Salt;
+package com.kindergarten.api.security.salt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
