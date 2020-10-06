@@ -13,9 +13,12 @@ import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -23,6 +26,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,25 +36,29 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private CookieUtil cookieUtil;
-    @Autowired
-    private RedisUtil redisUtil;
+    private final CookieUtil cookieUtil;
+
+    private final RedisUtil redisUtil;
+
+    public UserController(ModelMapper modelMapper, UserService userService, UserRepository userRepository, ResponseService responseService, JwtUtil jwtUtil, CookieUtil cookieUtil, RedisUtil redisUtil) {
+        this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.responseService = responseService;
+        this.jwtUtil = jwtUtil;
+        this.cookieUtil = cookieUtil;
+        this.redisUtil = redisUtil;
+    }
 
     @GetMapping("/list")
     public ListResult<User> findAll() {
@@ -87,7 +96,7 @@ public class UserController {
 
         User user = modelMapper.map(signUpRequest, User.class);
 
-        userService.signUpParent(user);
+        userService.signUpTeacher(user);
 
 
         return responseService.getSingleResult(user);
@@ -99,7 +108,7 @@ public class UserController {
 
         User user = modelMapper.map(signUpRequest, User.class);
 
-        userService.signUpParent(user);
+        userService.signUpDirector(user);
 
         return responseService.getSingleResult(user);
     }
@@ -108,19 +117,41 @@ public class UserController {
     public LoginResponse login(@RequestBody RequestLoginUser user,
                                HttpServletRequest request, HttpServletResponse response) {
         try {
+
             final User loginUser = userService.loginUser(user.getUserid(), user.getPassword());
             final String token = jwtUtil.generateToken(loginUser);
             final String refreshJwt = jwtUtil.generateRefreshToken(loginUser);
+
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
+
             redisUtil.setDataExpire(refreshJwt, user.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+
             response.addCookie(accessToken);
             response.addCookie(refreshToken);
+
+
             return new LoginResponse("success", "로그인성공", token);
         } catch (Exception e) {
             e.printStackTrace();
             return new LoginResponse("error", "실패", e.getMessage());
+
         }
     }
 
+
+    @PostMapping(path = "/check")
+    public SingleResult<User> chekuser(HttpServletRequest request, HttpServletResponse response) {
+
+        String accessToken = cookieUtil.getCookie(request, "accessToken").getValue();
+        String refreshToken = cookieUtil.getCookie(request, "refreshToken").getValue();
+        String data = redisUtil.getData(refreshToken);
+        log.warn(data);
+        log.warn(data);
+        log.warn(data);
+        log.warn(data);
+        User loginuser = userRepository.findByUserid(data);
+        return responseService.getSingleResult(loginuser);
+
+    }
 }

@@ -40,7 +40,6 @@ public class User {
     @Email
     private String email;
 
-    @JsonIgnore
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;

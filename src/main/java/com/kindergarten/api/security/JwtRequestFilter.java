@@ -44,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUid = null;
-
+        
         try {
             if (jwtToken != null) {
                 jwt = jwtToken.getValue();
@@ -55,6 +55,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 if (jwtUtil.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                   log.debug("=========================");
+                   log.debug(userDetails.getUsername());
+                   log.debug(userDetails.getAuthorities().toString());
+                   log.debug("=========================");
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
@@ -66,7 +70,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 refreshJwt = refreshToken.getValue();
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         try {
             if (refreshJwt != null) {
@@ -87,7 +91,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException e) {
-
+            e.printStackTrace();
         }
         filterChain.doFilter(request, response);
     }

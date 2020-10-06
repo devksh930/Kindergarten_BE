@@ -58,10 +58,10 @@ public class JwtUtil {
         return doGenerateToken(user.getUserid(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    public String doGenerateToken(String username, long expireTime) {
+    public String doGenerateToken(String userid, long expireTime) {
 
         Claims claims = Jwts.claims();
-        claims.put("username", username);
+        claims.put("userid", userid);
 
         String jwt = Jwts.builder()
                 .setClaims(claims)
