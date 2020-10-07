@@ -1,9 +1,9 @@
 package com.kindergarten.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kindergarten.api.model.request.RequestLoginUser;
+import com.kindergarten.api.model.dto.RequestLoginUser;
 import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.request.SignUpRequest;
+import com.kindergarten.api.model.dto.SignUpRequest;
 import com.kindergarten.api.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class UserControllerTest {
         this.user.setEmail("test@test.com");
         this.user.setPhone("010-1234-1234");
 
-        userService.signUpParent(user);
+        userService.signUpParent();
     }
 
     @Test

@@ -36,6 +36,7 @@ public class UserServiceImplTest {
         //when
 
         userService.signUpParent(inituser);
+
         User finduser = userRepository.findByUserid("user1");
         //then
         Assertions.assertThat(finduser.getRole()).isEqualTo(UserRole.ROLE_USER);
