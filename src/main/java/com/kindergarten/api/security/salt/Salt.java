@@ -1,4 +1,4 @@
-package com.kindergarten.api.security.entitiy;
+package com.kindergarten.api.security.salt;
 
 import lombok.Getter;
 import lombok.Setter;

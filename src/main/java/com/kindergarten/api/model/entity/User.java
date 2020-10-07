@@ -1,7 +1,7 @@
 package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kindergarten.api.security.entitiy.Salt;
+import com.kindergarten.api.security.salt.Salt;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,6 @@ public class User {
     @Email
     private String email;
 
-    @JsonIgnore
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;

@@ -33,7 +33,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private Claims extractAllClaims(String token) throws ExpiredJwtException {
+    public Claims extractAllClaims(String token) throws ExpiredJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(SECRET_KEY))
                 .build()
@@ -41,7 +41,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    private String getUserid(String token) {
+    public String getUserid(String token) {
         return extractAllClaims(token).get("userid", String.class);
     }
 
@@ -58,10 +58,10 @@ public class JwtUtil {
         return doGenerateToken(user.getUserid(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    public String doGenerateToken(String username, long expireTime) {
+    public String doGenerateToken(String userid, long expireTime) {
 
         Claims claims = Jwts.claims();
-        claims.put("username", username);
+        claims.put("userid", userid);
 
         String jwt = Jwts.builder()
                 .setClaims(claims)

@@ -1,25 +1,28 @@
-package com.kindergarten.api.service.Impl;
+package com.kindergarten.api.security.service;
 
+import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @Override
     public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUserid(userid);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException(user.get().getUserid());
+        User user = userRepository.findByUserid(userid);
+        if (user == null) {
+            throw new CUserNotFoundException();
         }
-        return new UserDetailsImpl(user.get());
+        return new UserDetailsImpl(user);
     }
 }
