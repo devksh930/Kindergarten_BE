@@ -1,7 +1,10 @@
 package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+<<<<<<< HEAD
+=======
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+>>>>>>> develop
 import com.kindergarten.api.security.salt.Salt;
 import lombok.Builder;
 import lombok.Data;

@@ -1,31 +1,18 @@
 package com.kindergarten.api.controller;
 
-import com.kindergarten.api.common.exception.CUserExistException;
-import com.kindergarten.api.common.response.LoginResponse;
 import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
-import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.StudentRepository;
+import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.util.CookieUtil;
-import com.kindergarten.api.security.util.JwtUtil;
-import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Role;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 @RestController
 @RequestMapping("/api/users")
 @EnableSwagger2

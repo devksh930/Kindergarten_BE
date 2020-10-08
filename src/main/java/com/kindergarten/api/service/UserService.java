@@ -32,8 +32,12 @@ public class UserService {
     @Autowired
     private RedisUtil redisUtil;
 
+<<<<<<< HEAD
+    boolean isPasswordUuidValidate(String key);
+=======
     @Autowired
     private KinderGartenRepository kinderGartenRepository;
+>>>>>>> develop
 
     @Autowired
     private StudentService studentService;
