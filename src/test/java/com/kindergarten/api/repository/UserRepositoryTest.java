@@ -21,6 +21,7 @@ public class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+
     @Test
     public void createUser() throws Exception {
         //given
@@ -33,7 +34,7 @@ public class UserRepositoryTest {
         userRepository.save(inituser);
 
         //when
-        User findUser = userRepository.findByUserid(inituser.getUserid());
+        User findUser = userRepository.findByUserid(inituser.getUserid()).get();
 
         //then
         Assertions.assertThat(findUser.getUserid()).isEqualTo(inituser.getUserid());
@@ -53,10 +54,10 @@ public class UserRepositoryTest {
 
         //when
         String changeName = "이름변경";
-        User updateuser = userRepository.findByUserid("user1");
+        User updateuser = userRepository.findByUserid("user1").get();
         updateuser.setName(changeName);
         userRepository.save(updateuser);
-        User findUser = userRepository.findByUserid("user1");
+        User findUser = userRepository.findByUserid("user1").get();
 
         //then
         Assertions.assertThat(findUser.getName()).isEqualTo(changeName);
@@ -88,7 +89,7 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(beforeDelete.size()).isEqualTo(2);
 
-        User user = userRepository.findByUserid("user1");
+        User user = userRepository.findByUserid("user1").get();
         userRepository.deleteById(user.getId());
 
         //지운후 User List

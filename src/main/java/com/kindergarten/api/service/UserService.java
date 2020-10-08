@@ -42,6 +42,13 @@ public class UserService {
     @Autowired
     private StudentService studentService;
 
+    public boolean isexistUser(String userid) {
+        Optional<User> byUserid = userRepository.findByUserid(userid);
+        byUserid.ifPresent(user -> {
+            throw new CUserExistException();
+        });
+        return false;
+    }
 
     public User registerAccount(UserDTO.Create userdto) {
         userRepository.findByUserid(userdto.getUserid()).ifPresent(user -> {
@@ -117,11 +124,13 @@ public class UserService {
 
 
     @Transactional
-    public User loginUser(String userid, String password) throws Exception {
+    public User loginUser(String userid, String password) {
 
         Optional<User> user = userRepository.findByUserid(userid);
 
-        if (user.isEmpty()) throw new CUserNotFoundException();
+        if (user.isEmpty()) {
+            throw new CUserNotFoundException();
+        }
         String salt = user.get().getSalt().getSalt();
         password = saltUtil.encodedPassword(salt, password);
 

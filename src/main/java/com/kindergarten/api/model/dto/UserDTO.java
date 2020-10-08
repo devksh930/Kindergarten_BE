@@ -16,9 +16,10 @@ public class UserDTO {
         private String email;
         private String role;
         private String kindergarten_id;
-        private List<ADD_Student> student=new ArrayList<>();
+        private List<ADD_Student> student = new ArrayList<>();
 
     }
+
     @Data
     public static class ADD_Student {
         private String name;
@@ -49,4 +50,6 @@ public class UserDTO {
         private String userid;
         private String password;
     }
+
+
 }

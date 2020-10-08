@@ -1,15 +1,19 @@
 existingUser:
   code: "409"
   msg: "해당 아이디는 가입한 회원입니다."
-notFoundUser:
+
+notfoundUser:
   code: "404"
   msg: "존재하지않는 계정입니다."
+
 incorrectPassword:
   code: "404"
   msg: "계정이 존재하지 않거나 이메일 또는 비밀번호가 정확하지 않습니다."
+
 entryPointException:
   code: "-1"
   msg: "해당 리소스에 접근하기 위한 권한이 없습니다."
+  
 accessDenied:
   code: "-2"
   msg: "보유한 권한으로 접근할수 없는 리소스 입니다."

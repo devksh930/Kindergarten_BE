@@ -30,7 +30,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public CommonResult userNotfoundException(HttpServletRequest request, CUserNotFoundException e) {
-        return responseService.getFailResult(Integer.parseInt(getMessage("notFoundUser.code")), getMessage("notFoundUser.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("notfoundUser.code")), getMessage("notfoundUser.msg"));
     }
 
     @ExceptionHandler(CUserIncorrectPasswordException.class)
@@ -42,13 +42,13 @@ public class ExceptionAdvice {
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
 
