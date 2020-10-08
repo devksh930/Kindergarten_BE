@@ -19,16 +19,17 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.transaction.Transactional;
 
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class UserControllerTest {
-
+public class AuthControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
@@ -62,49 +63,62 @@ public class UserControllerTest {
         this.create.setRole("USER");
         this.create.setEmail("test@test.com");
         this.create.setPhone("010-1234-1234");
-
     }
 
     @Test
-    public void 회원가입_성공() throws Exception {
+    public void 로그인_성공() throws Exception {
         //given
-//        userService.signUpParent(create);
-        System.out.println("=================================");
-        System.out.println(objectMapper.writeValueAsString(create));
-        System.out.println("=================================");
-        //when
-        final ResultActions resultActions = mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(create)));
+        userService.signUpParent(create);
+        UserDTO.Login loginUser = new UserDTO.Login();
+        loginUser.setUserid(create.getUserid());
+        loginUser.setPassword(create.getPassword());
 
+        //when
+        final ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(loginUser)))
+                .andDo(print());
         //then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value(0))
-                .andExpect(jsonPath("$.msg").exists())
-                .andExpect(jsonPath("$.data").exists());
-
+                .andExpect(cookie().exists("accessToken"))
+                .andExpect(cookie().exists("refreshToken"));
     }
 
     @Test
-    public void 회원가입_중복회원_실패() throws Exception {
+    public void 로그인_실패_존재하지않는계정() throws Exception {
+        //given
+        UserDTO.Login loginUser = new UserDTO.Login();
+        loginUser.setUserid(create.getUserid());
+        loginUser.setPassword(create.getPassword());
 
+
+        final ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(loginUser)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.msg").exists());
+    }
+    @Test
+    public void 로그인_실패_비밀번호틀림() throws Exception {
         //given
         userService.signUpParent(create);
 
-//        when
-        final ResultActions resultActions = mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(create)))
-                .andDo(print());
+        UserDTO.Login loginUser = new UserDTO.Login();
+        loginUser.setUserid(create.getUserid());
+        loginUser.setPassword("notpassword");
 
-        //then
-        resultActions
-                .andExpect(status().isConflict())
+
+        final ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(loginUser)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(409))
+                .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.msg").exists());
     }
-
 }

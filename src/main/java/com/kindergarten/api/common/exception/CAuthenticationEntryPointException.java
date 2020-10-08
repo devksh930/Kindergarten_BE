@@ -2,12 +2,12 @@ package com.kindergarten.api.common.exception;
 
 public class CAuthenticationEntryPointException extends RuntimeException {
 
-    public CAuthenticationEntryPointException(String message, Throwable t) {
-        super(message, t);
+    public CAuthenticationEntryPointException(String msg, Throwable t) {
+        super(msg, t);
     }
 
-    public CAuthenticationEntryPointException(String message) {
-        super(message);
+    public CAuthenticationEntryPointException(String msg) {
+        super(msg);
     }
 
     public CAuthenticationEntryPointException() {

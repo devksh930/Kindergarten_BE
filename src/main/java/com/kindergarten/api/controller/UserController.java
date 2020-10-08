@@ -1,5 +1,6 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.response.LoginResponse;
 import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
@@ -15,6 +16,8 @@ import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -37,26 +40,13 @@ public class UserController {
 
     private final ResponseService responseService;
 
-    private final JwtUtil jwtUtil;
 
-    private final CookieUtil cookieUtil;
-
-    private final RedisUtil redisUtil;
-
-    private final StudentRepository studentRepository;
-
-    private final KinderGartenRepository kinderGartenRepository;
-
-    public UserController(ModelMapper modelMapper, UserService userService, UserRepository userRepository, ResponseService responseService, JwtUtil jwtUtil, CookieUtil cookieUtil, RedisUtil redisUtil, StudentRepository studentRepository, KinderGartenRepository kinderGartenRepository) {
+    public UserController(ModelMapper modelMapper, UserService userService, UserRepository userRepository, ResponseService responseService) {
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.userRepository = userRepository;
         this.responseService = responseService;
-        this.jwtUtil = jwtUtil;
-        this.cookieUtil = cookieUtil;
-        this.redisUtil = redisUtil;
-        this.studentRepository = studentRepository;
-        this.kinderGartenRepository = kinderGartenRepository;
+
     }
 
     @GetMapping("/list")
@@ -65,18 +55,16 @@ public class UserController {
         return responseService.getListResult(userRepository.findAll());
     }
 
-//    @GetMapping("/existid/{userid}")
-//    public SingleResult existuserId(@PathVariable String userid) {
-//        log.debug("==============================================");
-//        log.debug(userid);
-//        log.debug("==============================================");
-//
-//        SingleResult singleResult;
-//
-//        singleResult = userService.existUserId(userid);
-//
-//        return singleResult;
-//    }
+    @GetMapping("/existid/{userid}")
+    public SingleResult existuserId(@PathVariable String userid) {
+
+        String msg = null;
+        boolean isexistUser = userService.isexistUser(userid);
+        if (!isexistUser) {
+            msg = "존재하지 않는 아이디 입니다";
+        }
+        return responseService.getSingleResult(msg);
+    }
 
     @PostMapping//회원가입
     public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
@@ -89,29 +77,4 @@ public class UserController {
     }
 
 
-    @PostMapping("/login")//로그인
-    public LoginResponse login(@RequestBody UserDTO.Login login,
-                               HttpServletRequest request, HttpServletResponse response) {
-        try {
-
-            final User loginUser = userService.loginUser(login.getUserid(), login.getPassword());
-            final String token = jwtUtil.generateToken(loginUser);
-            final String refreshJwt = jwtUtil.generateRefreshToken(loginUser);
-
-            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
-            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-
-            redisUtil.setDataExpire(refreshJwt, login.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-
-            response.addCookie(accessToken);
-            response.addCookie(refreshToken);
-
-
-            return new LoginResponse("success", "로그인성공", token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new LoginResponse("error", "실패", e.getMessage());
-
-        }
-    }
 }
