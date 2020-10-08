@@ -3,10 +3,7 @@ package com.kindergarten.api.config;
 import com.kindergarten.api.security.CAccessDeniedHandler;
 import com.kindergarten.api.security.CAuthenticationEntryPoint;
 import com.kindergarten.api.security.JwtRequestFilter;
-<<<<<<< HEAD:src/main/java/com/kindergarten/api/config/WebSecurityConfig.java
-=======
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> develop:src/main/java/com/kindergarten/api/security/config/WebSecurityConfig.java
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,16 +21,8 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-<<<<<<< HEAD:src/main/java/com/kindergarten/api/config/WebSecurityConfig.java
-    private final JwtRequestFilter jwtRequestFilter;
-
-    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-=======
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
->>>>>>> develop:src/main/java/com/kindergarten/api/security/config/WebSecurityConfig.java
 
 
     @Override
@@ -43,15 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-<<<<<<< HEAD:src/main/java/com/kindergarten/api/config/WebSecurityConfig.java
-                .httpBasic()
-                .authenticationEntryPoint(new CAuthenticationEntryPoint())
-                .and()
-                .exceptionHandling().accessDeniedHandler(new CAccessDeniedHandler())
 
-=======
                 .authorizeRequests()
                 .antMatchers("/api/users/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/users/existid/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/exception/**", "/actuator/health", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
@@ -59,19 +43,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(new CAccessDeniedHandler())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CAuthenticationEntryPoint())
->>>>>>> develop:src/main/java/com/kindergarten/api/security/config/WebSecurityConfig.java
+
                 .and()
 
 
-<<<<<<< HEAD:src/main/java/com/kindergarten/api/config/WebSecurityConfig.java
-=======
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
->>>>>>> develop:src/main/java/com/kindergarten/api/security/config/WebSecurityConfig.java
 
 
     @Bean
+
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));

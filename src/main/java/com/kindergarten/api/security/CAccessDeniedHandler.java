@@ -12,11 +12,7 @@ import java.io.IOException;
 @Component
 public class CAccessDeniedHandler implements AccessDeniedHandler {
     @Override
-<<<<<<< HEAD
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-=======
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
->>>>>>> develop
     response.sendRedirect("/exception/accessdenied");
     }
 

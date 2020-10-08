@@ -10,10 +10,7 @@ import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.Cookie;
@@ -63,6 +60,25 @@ public class AuthController {
 
         return responseService.getSingleResult("");
 
+    }
+
+    @GetMapping("/logout")
+    public SingleResult logout(HttpServletRequest request, HttpServletResponse response) {
+        Cookie refreshToken = cookieUtil.getCookie(request, "refreshToken");
+        String loginUserId = redisUtil.getData(refreshToken.getValue());
+        redisUtil.deleteData(refreshToken.getValue());
+
+        Cookie expiredaccessToken = new Cookie("refreshToken", "");
+        expiredaccessToken.setPath("/");
+        expiredaccessToken.setHttpOnly(true);
+
+        Cookie expiredrefreshToken = new Cookie("accessToken", "");
+        expiredrefreshToken.setPath("/");
+        expiredrefreshToken.setHttpOnly(true);
+
+        response.addCookie(expiredaccessToken);
+        response.addCookie(expiredrefreshToken);
+        return responseService.getSingleResult(loginUserId + "  로그아웃");
     }
 
 }
