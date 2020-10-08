@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +27,7 @@ public class KinderGarten {
 
     //     설립일
     @DateTimeFormat(pattern = "yyyyMMdd")
-    private LocalDateTime openDate;
+    private LocalDate openDate;
 
     private String address;
 

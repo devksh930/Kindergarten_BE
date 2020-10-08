@@ -1,6 +1,10 @@
 package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+>>>>>>> develop
 import com.kindergarten.api.security.salt.Salt;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +16,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -60,6 +66,11 @@ public class User {
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime lastModifiedDate = LocalDateTime.now();
+
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    List<Student> student = new ArrayList<>();
 
     @Builder
     public User(String userid, String password, String name, String phone, String email) {
