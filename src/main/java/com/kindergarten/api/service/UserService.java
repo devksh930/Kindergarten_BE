@@ -46,6 +46,7 @@ public class UserService {
         return false;
     }
 
+    @Transactional
     public User registerAccount(UserDTO.Create userdto) {
         userRepository.findByUserid(userdto.getUserid()).ifPresent(user -> {
             throw new CUserExistException();

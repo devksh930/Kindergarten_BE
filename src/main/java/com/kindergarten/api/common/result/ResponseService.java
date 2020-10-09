@@ -1,5 +1,6 @@
 package com.kindergarten.api.common.result;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +40,13 @@ public class ResponseService {
     public <T> ListResult<T> getListResult(List<T> list) {
         ListResult<T> result = new ListResult<>();
         result.setList(list);
+        setSuccessResult(result);
+        return result;
+    }
+    //페이징 결과
+    public <T> PageResult<T> getPageResult(Page<T> page) {
+        PageResult<T> result = new PageResult<>();
+        result.setData(page);
         setSuccessResult(result);
         return result;
     }

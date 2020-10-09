@@ -2,6 +2,8 @@ package com.kindergarten.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kindergarten.api.model.dto.UserDTO;
+import com.kindergarten.api.security.util.CookieUtil;
+import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,8 @@ public class AuthControllerTest {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RedisUtil redisUtil;
 
     UserDTO.Create create;
 
@@ -102,6 +106,7 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.msg").exists());
     }
+
     @Test
     public void 로그인_실패_비밀번호틀림() throws Exception {
         //given
