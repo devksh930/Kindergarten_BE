@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/users")
 @EnableSwagger2
@@ -42,11 +43,11 @@ public class UserController {
         return responseService.getListResult(userRepository.findAll());
     }
 
-    @GetMapping("/existid/{userid}")
+    @GetMapping("/existid/{userid}")//GET:/api/users/existid/{@PathVariable}
     public SingleResult existuserId(@PathVariable String userid) {
 
         String msg = null;
-        boolean isexistUser = userService.isexistUser(userid);
+        boolean isexistUser = userService.isexistsByUserid(userid);
         if (!isexistUser) {
             msg = "존재하지 않는 아이디 입니다";
         }

@@ -69,10 +69,6 @@ public class UserControllerTest {
     @Test
     public void 회원가입_성공() throws Exception {
         //given
-//        userService.signUpParent(create);
-        System.out.println("=================================");
-        System.out.println(objectMapper.writeValueAsString(create));
-        System.out.println("=================================");
         //when
         final ResultActions resultActions = mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

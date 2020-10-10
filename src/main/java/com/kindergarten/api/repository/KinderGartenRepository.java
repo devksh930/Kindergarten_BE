@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface KinderGartenRepository extends JpaRepository<KinderGarten, Long> {
-    List<KinderGarten> findByAddressContaining(String address);
+    Page<KinderGarten> findByAddressContaining(String address, Pageable pageable);
 
-    Page<KinderGarten> findAllByNameContaining(String name, Pageable pageable);
+    Page<KinderGarten> findByNameContaining(String name, Pageable pageable);
 
     Optional<KinderGarten> findById(Long id);
 

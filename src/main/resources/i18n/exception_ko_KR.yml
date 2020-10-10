@@ -17,3 +17,7 @@ entryPointException:
 accessDenied:
   code: "-2"
   msg: "보유한 권한으로 접근할수 없는 리소스 입니다."
+
+notfoundKinder:
+  code: "-3"
+  msg: "존재하지 않는 유치원입니다."
