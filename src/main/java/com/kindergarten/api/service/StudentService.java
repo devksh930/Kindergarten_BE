@@ -22,7 +22,8 @@ public class StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private KinderGartenRepository kinderGartenRepository;
-
+    @Autowired
+    private KinderGartenService kinderGartenService;
 
     @Transactional
     public List<Student> addStudent(List<UserDTO.ADD_Student> student, User user) {
@@ -42,4 +43,12 @@ public class StudentService {
         studentRepository.saveAll(students);
         return students;
     }
+
+    @Transactional
+    public List<Student>findByKinderGartenStudnet(Long id) {
+        KinderGarten kindergraten = kinderGartenService.findById(id);
+        List<Student> byKinderGarten = studentRepository.findByKinderGarten(kindergraten);
+        return byKinderGarten;
+    }
+
 }

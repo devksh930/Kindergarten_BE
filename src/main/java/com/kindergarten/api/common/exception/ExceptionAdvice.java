@@ -51,6 +51,11 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
+    @ExceptionHandler(CKinderGartenNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult kindergartenNotfoundException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("notfoundKinder.code")), getMessage("notfoundKinder.msg"));
+    }
 
     // code정보에 해당하는 메시지를 조회
     private String getMessage(String code) {

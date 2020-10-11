@@ -38,14 +38,15 @@ public class UserService {
     @Autowired
     private StudentService studentService;
 
-    public boolean isexistUser(String userid) {
-        Optional<User> byUserid = userRepository.findByUserid(userid);
-        byUserid.ifPresent(user -> {
+    public boolean isexistsByUserid(String userid) {
+        Boolean byUserid = userRepository.existsByUserid(userid);
+        if (byUserid) {
             throw new CUserExistException();
-        });
+        }
         return false;
     }
 
+    @Transactional
     public User registerAccount(UserDTO.Create userdto) {
         userRepository.findByUserid(userdto.getUserid()).ifPresent(user -> {
             throw new CUserExistException();

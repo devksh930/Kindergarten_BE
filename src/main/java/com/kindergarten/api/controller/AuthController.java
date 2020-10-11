@@ -56,8 +56,6 @@ public class AuthController {
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
-        UserDTO.Response responselogin = new UserDTO.Response();
-
         return responseService.getSingleResult("");
 
     }

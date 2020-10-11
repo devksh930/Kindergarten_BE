@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -58,11 +57,6 @@ public class UserServiceTest {
 
     @Test
     public void signUpTeacher() {
-        System.out.println("============================");
-        System.out.println("============================");
-        System.out.println(create.toString());
-        System.out.println("============================");
-        System.out.println("============================");
 
         //given
         UserDTO.Create create = this.create;
@@ -85,6 +79,7 @@ public class UserServiceTest {
         //given
         UserDTO.Create create = this.create;
         create.setRole("DIRECTOR");
+        create.setKindergarten_id("1");
 
 
         //when
