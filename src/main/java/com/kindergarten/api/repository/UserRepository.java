@@ -1,6 +1,8 @@
 package com.kindergarten.api.repository;
 
+import com.kindergarten.api.model.entity.KinderGarten;
 import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.model.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByUserid(String userid);
 
+    User findByRoleAndKinderGarten(UserRole role, KinderGarten kinderGarten);
 }

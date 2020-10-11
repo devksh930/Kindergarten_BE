@@ -4,13 +4,19 @@ import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.KinderGartenDTO;
 import com.kindergarten.api.model.entity.KinderGarten;
+import com.kindergarten.api.model.entity.Student;
+import com.kindergarten.api.repository.KinderGartenRepository;
+import com.kindergarten.api.repository.StudentRepository;
 import com.kindergarten.api.service.KinderGartenService;
+import com.kindergarten.api.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/kindergartens")
@@ -24,9 +30,11 @@ public class KinderGartenController {
     private ResponseService responseService;
 
     @Autowired
+    private StudentService studentService;
+    @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping //GET:/api/kindergartens{PathVariable}
+    @GetMapping("/name") //GET:/api/kindergartens{PathVariable}
     public SingleResult<KinderGartenDTO.UserCreate> finbydallByname(@RequestParam(value = "name") String name, Pageable pageable) {
         KinderGartenDTO.UserCreate byAllByName = kinderGartenService.findByAllByName(name, pageable);
         return responseService.getSingleResult(byAllByName);
@@ -41,9 +49,15 @@ public class KinderGartenController {
     @GetMapping("/{id}")
     public SingleResult detailKinderGarten(@PathVariable Long id) {
         KinderGarten byId = kinderGartenService.findById(id);
-        KinderGartenDTO.KinderGartenDetail kinderGartenDetail = modelMapper.map(byId, KinderGartenDTO.KinderGartenDetail.class);
-
-        return responseService.getSingleResult(byId);
+        KinderGartenDTO.KinderGartenDetail map = modelMapper.map(byId, KinderGartenDTO.KinderGartenDetail.class);
+        return responseService.getSingleResult(map);
     }
 
+    @GetMapping("{id}/student")
+    public List<Student> findStudnetKinder(@PathVariable Long id) {
+
+        List<Student> byKinderGarten = studentService.findByKinderGartenStudnet(id);
+
+        return byKinderGarten;
+    }
 }
