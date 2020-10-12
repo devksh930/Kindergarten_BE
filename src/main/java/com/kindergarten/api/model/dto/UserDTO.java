@@ -10,17 +10,18 @@ import java.util.List;
 public class UserDTO {
     @Data
     public static class Create {
-        @Min(value = 6, message = "6자 이상 입력해주세요")
-        @Max(value = 20, message = "20자 이상 입력할수 없습니다")
+        @Size(min = 6, max = 20, message = "id는 6자이상 20자이하로 입력해주세요.")
         private String userid;
 
         @Pattern(regexp = "[a-zA-Z1-9]{8,20}", message = "비밀번호는 영어와 숫자로 포함해서 8~20자리 이내로 입력해주세요.")
         private String password;
 
-        @Min(value = 2, message = "2자 이상 입력해주세요")
+        @NotBlank
+        @Pattern(regexp = "\\S{2,6}", message = "이름은 2~6자로 입력해주세요.")
         private String name;
 
-        @Pattern(regexp = "\\d{10,11}", message = "숫자만 입력가능합니다.")
+        @NotBlank(message = "전화번호를 입력해주세요.")
+        @Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
         private String phone;
 
         @Email(message = "올바른 이메일을 입력해주세요 aaa@email.com")
