@@ -18,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
@@ -34,26 +35,26 @@ public class KinderGartenController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/name") //GET:/api/kindergartens{PathVariable}
+    @GetMapping("/name") //GET:/api/kindergartens&name
     public SingleResult<KinderGartenDTO.UserCreate> finbydallByname(@RequestParam(value = "name") String name, Pageable pageable) {
         KinderGartenDTO.UserCreate byAllByName = kinderGartenService.findByAllByName(name, pageable);
         return responseService.getSingleResult(byAllByName);
     }
 
-    @GetMapping("/addr")//GET:/api/kindergartens/addr{PathVariable}
+    @GetMapping("/addr")//GET:/api/kindergartens/addr&addr
     public SingleResult<KinderGartenDTO.UserCreate> findByAdress(@RequestParam(value = "addr") String addr, Pageable pageable) {
         KinderGartenDTO.UserCreate byAllByName = kinderGartenService.findByAddress(addr, pageable);
         return responseService.getSingleResult(byAllByName);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}")//GET:/api/kindergartens/{id}
     public SingleResult detailKinderGarten(@PathVariable Long id) {
         KinderGarten byId = kinderGartenService.findById(id);
         KinderGartenDTO.KinderGartenDetail map = modelMapper.map(byId, KinderGartenDTO.KinderGartenDetail.class);
         return responseService.getSingleResult(map);
     }
 
-    @GetMapping("{id}/student")
+    @GetMapping("{id}/student")//GET:/api/kindergartens/{id}/studnet
     public List<Student> findStudnetKinder(@PathVariable Long id) {
 
         List<Student> byKinderGarten = studentService.findByKinderGartenStudnet(id);

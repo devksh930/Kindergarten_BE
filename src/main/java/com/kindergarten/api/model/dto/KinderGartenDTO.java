@@ -2,13 +2,7 @@ package com.kindergarten.api.model.dto;
 
 import com.kindergarten.api.model.entity.KinderGarten;
 import lombok.Data;
-import org.modelmapper.ModelMapper;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
