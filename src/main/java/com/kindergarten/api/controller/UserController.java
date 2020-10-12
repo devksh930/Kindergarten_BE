@@ -9,10 +9,12 @@ import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
+
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/users")
@@ -57,7 +59,6 @@ public class UserController {
     @PostMapping//회원가입
     public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
         log.debug("REST request to signup USER : {}", userdto.getUserid());
-
         User user = userService.registerAccount(userdto);
         UserDTO.Response response = modelMapper.map(user, UserDTO.Response.class);
 
