@@ -3,9 +3,16 @@ package com.kindergarten.api.repository;
 import com.kindergarten.api.model.entity.User;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -16,11 +23,16 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+@ActiveProfiles("dev")
 public class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
 
+    @AfterEach
+    public void cleanup() { // 데이터 섞임 방지
+        userRepository.deleteAll();
+    }
 
     @Test
     public void createUser() throws Exception {
@@ -90,8 +102,7 @@ public class UserRepositoryTest {
         Assertions.assertThat(beforeDelete.size()).isEqualTo(2);
 
         User user = userRepository.findByUserid("user1").get();
-        userRepository.deleteById(user.getId());
-
+        userRepository.delete(user);
         //지운후 User List
         List<User> afterDelete = userRepository.findAll();
         //then

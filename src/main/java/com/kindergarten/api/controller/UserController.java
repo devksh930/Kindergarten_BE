@@ -51,7 +51,7 @@ public class UserController {
         String msg = null;
         boolean isexistUser = userService.isexistsByUserid(userid);
         if (!isexistUser) {
-            msg = "존재하지 않는 아이디 입니다";
+            msg = "사용가능한 아이디입니다.";
         }
         return responseService.getSingleResult(msg);
     }
