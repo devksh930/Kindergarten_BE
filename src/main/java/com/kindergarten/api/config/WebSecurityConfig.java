@@ -21,8 +21,12 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
 
     @Override

@@ -96,10 +96,9 @@ public class UserServiceTest {
 
 
     @Test
-    public void loginUser() throws Exception {
+    public void loginUser() {
         // given
-        UserDTO.Create create = this.create;
-        userService.signUpParent(create);
+        userService.signUpParent(this.create);
 
         //when
         User user = userService.loginUser(create.getUserid(), create.getPassword());
