@@ -1,9 +1,9 @@
 package com.kindergarten.api.service;
 
+import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.KinderGarten;
 import com.kindergarten.api.model.entity.Student;
 import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class StudentService {
     }
 
     @Transactional
-    public List<Student>findByKinderGartenStudnet(Long id) {
+    public List<Student> findByKinderGartenStudnet(Long id) {
         KinderGarten kindergraten = kinderGartenService.findById(id);
         List<Student> byKinderGarten = studentRepository.findByKinderGarten(kindergraten);
         return byKinderGarten;

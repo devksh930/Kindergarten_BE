@@ -3,7 +3,10 @@ package com.kindergarten.api.model.dto;
 import com.kindergarten.api.model.entity.UserRole;
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 

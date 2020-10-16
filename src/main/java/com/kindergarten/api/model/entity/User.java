@@ -1,9 +1,7 @@
 package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kindergarten.api.security.salt.Salt;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -65,17 +63,6 @@ public class User {
     private LocalDateTime lastModifiedDate = LocalDateTime.now();
 
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    List<Student> student = new ArrayList<>();
-
-    @Builder
-    public User(String userid, String password, String name, String phone, String email) {
-        this.userid = userid;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-    }
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Student> student = new ArrayList<>();
 }

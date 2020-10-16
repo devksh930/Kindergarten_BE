@@ -13,7 +13,7 @@ incorrectPassword:
 entryPointException:
   code: "-1"
   msg: "해당 리소스에 접근하기 위한 권한이 없습니다."
-  
+
 accessDenied:
   code: "-2"
   msg: "보유한 권한으로 접근할수 없는 리소스 입니다."
