@@ -43,6 +43,7 @@ public class ResponseService {
         setSuccessResult(result);
         return result;
     }
+
     //페이징 결과
     public <T> PageResult<T> getPageResult(Page<T> page) {
         PageResult<T> result = new PageResult<>();

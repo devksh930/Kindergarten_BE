@@ -1,14 +1,25 @@
 spring:
-  h2:
-    console:
-      enabled: true
+  output:
+    ansi:
+      enabled: always
+
   datasource:
-    url: jdbc:h2:tcp://localhost/~/kinder
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: kinderkinder123
+    url: jdbc:mysql://localhost:3306/kinder?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    initialization-mode: always
+    data: classpath:data.sql
+
   jpa:
+    hibernate:
+      ddl-auto: create
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: false
     show-sql: true
+
+
   messages:
     basename: i18n/exception
     encoding: UTF-8

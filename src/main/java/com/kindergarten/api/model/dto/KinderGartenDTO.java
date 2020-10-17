@@ -44,8 +44,9 @@ public class KinderGartenDTO {
         private String address;
         private String type;
     }
+
     @Data
-    public static class  KinderGartenDetail{
+    public static class KinderGartenDetail {
         private Long id;
         private String name;
         private String type;

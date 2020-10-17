@@ -7,7 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,6 +37,9 @@ public class KinderGarten {
     private String website;
 
     private String operatingTime;
+
+    @OneToMany(mappedBy = "kinderGarten")
+    private List<Review> reviews = new ArrayList<>();
 
 
 }

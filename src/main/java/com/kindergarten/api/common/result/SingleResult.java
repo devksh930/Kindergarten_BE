@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SingleResult<T> extends CommonResult {
-//    단건의 result
+    //    단건의 result
     private T data;
 }

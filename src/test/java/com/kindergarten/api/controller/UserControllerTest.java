@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("dev")
 public class UserControllerTest {
 
     private MockMvc mockMvc;
@@ -57,12 +59,12 @@ public class UserControllerTest {
     @Before
     public void initMember() {
         this.create = new UserDTO.Create();
-        this.create.setUserid("testuser");
+        this.create.setUserid("testuser1");
         this.create.setPassword("password");
         this.create.setName("테스트유저");
         this.create.setRole("USER");
         this.create.setEmail("test@test.com");
-        this.create.setPhone("010-1234-1234");
+        this.create.setPhone("01012341234");
 
     }
 

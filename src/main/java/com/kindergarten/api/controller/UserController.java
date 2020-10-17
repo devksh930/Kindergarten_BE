@@ -9,7 +9,6 @@ import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -51,7 +50,7 @@ public class UserController {
         String msg = null;
         boolean isexistUser = userService.isexistsByUserid(userid);
         if (!isexistUser) {
-            msg = "존재하지 않는 아이디 입니다";
+            msg = "사용가능한 아이디입니다.";
         }
         return responseService.getSingleResult(msg);
     }

@@ -2,17 +2,15 @@ package com.kindergarten.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.security.util.CookieUtil;
-import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,16 +20,15 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.transaction.Transactional;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("dev")
 public class AuthControllerTest {
     private MockMvc mockMvc;
 
@@ -44,8 +41,6 @@ public class AuthControllerTest {
     @Autowired
     UserService userService;
 
-    @Autowired
-    RedisUtil redisUtil;
 
     UserDTO.Create create;
 

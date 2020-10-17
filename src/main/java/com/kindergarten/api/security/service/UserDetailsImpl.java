@@ -16,8 +16,6 @@ public class UserDetailsImpl extends User {
     }
 
 
-
-
     private static Collection<? extends GrantedAuthority> authorities(com.kindergarten.api.model.entity.User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (user.getRole().equals(UserRole.ROLE_ADMIN)) {
