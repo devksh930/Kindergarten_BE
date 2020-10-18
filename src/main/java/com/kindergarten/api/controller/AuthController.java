@@ -71,7 +71,7 @@ public class AuthController {
 
         Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
         for (String header : headers) {
-            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None;");
+            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
         }
 
         return responseService.getSingleResult("");
