@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
@@ -37,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/kindergartens/**").permitAll()
+                .antMatchers("/api/kindergartens/**").hasRole("USER")
                 .antMatchers("/api/users/existid/**").permitAll()
                 .antMatchers("/api/studnet/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/exception/**", "/actuator/health", "/favicon.ico").permitAll()
@@ -50,7 +51,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
 
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // - (1)
+                /* 중략 */
+                .anyRequest().authenticated().and()
+                .cors().and(); // - (2
 
     }
 
