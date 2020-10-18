@@ -25,11 +25,11 @@ public class StudentLog {
     //  승인이 되어 있었는지 확인
     private boolean access;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KINDERGARTEN_ID")
     private KinderGarten kinderGarten;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STUDENT_ID")
     private Student students;
 }

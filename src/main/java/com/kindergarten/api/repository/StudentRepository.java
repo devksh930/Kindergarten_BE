@@ -10,7 +10,14 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Student findByUser(User user);
+    boolean existsByUser(User user);
+
+    boolean existsByUserAndAccessTrue(User user);
+
+
+    List<Student> findByUserAndKinderGarten(User user, KinderGarten kinderGarten);
 
     List<Student> findByKinderGarten(KinderGarten kinderGarten);
+
+    List<Student> findByUserAndKinderGartenAndAccessTrue(User user, KinderGarten kinderGarten);
 }

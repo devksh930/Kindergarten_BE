@@ -119,6 +119,11 @@ public class UserService {
         return true;
     }
 
+    public User findUserid(String userid) {
+        Optional<User> byId = userRepository.findByUserid(userid);
+
+        return byId.get();
+    }
 
     @Transactional
     public User loginUser(String userid, String password) {

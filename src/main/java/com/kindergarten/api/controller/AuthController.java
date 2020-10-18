@@ -4,11 +4,13 @@ import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -32,12 +34,23 @@ public class AuthController {
 
     private final RedisUtil redisUtil;
 
-    public AuthController(ResponseService responseService, UserService userService, CookieUtil cookieUtil, JwtUtil jwtUtil, RedisUtil redisUtil) {
+    private final UserRepository userRepository;
+
+    public AuthController(ResponseService responseService, UserService userService, CookieUtil cookieUtil, JwtUtil jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
         this.responseService = responseService;
         this.userService = userService;
         this.cookieUtil = cookieUtil;
         this.jwtUtil = jwtUtil;
         this.redisUtil = redisUtil;
+        this.userRepository = userRepository;
+    }
+
+    @PostMapping("/currentuser")
+    public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie refreshToken = cookieUtil.getCookie(request, "refreshToken");
+//        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
+        String userid = jwtUtil.getUserid(refreshToken.getValue());
+        return userid+"님"+" 안녕하세요!";
     }
 
     @PostMapping("/login")//로그인

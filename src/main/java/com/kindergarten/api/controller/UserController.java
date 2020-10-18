@@ -9,6 +9,7 @@ import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -54,7 +55,7 @@ public class UserController {
         }
         return responseService.getSingleResult(msg);
     }
-
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping//회원가입
     public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
         log.debug("REST request to signup USER : {}", userdto.getUserid());

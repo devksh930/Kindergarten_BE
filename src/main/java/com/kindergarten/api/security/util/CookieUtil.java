@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 
 @Service
 public class CookieUtil {

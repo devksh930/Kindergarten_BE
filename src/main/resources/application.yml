@@ -6,8 +6,6 @@ spring:
     port: 6379
   cache:
     type: redis
-jwt:
-  secret: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
 server:
   servlet:
     encoding:
