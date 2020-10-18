@@ -2,6 +2,7 @@ package com.kindergarten.api.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kindergarten.api.security.salt.Salt;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,6 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Table(name = "USER")
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
