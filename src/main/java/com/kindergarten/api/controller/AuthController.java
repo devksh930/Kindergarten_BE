@@ -10,13 +10,14 @@ import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
@@ -50,7 +51,7 @@ public class AuthController {
         Cookie refreshToken = cookieUtil.getCookie(request, "refreshToken");
 //        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
         String userid = jwtUtil.getUserid(refreshToken.getValue());
-        return userid+"님"+" 안녕하세요!";
+        return userid + "님" + " 안녕하세요!";
     }
 
     @PostMapping("/login")//로그인
@@ -65,9 +66,13 @@ public class AuthController {
         Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
 
         redisUtil.setDataExpire(refreshJwt, login.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
+
+        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+        for (String header : headers) {
+            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
+        }
 
         return responseService.getSingleResult("");
 
