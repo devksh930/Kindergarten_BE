@@ -59,7 +59,6 @@ public class UserRepositoryTest {
         inituser.setPhone("010-1234-1234");
         inituser.setEmail("test@test.com");
         userRepository.save(inituser);;
-        userRepository.save(inituser);
 
         //when
         String changeName = "이름변경";
@@ -86,7 +85,7 @@ public class UserRepositoryTest {
 
         User inituser2 = new User();
 
-        inituser2.setUserid("user1");
+        inituser2.setUserid("user2");
         inituser2.setPassword("password");
         inituser2.setName("테스트");
         inituser2.setPhone("010-1234-1234");
