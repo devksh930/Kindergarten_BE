@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000","http://mommyogi.com"})
 @RestController
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
