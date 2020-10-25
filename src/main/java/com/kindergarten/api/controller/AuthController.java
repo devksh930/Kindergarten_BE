@@ -69,10 +69,10 @@ public class AuthController {
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
-        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-        for (String header : headers) {
-            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
-        }
+//        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+//        for (String header : headers) {
+//            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
+//        }
 
         return responseService.getSingleResult("");
 
