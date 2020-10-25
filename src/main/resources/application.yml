@@ -16,4 +16,4 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-  port: 443
+  port: 8443
