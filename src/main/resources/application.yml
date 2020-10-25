@@ -8,7 +8,7 @@ spring:
     type: redis
 server:
   ssl:
-    key-store: /home/ubuntu/kinder-back/deploy/
+    key-store: /home/ubuntu/kinder-back/deploy/keystore.p12
     key-store-type: PKCS12
     key-store-password: kinderkinder123
     enabled: true
