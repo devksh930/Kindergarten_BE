@@ -7,6 +7,9 @@ spring:
   cache:
     type: redis
 server:
+  tomcat:
+    remoteip:
+      protocol-header-https-value: https
   ssl:
     key-store: classpath:keystore.p12
     key-store-type: PKCS12
