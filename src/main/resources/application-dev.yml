@@ -26,3 +26,4 @@
       key-store: claspath:keystore.p12
       key-store-type: PKCS12
       key-store-password: Rhrhtl45!11
+    port: 443
