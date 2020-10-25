@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
 
 @Service
 public class CookieUtil {
@@ -12,7 +11,7 @@ public class CookieUtil {
     public Cookie createCookie(String cookieName, String value) {
         Cookie token = new Cookie(cookieName, value);
         token.setHttpOnly(true);
-
+        token.setSecure(true);
 //        token.setHttpOnly(true);
 //        token.setDomain("http://mommyyogi.com");
         token.setMaxAge((int) JwtUtil.TOKEN_VALIDATION_SECOND);
