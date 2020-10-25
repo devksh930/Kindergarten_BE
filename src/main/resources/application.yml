@@ -8,12 +8,13 @@ spring:
     type: redis
 server:
   ssl:
-    key-store: /home/ubuntu/kinder-back/deploy/keystore.p12
+    key-store: classpath:keystore.p12
     key-store-type: PKCS12
-    key-store-password: kinderkinder123
+    key-store-password: Rhrhtl45!11
     enabled: true
-    key-alias: tomca
   servlet:
     encoding:
       charset: UTF-8
   port: 8443
+  http2:
+    enabled: true
