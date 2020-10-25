@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000","http://mommyogi.com"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2

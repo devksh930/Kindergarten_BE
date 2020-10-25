@@ -10,16 +10,14 @@ import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
-@CrossOrigin(origins = {"http://localhost:3000","http://mommyogi.com"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/auth")
 @EnableSwagger2
@@ -69,12 +67,14 @@ public class AuthController {
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
+        String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
+        String userid = jwtUtil.getUserid(accessToken1);
 //        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
 //        for (String header : headers) {
 //            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
 //        }
 
-        return responseService.getSingleResult("");
+        return responseService.getSingleResult(userid);
 
     }
 
