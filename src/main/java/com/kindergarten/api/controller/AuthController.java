@@ -16,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
@@ -69,10 +70,10 @@ public class AuthController {
 
         String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
         String userid = jwtUtil.getUserid(accessToken1);
-//        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-//        for (String header : headers) {
-//            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None; Secure");
-//        }
+        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
+        for (String header : headers) {
+            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None;");
+        }
 
         return responseService.getSingleResult(userid);
 
