@@ -1,0 +1,28 @@
+  spring:
+    h2:
+      console:
+        enabled: true
+        path: /h2
+        settings:
+          trace: true
+          web-allow-others: true
+    datasource:
+      url: jdbc:h2:mem:testdb
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    jpa:
+      show-sql: true
+    messages:
+      basename: i18n/exception
+      encoding: UTF-8
+  logging:
+    level:
+      root: debug
+  jwt:
+    secret: tesafdsa!jflksdjlkf;asjdk21j3kljfkls
+  server:
+    ssl:
+      key-store: claspath:keystore.p12
+      key-store-type: PKCS12
+      key-store-password: Rhrhtl45!11
