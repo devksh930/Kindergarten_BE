@@ -20,9 +20,9 @@ public class Review {
     //  부모 리뷰 id
     private Long parentid;
 
-    @Column(name = "currentStudent")
-    @Enumerated(EnumType.STRING)
-    private CurrentStudent currentStudent;
+//    @Column(name = "currentStudent")
+//    @Enumerated(EnumType.STRING)
+//    private CurrentStudent currentStudent;
 
     @NotEmpty
     private String description;
