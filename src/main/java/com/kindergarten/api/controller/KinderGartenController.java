@@ -19,6 +19,8 @@ import java.util.List;
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
 @Slf4j
+@CrossOrigin("*")
+
 public class KinderGartenController {
 
     private final KinderGartenService kinderGartenService;

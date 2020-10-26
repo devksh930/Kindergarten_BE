@@ -19,6 +19,8 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 @EnableSwagger2
 @Slf4j
+@CrossOrigin("*")
+
 public class UserController {
 
     private final ModelMapper modelMapper;

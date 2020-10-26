@@ -23,6 +23,7 @@ import java.util.Collection;
 @RequestMapping("/api/auth")
 @EnableSwagger2
 @Slf4j
+@CrossOrigin("*")
 public class AuthController {
     private final ResponseService responseService;
 

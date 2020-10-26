@@ -23,6 +23,8 @@ import java.util.Optional;
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
 @Slf4j
+@CrossOrigin("*")
+
 public class ReviewController {
     private final ModelMapper modelMapper;
 
