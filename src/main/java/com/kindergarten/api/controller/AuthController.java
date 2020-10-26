@@ -66,11 +66,11 @@ public class AuthController {
         redisUtil.setDataExpire(refreshJwt, login.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
-
-        String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
-
-        String userid = jwtUtil.getUserid(accessToken1);
-        return responseService.getSingleResult(userid);
+//
+//        String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
+//
+//        String userid = jwtUtil.getUserid(accessToken1);
+        return responseService.getSingleResult(accessToken);
 
     }
 
