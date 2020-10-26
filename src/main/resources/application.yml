@@ -7,17 +7,7 @@ spring:
   cache:
     type: redis
 server:
-  tomcat:
-    remoteip:
-      protocol-header-https-value: https
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-type: PKCS12
-    key-store-password: Rhrhtl45!11
-    enabled: true
   servlet:
     encoding:
       charset: UTF-8
-  port: 8443
-  http2:
-    enabled: true
+

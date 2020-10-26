@@ -15,7 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/users")
 @EnableSwagger2

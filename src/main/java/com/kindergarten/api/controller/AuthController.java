@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/auth")
 @EnableSwagger2
