@@ -1,14 +1,13 @@
 spring:
   profiles:
-    active: prod
+    active: dev
   redis:
     host: localhost
     port: 6379
   cache:
     type: redis
-jwt:
-  secret: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
 server:
   servlet:
     encoding:
       charset: UTF-8
+

@@ -31,12 +31,13 @@ public class UserRepositoryTest {
     @Test
     public void createUser() throws Exception {
         //given
-        User inituser = User.builder()
-                .userid("user1")
-                .password("password")
-                .name("테스트")
-                .phone("010-1234-1234")
-                .email("test@test.com").build();
+        User inituser = new User();
+
+        inituser.setUserid("user1");
+        inituser.setPassword("password");
+        inituser.setName("테스트");
+        inituser.setPhone("010-1234-1234");
+        inituser.setEmail("test@test.com");
         userRepository.save(inituser);
 
         //when
@@ -50,13 +51,14 @@ public class UserRepositoryTest {
     @Test
     public void updateUser() throws Exception {
         //given
-        User inituser = User.builder()
-                .userid("user1")
-                .password("password")
-                .name("테스트")
-                .phone("010-1234-1234")
-                .email("test@test.com").build();
-        userRepository.save(inituser);
+        User inituser = new User();
+
+        inituser.setUserid("user1");
+        inituser.setPassword("password");
+        inituser.setName("테스트");
+        inituser.setPhone("010-1234-1234");
+        inituser.setEmail("test@test.com");
+        userRepository.save(inituser);;
 
         //when
         String changeName = "이름변경";
@@ -72,20 +74,22 @@ public class UserRepositoryTest {
     @Test
     public void deleteUser() throws Exception {
         //given
-        User inituser1 = User.builder()
-                .userid("user1")
-                .password("password")
-                .name("테스트1")
-                .phone("010-1234-1234")
-                .email("test@test.com").build();
+        User inituser1 = new User();
+
+        inituser1.setUserid("user1");
+        inituser1.setPassword("password");
+        inituser1.setName("테스트");
+        inituser1.setPhone("010-1234-1234");
+        inituser1.setEmail("test@test.com");
         userRepository.save(inituser1);
 
-        User inituser2 = User.builder()
-                .userid("user2")
-                .password("password")
-                .name("테스트2")
-                .phone("010-1234-1234")
-                .email("test@test.com").build();
+        User inituser2 = new User();
+
+        inituser2.setUserid("user2");
+        inituser2.setPassword("password");
+        inituser2.setName("테스트");
+        inituser2.setPhone("010-1234-1234");
+        inituser2.setEmail("test@test.com");
         userRepository.save(inituser2);
 
         //when

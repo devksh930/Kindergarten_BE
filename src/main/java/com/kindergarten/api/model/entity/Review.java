@@ -17,7 +17,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    //  부모 리뷰 id
     private Long parentid;
 
     @Column(name = "currentStudent")
@@ -26,7 +26,6 @@ public class Review {
 
     @NotEmpty
     private String description;
-
     //    시설점수
     private int facilityScore;
     //    선생님점수

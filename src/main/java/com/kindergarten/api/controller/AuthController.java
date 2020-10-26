@@ -4,6 +4,7 @@ import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.CookieUtil;
 import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
@@ -16,11 +17,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
 @RequestMapping("/api/auth")
 @EnableSwagger2
 @Slf4j
+//
+@CrossOrigin("*")
 public class AuthController {
     private final ResponseService responseService;
 
@@ -32,12 +34,23 @@ public class AuthController {
 
     private final RedisUtil redisUtil;
 
-    public AuthController(ResponseService responseService, UserService userService, CookieUtil cookieUtil, JwtUtil jwtUtil, RedisUtil redisUtil) {
+    private final UserRepository userRepository;
+
+    public AuthController(ResponseService responseService, UserService userService, CookieUtil cookieUtil, JwtUtil jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
         this.responseService = responseService;
         this.userService = userService;
         this.cookieUtil = cookieUtil;
         this.jwtUtil = jwtUtil;
         this.redisUtil = redisUtil;
+        this.userRepository = userRepository;
+    }
+
+    @PostMapping("/currentuser")
+    public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie refreshToken = cookieUtil.getCookie(request, "refreshToken");
+//        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
+        String userid = jwtUtil.getUserid(refreshToken.getValue());
+        return userid + "님" + " 안녕하세요!";
     }
 
     @PostMapping("/login")//로그인
@@ -52,11 +65,11 @@ public class AuthController {
         Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
 
         redisUtil.setDataExpire(refreshJwt, login.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
-        return responseService.getSingleResult("");
+
+        return responseService.getSingleResult(token);
 
     }
 
