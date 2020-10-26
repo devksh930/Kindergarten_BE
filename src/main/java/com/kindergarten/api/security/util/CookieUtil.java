@@ -10,6 +10,7 @@ public class CookieUtil {
 
     public Cookie createCookie(String cookieName, String value) {
         Cookie token = new Cookie(cookieName, value);
+        token.setDomain("https://mommyogi.com");
         token.setHttpOnly(true);
         token.setSecure(true);
         token.setMaxAge((int) JwtUtil.TOKEN_VALIDATION_SECOND);
