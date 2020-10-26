@@ -69,11 +69,7 @@ public class AuthController {
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
-        String accessToken1 = cookieUtil.getCookie(request, "refreshToken").getValue();
-        String userid = jwtUtil.getUserid(accessToken1);
-
-
-        return responseService.getSingleResult(userid);
+        return responseService.getSingleResult(token);
 
     }
 
