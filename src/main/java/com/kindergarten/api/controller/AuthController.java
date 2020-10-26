@@ -47,9 +47,14 @@ public class AuthController {
     @PostMapping("/currentuser")
     public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) {
         Cookie refreshToken = cookieUtil.getCookie(request, "refreshToken");
-//        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
+        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
+
+        System.out.println(accessToken);
+        System.out.println(refreshToken);
+
         String userid = jwtUtil.getUserid(refreshToken.getValue());
-        return userid + "님" + " 안녕하세요!";
+        String accesId = jwtUtil.getUserid(accessToken.getValue());
+        return "rereshtoken" + userid + "님" + " 안녕하세요! " + "accessToken :" + accesId;
     }
 
     @PostMapping("/login")//로그인
