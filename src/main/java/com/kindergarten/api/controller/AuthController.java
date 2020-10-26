@@ -10,14 +10,12 @@ import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -69,7 +67,10 @@ public class AuthController {
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
 
-        return responseService.getSingleResult(token);
+        String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
+
+        String userid = jwtUtil.getUserid(accessToken1);
+        return responseService.getSingleResult(userid);
 
     }
 
