@@ -9,11 +9,10 @@ import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.salt.Salt;
+import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.security.util.RedisUtil;
-import com.kindergarten.api.security.util.SaltUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,20 +22,23 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private SaltUtil saltUtil;
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
+    private final KinderGartenRepository kinderGartenRepository;
+    private final StudentService studentService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private KinderGartenRepository kinderGartenRepository;
-
-    @Autowired
-    private StudentService studentService;
+    public UserService(UserRepository userRepository, RedisUtil redisUtil, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.redisUtil = redisUtil;
+        this.kinderGartenRepository = kinderGartenRepository;
+        this.studentService = studentService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public boolean isexistsByUserid(String userid) {
         Boolean byUserid = userRepository.existsByUserid(userid);
@@ -75,9 +77,7 @@ public class UserService {
         newuser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf(userdto.getKindergarten_id())).get());
         newuser.setName(userdto.getName());
         newuser.setEmail(userdto.getEmail());
-        String salt = saltUtil.genSalt();
-        newuser.setSalt(new Salt(salt));
-        newuser.setPassword(saltUtil.encodedPassword(salt, userdto.getPassword()));
+        newuser.setPassword(passwordEncoder.encode(userdto.getPassword()));
         userRepository.save(newuser);
 
         return newuser;
@@ -92,11 +92,8 @@ public class UserService {
         newuser.setPhone(userdto.getPhone());
         newuser.setName(userdto.getName());
         newuser.setEmail(userdto.getEmail());
+        newuser.setPassword(passwordEncoder.encode(userdto.getPassword()));
 
-        String salt = saltUtil.genSalt();
-        newuser.setSalt(new Salt(salt));
-
-        newuser.setPassword(saltUtil.encodedPassword(salt, userdto.getPassword()));
 
         userRepository.save(newuser);
 
@@ -126,20 +123,14 @@ public class UserService {
     }
 
     @Transactional
-    public User loginUser(String userid, String password) {
+    public String loginUser(String userid, String password) {
 
-        Optional<User> user = userRepository.findByUserid(userid);
-
-        if (user.isEmpty()) {
-            throw new CUserNotFoundException();
-        }
-        String salt = user.get().getSalt().getSalt();
-        password = saltUtil.encodedPassword(salt, password);
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
 
 
-        if (!user.get().getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CUserIncorrectPasswordException();
         }
-        return user.get();
+        return jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name());
     }
 }

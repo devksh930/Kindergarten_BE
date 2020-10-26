@@ -1,8 +1,10 @@
 package com.kindergarten.api.config;
 
+import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.security.CAccessDeniedHandler;
 import com.kindergarten.api.security.CAuthenticationEntryPoint;
-import com.kindergarten.api.security.JwtRequestFilter;
+import com.kindergarten.api.security.JwtAuthenticationFilter;
+import com.kindergarten.api.security.util.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +20,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final JwtTokenProvider jwtTokenProvider;
 
-    private final JwtRequestFilter jwtRequestFilter;
-
-    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
+    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/users/list").hasRole("NOT_PERMITTED_TEACHER")
                 .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/kindergartens/**").permitAll()
@@ -52,16 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
 
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
     }
 
-
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {

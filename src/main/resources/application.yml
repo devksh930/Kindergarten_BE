@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    key: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiJkZXZrc2g5MzAiLCJpYXQiOjE2MDM3MDU1ODYsImV4cCI6MTYwMzcwODQ2Nn0.a719qFwN6hvERx7AqVHVkmxxfe6TMvwlY_kQgjGly7o
   profiles:
     active: dev
   redis:
@@ -6,6 +8,9 @@ spring:
     port: 6379
   cache:
     type: redis
+  security:
+    oauth2:
+      resourceserver:
 server:
   servlet:
     encoding:

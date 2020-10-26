@@ -4,6 +4,7 @@ import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.security.util.JwtTokenProvider;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,8 @@ public class UserServiceTest {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     UserDTO.Create create;
 
     @Before
@@ -101,8 +103,9 @@ public class UserServiceTest {
         userService.signUpParent(this.create);
 
         //when
-        User user = userService.loginUser(create.getUserid(), create.getPassword());
+        String user = userService.loginUser(create.getUserid(), create.getPassword());
+        String userPk = jwtTokenProvider.getUserId(user);
         //then
-        Assertions.assertThat(create.getUserid()).isEqualTo(user.getUserid());
+        Assertions.assertThat(create.getUserid()).isEqualTo(userPk);
     }
 }
