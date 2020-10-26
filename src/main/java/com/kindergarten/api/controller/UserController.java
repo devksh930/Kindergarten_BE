@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 @EnableSwagger2
 @Slf4j
-@CrossOrigin(origins = "https://api.mommyogi.com:8443")
+@CrossOrigin(origins = "https://api.mommyogi.com:8443, https://localhost:443, https://localhost")
 
 public class UserController {
 
@@ -56,6 +56,7 @@ public class UserController {
         }
         return responseService.getSingleResult(msg);
     }
+
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping//회원가입
     public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
