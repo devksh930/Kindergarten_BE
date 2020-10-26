@@ -71,10 +71,7 @@ public class AuthController {
 
         String accessToken1 = cookieUtil.getCookie(request, "accessToken").getValue();
         String userid = jwtUtil.getUserid(accessToken1);
-        Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-        for (String header : headers) {
-            response.setHeader(HttpHeaders.SET_COOKIE, header + "; " + "SameSite=None;");
-        }
+
 
         return responseService.getSingleResult(userid);
 
