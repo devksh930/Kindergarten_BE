@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/auth")
 @EnableSwagger2
 @Slf4j
-@CrossOrigin(origins = "https://mommyogi.com")
+@CrossOrigin(origins = "https://api.mommyogi.com")
 public class AuthController {
     private final ResponseService responseService;
 

@@ -13,7 +13,7 @@ public class CookieUtil {
         token.setHttpOnly(true);
         token.setSecure(true);
         token.setPath("/");
-        token.setDomain("https://mommyogi.com");
+//        token.setDomain("https://mommyogi.com");
         token.setMaxAge((int) JwtUtil.TOKEN_VALIDATION_SECOND);
         return token;
     }
