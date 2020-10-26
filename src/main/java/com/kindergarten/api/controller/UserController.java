@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 @EnableSwagger2
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin(origins = "https://mommyogi.com")
 
 public class UserController {
 
