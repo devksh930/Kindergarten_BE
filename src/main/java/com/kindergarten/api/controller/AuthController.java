@@ -10,20 +10,19 @@ import com.kindergarten.api.security.util.JwtUtil;
 import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/auth")
 @EnableSwagger2
 @Slf4j
-@CrossOrigin(origins = "https://mommyogi.com")
+//
+@CrossOrigin("*")
 public class AuthController {
     private final ResponseService responseService;
 
@@ -68,6 +67,7 @@ public class AuthController {
         redisUtil.setDataExpire(refreshJwt, login.getUserid(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
         response.addCookie(accessToken);
         response.addCookie(refreshToken);
+
 
         return responseService.getSingleResult(token);
 

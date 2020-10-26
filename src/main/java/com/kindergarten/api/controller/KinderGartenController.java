@@ -19,7 +19,8 @@ import java.util.List;
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
 @Slf4j
-@CrossOrigin(origins = "https://mommyogi.com")
+//@CrossOrigin(origins = "https://mommyogi.com")
+@CrossOrigin("*")
 
 public class KinderGartenController {
 
