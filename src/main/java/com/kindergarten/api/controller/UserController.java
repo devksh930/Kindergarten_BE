@@ -1,5 +1,6 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
@@ -7,6 +8,9 @@ import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -23,27 +27,24 @@ import javax.validation.Valid;
 @CrossOrigin("*")
 
 public class UserController {
-
+    private final UserRepository userRepository;
+    private final ResponseService responseService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
-    private final UserService userService;
-
-    private final UserRepository userRepository;
-
-    private final ResponseService responseService;
-
-
-    public UserController(ModelMapper modelMapper, UserService userService, UserRepository userRepository, ResponseService responseService) {
-        this.modelMapper = modelMapper;
-        this.userService = userService;
+    public UserController(UserRepository userRepository, ResponseService responseService, UserService userService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.responseService = responseService;
-
+        this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping("/list")
     public ListResult<User> findAll() {
-
         return responseService.getListResult(userRepository.findAll());
     }
 
@@ -57,14 +58,15 @@ public class UserController {
         }
         return responseService.getSingleResult(msg);
     }
+
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping//회원가입
-    public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
+    public CommonResult userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
         log.debug("REST request to signup USER : {}", userdto.getUserid());
         User user = userService.registerAccount(userdto);
         UserDTO.Response response = modelMapper.map(user, UserDTO.Response.class);
 
-        return responseService.getSingleResult(response);
+        return responseService.getSuccessResult();
     }
 
 
