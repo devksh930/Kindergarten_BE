@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public SingleResult<String> loginuser(@RequestBody UserDTO.Login login) {
+    public SingleResult<String> loginUser(@RequestBody UserDTO.Login login) {
         String s = userService.loginUser(login.getUserid(), login.getPassword());
         return responseService.getSingleResult(s);
     }

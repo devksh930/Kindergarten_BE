@@ -2,6 +2,7 @@ package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -37,7 +38,6 @@ public class KinderGarten {
     private String website;
 
     private String operatingTime;
-
     @OneToMany(mappedBy = "kinderGarten")
     private List<Review> reviews = new ArrayList<>();
 

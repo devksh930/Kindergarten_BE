@@ -3,10 +3,7 @@ package com.kindergarten.api.model.dto;
 import com.kindergarten.api.model.entity.UserRole;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +59,12 @@ public class UserDTO {
 
     @Data
     public static class UserModify {
+        @NotNull(message = "Null일수는 없습니다")
         private String phone;
+        @NotNull(message = "Null일수는 없습니다")
         private String email;
+        @NotNull(message = "Null일수는 없습니다")
         private String kindergraten_id;
-        private List<ADD_Student> student = new ArrayList<>();
     }
 
     @Data

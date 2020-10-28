@@ -11,6 +11,7 @@ import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,6 +102,30 @@ public class UserService {
         }
 
         return newuser;
+    }
+
+    @Transactional
+    public User modifyUser(Authentication authentication, UserDTO.UserModify userModify) {
+        String userId = authentication.getName();
+        User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
+        String phone = userModify.getPhone();
+        String email = userModify.getEmail();
+        String kindergarten_id = userModify.getKindergraten_id();
+
+        if (!phone.isBlank()) {
+            updateUser.setPhone(phone);
+        }
+        if (!email.isBlank()) {
+            updateUser.setEmail(email);
+        }
+        if (!kindergarten_id.isBlank()
+        ) {
+            updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).get());
+        }
+
+        userRepository.save(updateUser);
+
+        return updateUser;
     }
 
     @Transactional

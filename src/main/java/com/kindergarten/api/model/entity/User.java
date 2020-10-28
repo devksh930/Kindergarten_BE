@@ -44,7 +44,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KINDERGATENT_ID")
     private KinderGarten kinderGarten;
 
