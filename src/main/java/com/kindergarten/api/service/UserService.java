@@ -10,14 +10,12 @@ import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
-import com.kindergarten.api.security.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,15 +23,13 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    private final RedisUtil redisUtil;
     private final KinderGartenRepository kinderGartenRepository;
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserService(UserRepository userRepository, RedisUtil redisUtil, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
-        this.redisUtil = redisUtil;
         this.kinderGartenRepository = kinderGartenRepository;
         this.studentService = studentService;
         this.passwordEncoder = passwordEncoder;
@@ -107,21 +103,6 @@ public class UserService {
         return newuser;
     }
 
-
-    public boolean isPasswordUuidValidate(String key) {
-        String userId = redisUtil.getData(key);
-        if (userId.equals("")) {
-            return false;
-        }
-        return true;
-    }
-
-    public User findUserid(String userid) {
-        Optional<User> byId = userRepository.findByUserid(userid);
-
-        return byId.get();
-    }
-
     @Transactional
     public String loginUser(String userid, String password) {
 
@@ -133,4 +114,5 @@ public class UserService {
         }
         return jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name());
     }
+
 }

@@ -46,15 +46,6 @@ public class UserDTO {
     }
 
     @Data
-    public static class Update {
-        private Long id;
-        private String userid;
-        private String email;
-        private String phone;
-        private String password;
-    }
-
-    @Data
     public static class Response {
         private Long id;
         private String email;
@@ -69,5 +60,16 @@ public class UserDTO {
         private String password;
     }
 
+    @Data
+    public static class UserModify {
+        private String phone;
+        private String email;
+        private String kindergraten_id;
+        private List<ADD_Student> student = new ArrayList<>();
+    }
 
+    @Data
+    public static class UserPasswordModify {
+        private String password;
+    }
 }

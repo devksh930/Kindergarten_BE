@@ -26,6 +26,7 @@ public class Review {
 
     @NotEmpty
     private String description;
+    private int descScore;
     //    시설점수
     private int facilityScore;
     //    선생님점수

@@ -5,7 +5,6 @@ import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
-import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +24,13 @@ public class AuthController {
 
     private final JwtTokenProvider jwtUtil;
 
-    private final RedisUtil redisUtil;
 
     private final UserRepository userRepository;
 
-    public AuthController(ResponseService responseService, UserService userService, JwtTokenProvider jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
+    public AuthController(ResponseService responseService, UserService userService, JwtTokenProvider jwtUtil, UserRepository userRepository) {
         this.responseService = responseService;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
-        this.redisUtil = redisUtil;
         this.userRepository = userRepository;
     }
 
@@ -42,7 +39,6 @@ public class AuthController {
         String s = userService.loginUser(login.getUserid(), login.getPassword());
         return responseService.getSingleResult(s);
     }
-
 
 
 }
