@@ -6,6 +6,7 @@ import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,12 +36,13 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final JwtTokenProvider jwtTokenProvider;
-
-    public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
+    private final UserRepository userRepository;
+    public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
         this.responseService = responseService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
     }
 
     @ApiImplicitParams({
