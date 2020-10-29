@@ -112,14 +112,13 @@ public class UserService {
         String email = userModify.getEmail();
         String kindergarten_id = userModify.getKindergraten_id();
 
-        if (!phone.isBlank()) {
+        if (!userModify.getPhone().isBlank()) {
             updateUser.setPhone(phone);
         }
-        if (!email.isBlank()) {
+        if (!userModify.getEmail().isBlank()) {
             updateUser.setEmail(email);
         }
-        if (!kindergarten_id.isBlank()
-        ) {
+        if (!userModify.getKindergraten_id().isBlank()) {
             updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).get());
         }
 

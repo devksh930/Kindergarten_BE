@@ -1,6 +1,7 @@
 package com.kindergarten.api.controller;
 
 import com.kindergarten.api.common.result.CommonResult;
+import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
@@ -9,13 +10,13 @@ import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -42,14 +43,14 @@ public class UserController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
-//    @GetMapping("/list")
-//    public ListResult<User> findAll() {
-//        return responseService.getListResult(userRepository.findAll());
-//    }
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
+    @GetMapping("/list")
+    public ListResult<User> findAll() {
+        return responseService.getListResult(userRepository.findAll());
+    }
 
     @GetMapping("/existid/{userid}")//GET:/api/users/existid/{@PathVariable}
     public SingleResult existuserId(@PathVariable String userid) {
@@ -78,7 +79,6 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @Transactional
     @PutMapping
     public CommonResult userModify(@RequestBody UserDTO.UserModify userModify) {
 
