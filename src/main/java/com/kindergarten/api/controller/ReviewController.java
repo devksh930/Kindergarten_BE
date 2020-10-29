@@ -1,6 +1,9 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.common.result.ResponseService;
+import com.kindergarten.api.model.entity.KinderGarten;
+import com.kindergarten.api.model.entity.Student;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.StudentRepository;
 import com.kindergarten.api.repository.UserRepository;
@@ -8,10 +11,11 @@ import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/kindergartens")
@@ -44,11 +48,11 @@ public class ReviewController {
     }
 
 //    @PostMapping("/{kindergartenid}/reviews")
-//    public List<Student> createReview(HttpServletRequest request, /*@RequestBody UserDTO.Create createreview, */@PathVariable Long kindergartenid) {
+//    public List<Student> createReview(@PathVariable Long kindergartenid) {
 //
 //
 //        Optional<KinderGarten> byId1 = kinderGartenRepository.findById(kindergartenid);
-//
+//        KinderGarten kinderGarten = byId1.orElseThrow(CKinderGartenNotFoundException::new);
 //
 //        if (byUser.isEmpty()) {
 //            log.error("========================================================================");

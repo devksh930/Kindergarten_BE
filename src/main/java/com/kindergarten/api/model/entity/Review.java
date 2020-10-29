@@ -33,9 +33,11 @@ public class Review {
     private int teacherScore;
     //    교육점수
     private int eduScore;
-
+    
     @NotNull
-    private String writer;
+    private String goodThing;
+    @NotNull
+    private String baddThing;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KINDERGARTEN_ID")

@@ -1,9 +1,11 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
+import com.kindergarten.api.model.entity.Student;
 import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
@@ -22,6 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -106,6 +109,31 @@ public class UserController {
             userService.modifyUser(authentication, userModify);
         }
         return responseService.getSuccessResult();
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/students")
+    public SingleResult<UserDTO.Response_User_Student> userStudentList() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        User user = userRepository.findByUserid(name).orElseThrow(CUserExistException::new);
+        UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
+        response_user_student.setUserid(user.getUserid());
+        List<UserDTO.Response_Student> students1 = response_user_student.getStudents();
+
+        List<Student> students = user.getStudent();
+        for (Student student : students) {
+            UserDTO.Response_Student responseStudent = new UserDTO.Response_Student();
+            responseStudent.setName(student.getName());
+            responseStudent.setAccess(student.isAccess());
+            responseStudent.setBirthday(student.getBirthday());
+            responseStudent.setKindergarten_id(student.getKinderGarten().getId());
+            responseStudent.setKindergarten_name(student.getKinderGarten().getName());
+            students1.add(responseStudent);
+        }
+        return responseService.getSingleResult(response_user_student);
     }
 }
 

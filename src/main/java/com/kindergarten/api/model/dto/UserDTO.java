@@ -2,8 +2,10 @@ package com.kindergarten.api.model.dto;
 
 import com.kindergarten.api.model.entity.UserRole;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,22 @@ public class UserDTO {
         private int month;
         private int day;
         private String kindergarten_id;
+    }
+
+    @Data
+    public static class Response_User_Student {
+        private String userid;
+        private List<Response_Student> students = new ArrayList<>();
+    }
+
+    @Data
+    public static class Response_Student {
+        private String name;
+        @DateTimeFormat(pattern = "yyyyMMdd")
+        private LocalDate birthday;
+        private Long kindergarten_id;
+        private String kindergarten_name;
+        private boolean access;
     }
 
     @Data
