@@ -1,7 +1,6 @@
 package com.kindergarten.api.controller;
 
 import com.kindergarten.api.common.result.CommonResult;
-import com.kindergarten.api.common.result.ListResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
@@ -37,6 +36,7 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+
     public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
         this.responseService = responseService;
         this.userService = userService;
@@ -50,8 +50,11 @@ public class UserController {
     })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping("/list")
-    public ListResult<User> findAll() {
-        return responseService.getListResult(userRepository.findAll());
+    public SingleResult findAll() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String name = authentication.getName();
+        return responseService.getSingleResult(name);
     }
 
     @GetMapping("/existid/{userid}")//GET:/api/users/existid/{@PathVariable}
