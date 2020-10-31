@@ -103,8 +103,8 @@ public class UserServiceTest {
         userService.signUpParent(this.create);
 
         //when
-        String user = userService.loginUser(create.getUserid(), create.getPassword());
-        String userPk = jwtTokenProvider.getUserId(user);
+        UserDTO.Login_response response = userService.loginUser(create.getUserid(), create.getPassword());
+        String userPk = jwtTokenProvider.getUserId(response.getToken());
         //then
         Assertions.assertThat(create.getUserid()).isEqualTo(userPk);
     }
