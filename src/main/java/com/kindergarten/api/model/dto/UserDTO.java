@@ -52,6 +52,7 @@ public class UserDTO {
 
     @Data
     public static class Response_Student {
+        private Long student_id;
         private String name;
         @DateTimeFormat(pattern = "yyyyMMdd")
         private LocalDate birthday;

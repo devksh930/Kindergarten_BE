@@ -139,4 +139,25 @@ public class UserService {
         return jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name());
     }
 
+    public UserDTO.Response_User_Student parentStudents(Authentication authentication) {
+        String name = authentication.getName();
+        User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
+        UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
+        response_user_student.setUserid(user.getUserid());
+
+        List<UserDTO.Response_Student> students1 = response_user_student.getStudents();
+        List<Student> students = user.getStudent();
+
+        for (Student student : students) {
+            UserDTO.Response_Student responseStudent = new UserDTO.Response_Student();
+            responseStudent.setStudent_id(student.getId());
+            responseStudent.setName(student.getName());
+            responseStudent.setAccess(student.isAccess());
+            responseStudent.setBirthday(student.getBirthday());
+            responseStudent.setKindergarten_id(student.getKinderGarten().getId());
+            responseStudent.setKindergarten_name(student.getKinderGarten().getName());
+            students1.add(responseStudent);
+        }
+        return response_user_student;
+    }
 }
