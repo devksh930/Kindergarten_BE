@@ -77,6 +77,13 @@ public class UserDTO {
     }
 
     @Data
+    public static class Login_response {
+        private String userid;
+        private String name;
+        private String token;
+    }
+
+    @Data
     public static class UserModify {
         @NotNull(message = "Null일수는 없습니다")
         private String phone;

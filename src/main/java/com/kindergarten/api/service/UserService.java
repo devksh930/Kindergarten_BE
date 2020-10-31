@@ -128,15 +128,20 @@ public class UserService {
     }
 
     @Transactional
-    public String loginUser(String userid, String password) {
+    public UserDTO.Login_response loginUser(String userid, String password) {
 
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
-
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CUserIncorrectPasswordException();
         }
-        return jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name());
+        UserDTO.Login_response response = new UserDTO.Login_response();
+        response.setName(user.getName());
+        response.setToken(jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name()));
+        response.setUserid(user.getUserid());
+
+
+        return response;
     }
 
     public UserDTO.Response_User_Student parentStudents(Authentication authentication) {

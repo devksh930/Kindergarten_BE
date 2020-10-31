@@ -55,11 +55,5 @@ public class SignUpKinderGartenController {
         return responseService.getSingleResult(map);
     }
 
-    @GetMapping("{id}/student")//GET:/api/kindergartens/{id}/studnet
-    public List<Student> findStudentKinder(@PathVariable Long id) {
 
-        List<Student> byKinderGarten = studentService.findByKinderGartenStudnet(id);
-
-        return byKinderGarten;
-    }
 }
