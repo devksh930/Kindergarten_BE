@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/api/users/existid/**").permitAll()
                 .antMatchers("/api/kindergartens/**").permitAll()
-                .antMatchers("/api/api/signup-kindergartens/**").permitAll()
+                .antMatchers("/api/signup-kindergartens/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/studnet/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/exception/**", "/actuator/health", "/favicon.ico").permitAll()
