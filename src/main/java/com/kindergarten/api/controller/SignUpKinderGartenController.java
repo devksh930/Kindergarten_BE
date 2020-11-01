@@ -48,12 +48,5 @@ public class SignUpKinderGartenController {
         return responseService.getSingleResult(byAllByName);
     }
 
-    @GetMapping("/{id}")//GET:/api/kindergartens/{id}
-    public SingleResult detailKindergarten(@PathVariable Long id) {
-        KinderGarten byId = kinderGartenService.findById(id);
-        KinderGartenDTO.KinderGartenDetail map = modelMapper.map(byId, KinderGartenDTO.KinderGartenDetail.class);
-        return responseService.getSingleResult(map);
-    }
-
 
 }

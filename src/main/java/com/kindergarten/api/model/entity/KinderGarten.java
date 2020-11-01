@@ -2,7 +2,7 @@ package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -41,5 +41,11 @@ public class KinderGarten {
     @OneToMany(mappedBy = "kinderGarten")
     private List<Review> reviews = new ArrayList<>();
 
+    @ColumnDefault("10.0")
+    private Double score;
+
+    public Double getScore() {
+        return score / 2;
+    }
 
 }

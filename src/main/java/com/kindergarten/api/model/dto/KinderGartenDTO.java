@@ -55,6 +55,6 @@ public class KinderGartenDTO {
         private String phone;
         private String website;
         private String operatingTime;
-
+        private double score;
     }
 }
