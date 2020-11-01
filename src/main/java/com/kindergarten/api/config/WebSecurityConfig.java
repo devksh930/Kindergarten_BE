@@ -1,6 +1,5 @@
 package com.kindergarten.api.config;
 
-import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.security.CAccessDeniedHandler;
 import com.kindergarten.api.security.CAuthenticationEntryPoint;
 import com.kindergarten.api.security.JwtAuthenticationFilter;
@@ -45,9 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/users/list").hasRole("NOT_PERMITTED_TEACHER")
                 .antMatchers("/api/users/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/kindergartens/**").permitAll()
                 .antMatchers("/api/users/existid/**").permitAll()
+                .antMatchers("/api/kindergartens/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/studnet/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/exception/**", "/actuator/health", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
@@ -57,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new CAuthenticationEntryPoint())
 
                 .and()
-
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
@@ -74,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://mommyogi.com");
+        configuration.addAllowedOrigin("http://localhost:3000");
+//        configuration.addAllowedOrigin("https://mommyogi.com");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

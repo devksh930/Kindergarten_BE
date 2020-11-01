@@ -10,14 +10,13 @@ import com.kindergarten.api.model.entity.UserRole;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
-import com.kindergarten.api.security.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,15 +24,13 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    private final RedisUtil redisUtil;
     private final KinderGartenRepository kinderGartenRepository;
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserService(UserRepository userRepository, RedisUtil redisUtil, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
-        this.redisUtil = redisUtil;
         this.kinderGartenRepository = kinderGartenRepository;
         this.studentService = studentService;
         this.passwordEncoder = passwordEncoder;
@@ -107,30 +104,65 @@ public class UserService {
         return newuser;
     }
 
+    @Transactional
+    public User modifyUser(Authentication authentication, UserDTO.UserModify userModify) {
+        String userId = authentication.getName();
+        User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
+        String phone = userModify.getPhone();
+        String email = userModify.getEmail();
+        String kindergarten_id = userModify.getKindergraten_id();
 
-    public boolean isPasswordUuidValidate(String key) {
-        String userId = redisUtil.getData(key);
-        if (userId.equals("")) {
-            return false;
+        if (!userModify.getPhone().isBlank()) {
+            updateUser.setPhone(phone);
         }
-        return true;
-    }
+        if (!userModify.getEmail().isBlank()) {
+            updateUser.setEmail(email);
+        }
+        if (!userModify.getKindergraten_id().isBlank()) {
+            updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).get());
+        }
 
-    public User findUserid(String userid) {
-        Optional<User> byId = userRepository.findByUserid(userid);
+        userRepository.save(updateUser);
 
-        return byId.get();
+        return updateUser;
     }
 
     @Transactional
-    public String loginUser(String userid, String password) {
+    public UserDTO.Login_response loginUser(String userid, String password) {
 
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
-
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CUserIncorrectPasswordException();
         }
-        return jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name());
+        UserDTO.Login_response response = new UserDTO.Login_response();
+        response.setName(user.getName());
+        response.setToken(jwtTokenProvider.createToken(String.valueOf(user.getUserid()), user.getRole().name()));
+        response.setUserid(user.getUserid());
+
+
+        return response;
+    }
+
+    public UserDTO.Response_User_Student parentStudents(Authentication authentication) {
+        String name = authentication.getName();
+        User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
+        UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
+        response_user_student.setUserid(user.getUserid());
+
+        List<UserDTO.Response_Student> students1 = response_user_student.getStudents();
+        List<Student> students = user.getStudent();
+
+        for (Student student : students) {
+            UserDTO.Response_Student responseStudent = new UserDTO.Response_Student();
+            responseStudent.setStudent_id(student.getId());
+            responseStudent.setName(student.getName());
+            responseStudent.setAccess(student.isAccess());
+            responseStudent.setBirthday(student.getBirthday());
+            responseStudent.setKindergarten_id(student.getKinderGarten().getId());
+            responseStudent.setKindergarten_name(student.getKinderGarten().getName());
+            students1.add(responseStudent);
+        }
+        return response_user_student;
     }
 }

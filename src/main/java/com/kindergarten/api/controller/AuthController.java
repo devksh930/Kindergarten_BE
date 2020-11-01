@@ -1,15 +1,20 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.util.JwtTokenProvider;
-import com.kindergarten.api.security.util.RedisUtil;
 import com.kindergarten.api.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,26 +28,29 @@ public class AuthController {
     private final UserService userService;
 
 
-    private final JwtTokenProvider jwtUtil;
-
-    private final RedisUtil redisUtil;
-
-    private final UserRepository userRepository;
-
-    public AuthController(ResponseService responseService, UserService userService, JwtTokenProvider jwtUtil, RedisUtil redisUtil, UserRepository userRepository) {
+    public AuthController(ResponseService responseService, UserService userService) {
         this.responseService = responseService;
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
-        this.redisUtil = redisUtil;
-        this.userRepository = userRepository;
     }
 
     @PostMapping("/login")
-    public SingleResult<String> loginuser(@RequestBody UserDTO.Login login) {
-        String s = userService.loginUser(login.getUserid(), login.getPassword());
-        return responseService.getSingleResult(s);
+    public SingleResult<UserDTO.Login_response> loginUser(@RequestBody UserDTO.Login login) {
+        UserDTO.Login_response response = userService.loginUser(login.getUserid(), login.getPassword());
+        return responseService.getSingleResult(response);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/currentuser")
+    public SingleResult<String> currentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String ROLE = authorities.toString().replace("[", "").replace("]", "");
 
-
+        if (authorities == null || ROLE.equals("ROLE_ANONYMOUS")) {
+            throw new CUserNotFoundException();
+        }
+        return responseService.getSingleResult(ROLE);
+    }
 }

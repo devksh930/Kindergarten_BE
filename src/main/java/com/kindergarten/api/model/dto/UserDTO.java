@@ -2,11 +2,10 @@ package com.kindergarten.api.model.dto;
 
 import com.kindergarten.api.model.entity.UserRole;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,12 +45,20 @@ public class UserDTO {
     }
 
     @Data
-    public static class Update {
-        private Long id;
+    public static class Response_User_Student {
         private String userid;
-        private String email;
-        private String phone;
-        private String password;
+        private List<Response_Student> students = new ArrayList<>();
+    }
+
+    @Data
+    public static class Response_Student {
+        private Long student_id;
+        private String name;
+        @DateTimeFormat(pattern = "yyyyMMdd")
+        private LocalDate birthday;
+        private Long kindergarten_id;
+        private String kindergarten_name;
+        private boolean access;
     }
 
     @Data
@@ -69,5 +76,25 @@ public class UserDTO {
         private String password;
     }
 
+    @Data
+    public static class Login_response {
+        private String userid;
+        private String name;
+        private String token;
+    }
 
+    @Data
+    public static class UserModify {
+        @NotNull(message = "Null일수는 없습니다")
+        private String phone;
+        @NotNull(message = "Null일수는 없습니다")
+        private String email;
+        @NotNull(message = "Null일수는 없습니다")
+        private String kindergraten_id;
+    }
+
+    @Data
+    public static class UserPasswordModify {
+        private String password;
+    }
 }
