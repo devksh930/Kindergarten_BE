@@ -10,7 +10,7 @@ import java.util.List;
 public class KinderGartenDTO {
     //    회원가입시 사용하는 DTO
     @Data
-    public static class UserCreate {
+    public static class KindergatenPage {
         private int totalPage;
         private int currentpage;
 
@@ -26,12 +26,14 @@ public class KinderGartenDTO {
                 String name = kinderGarten.getName();
                 String address = kinderGarten.getAddress();
                 String type = kinderGarten.getType();
+                Double score = kinderGarten.getScore();
                 find_KinderGarten find_kinderGarten = new find_KinderGarten();
 
                 find_kinderGarten.setId(id);
                 find_kinderGarten.setName(name);
                 find_kinderGarten.setAddress(address);
                 find_kinderGarten.setType(type);
+                find_kinderGarten.setScore(score);
                 this.kinderGartens.add(find_kinderGarten);
             });
         }
@@ -43,6 +45,7 @@ public class KinderGartenDTO {
         private String name;
         private String address;
         private String type;
+        private Double score;
     }
 
     @Data

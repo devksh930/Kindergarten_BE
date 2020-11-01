@@ -48,4 +48,5 @@ public class KinderGarten {
         return score / 2;
     }
 
+    public Boolean isKinder;
 }
