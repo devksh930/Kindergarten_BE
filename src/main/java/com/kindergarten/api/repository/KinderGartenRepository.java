@@ -20,5 +20,4 @@ public interface KinderGartenRepository extends JpaRepository<KinderGarten, Long
 
     Optional<KinderGarten> findById(Long id);
 
-
 }

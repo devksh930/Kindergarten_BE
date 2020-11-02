@@ -157,7 +157,7 @@ public class UserService {
             UserDTO.Response_Student responseStudent = new UserDTO.Response_Student();
             responseStudent.setStudent_id(student.getId());
             responseStudent.setName(student.getName());
-            responseStudent.setAccess(student.isAccess());
+            responseStudent.setAccess(student.getAccess());
             responseStudent.setBirthday(student.getBirthday());
             responseStudent.setKindergarten_id(student.getKinderGarten().getId());
             responseStudent.setKindergarten_name(student.getKinderGarten().getName());

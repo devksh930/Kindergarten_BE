@@ -45,7 +45,7 @@ public class KinderGarten {
     private Double score;
 
     public Double getScore() {
-        return score / 2;
+        return score / 2.0;
     }
 
     public Boolean isKinder;

@@ -60,6 +60,24 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("notfoundKinder.code")), getMessage("notfoundKinder.msg"));
     }
 
+    @ExceptionHandler(CReviewExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public CommonResult reviewExistException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("existReview.code")), getMessage("existReview.msg"));
+    }
+
+    @ExceptionHandler(CStudentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult studentNotFoundException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("notfoundStudent.code")), getMessage("notfoundStudent.msg"));
+    }
+
+    @ExceptionHandler(CNotOwnerException.class)
+    @ResponseStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
+    public CommonResult notOwnerException(HttpServletRequest request, CNotOwnerException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("notOwnerException.code")), getMessage("notOwnerException.msg"));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult methodNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {

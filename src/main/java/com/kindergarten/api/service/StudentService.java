@@ -7,7 +7,6 @@ import com.kindergarten.api.model.entity.User;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +17,15 @@ import java.util.List;
 @Service
 @Slf4j
 public class StudentService {
-    @Autowired
-    private StudentRepository studentRepository;
-    @Autowired
-    private KinderGartenRepository kinderGartenRepository;
-    @Autowired
-    private KinderGartenService kinderGartenService;
+    private final StudentRepository studentRepository;
+    private final KinderGartenRepository kinderGartenRepository;
+    private final KinderGartenService kinderGartenService;
+
+    public StudentService(StudentRepository studentRepository, KinderGartenRepository kinderGartenRepository, KinderGartenService kinderGartenService) {
+        this.studentRepository = studentRepository;
+        this.kinderGartenRepository = kinderGartenRepository;
+        this.kinderGartenService = kinderGartenService;
+    }
 
     @Transactional
     public List<Student> addStudent(List<UserDTO.ADD_Student> student, User user) {

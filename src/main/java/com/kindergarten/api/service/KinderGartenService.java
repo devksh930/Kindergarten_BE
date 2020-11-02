@@ -18,12 +18,15 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class KinderGartenService {
-    @Autowired
-    private KinderGartenRepository kinderGartenRepository;
-    @Autowired
-    private StudentRepository studentRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final KinderGartenRepository kinderGartenRepository;
+    private final StudentRepository studentRepository;
+    private final ModelMapper modelMapper;
+
+    public KinderGartenService(KinderGartenRepository kinderGartenRepository, StudentRepository studentRepository, ModelMapper modelMapper) {
+        this.kinderGartenRepository = kinderGartenRepository;
+        this.studentRepository = studentRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Transactional
     public KinderGartenDTO.KindergatenPage findByAddress(String addr, Pageable pageable) {

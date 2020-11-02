@@ -28,7 +28,8 @@ public class Student {
     private KinderGarten kinderGarten;
 
     //    승인확인
-    private boolean access = false;
+    @Column
+    private Boolean access = false;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")

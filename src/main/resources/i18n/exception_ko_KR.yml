@@ -21,3 +21,15 @@ accessDenied:
 notfoundKinder:
   code: "-3"
   msg: "존재하지 않는 유치원입니다."
+
+existReview:
+  code: "-4"
+  msg: "학부모는 하나의 원에 하나의 리뷰만 작성할수 있습니다."
+
+notfoundStudent:
+  code: "-5"
+  msg: "존재하지 않는 학생입니다."
+
+notOwnerException:
+  code: "-6"
+  msg: "해당 자원의 소유자가 아니거나 소속된 유치원이 아닙니다."
