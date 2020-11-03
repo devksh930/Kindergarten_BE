@@ -27,7 +27,7 @@ public class StudentService {
         this.kinderGartenService = kinderGartenService;
     }
 
-    @Transactional
+    @Transactional// 회원가입시 유치원 회원검사
     public List<Student> addStudent(List<UserDTO.ADD_Student> student, User user) {
 
         List<Student> students = new ArrayList<>();

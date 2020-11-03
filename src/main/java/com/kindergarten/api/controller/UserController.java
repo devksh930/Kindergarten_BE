@@ -5,8 +5,6 @@ import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.model.dto.UserDTO;
 import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.repository.UserRepository;
-import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,15 +32,12 @@ public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
 
-    public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+
+    public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper) {
         this.responseService = responseService;
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userRepository = userRepository;
     }
 
     @ApiImplicitParams({
@@ -57,6 +52,7 @@ public class UserController {
         return responseService.getSingleResult(name);
     }
 
+    @ApiOperation(value = "중복회원 조회", notes = "중복된 id가 있는지 검사한다")
     @GetMapping("/existid/{userid}")//GET:/api/users/existid/{@PathVariable}
     public SingleResult existuserId(@PathVariable String userid) {
         log.debug("REST request to exist USER : {}", userid);
@@ -68,7 +64,7 @@ public class UserController {
         }
         return responseService.getSingleResult(msg);
     }
-
+    @ApiOperation(value = "회원 가입", notes = "회원 가입을 한다")
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping//회원가입
     public SingleResult<UserDTO.Response> userSignUp(@Valid @RequestBody UserDTO.Create userdto) {
@@ -84,6 +80,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "회원 정보 수정", notes = "회원정보를 수정한다.")
     @PutMapping
     public CommonResult userModify(@RequestBody UserDTO.UserModify userModify) {
 
@@ -114,8 +111,6 @@ public class UserController {
     @PostMapping("/students")
     public SingleResult<UserDTO.Response_User_Student> userStudentList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String ROLE = authorities.toString();
 
         UserDTO.Response_User_Student response_user_student = userService.parentStudents(authentication);
         return responseService.getSingleResult(response_user_student);

@@ -37,6 +37,7 @@ public class UserService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    //id가 중복된 회원이 있는지 검사
     public boolean isexistsByUserid(String userid) {
         Boolean byUserid = userRepository.existsByUserid(userid);
         if (byUserid) {
@@ -45,7 +46,7 @@ public class UserService {
         return false;
     }
 
-    @Transactional
+    @Transactional //회원가입전 가입하려고 하는 회원의 Role, 중복 회원검사
     public User registerAccount(UserDTO.Create userdto) {
         userRepository.findByUserid(userdto.getUserid()).ifPresent(user -> {
             throw new CUserExistException();
@@ -61,7 +62,7 @@ public class UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional // 선생님 회원가입
     public User signUpTeacher(UserDTO.Create userdto) {
         User newuser = new User();
         newuser.setUserid(userdto.getUserid());
@@ -80,7 +81,7 @@ public class UserService {
         return newuser;
     }
 
-    @Transactional
+    @Transactional// 학부모 회원가입
     public User signUpParent(UserDTO.Create userdto) {
 
         User newuser = new User();
@@ -104,7 +105,7 @@ public class UserService {
         return newuser;
     }
 
-    @Transactional
+    @Transactional // 회원정보 수정
     public User modifyUser(Authentication authentication, UserDTO.UserModify userModify) {
         String userId = authentication.getName();
         User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
@@ -127,7 +128,7 @@ public class UserService {
         return updateUser;
     }
 
-    @Transactional
+    @Transactional //로그인
     public UserDTO.Login_response loginUser(String userid, String password) {
 
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
@@ -144,6 +145,7 @@ public class UserService {
         return response;
     }
 
+    // 유저의 학생 불러오기
     public UserDTO.Response_User_Student parentStudents(Authentication authentication) {
         String name = authentication.getName();
         User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);

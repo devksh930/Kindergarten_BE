@@ -14,13 +14,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
-@RequestMapping("/api/review")
+@RequestMapping("/api/reviews")
 @EnableSwagger2
 @Slf4j
 //@CrossOrigin(origins = "https://mommyogi.com")
@@ -61,30 +62,11 @@ public class ReviewController {
         return responseService.getSingleResult(checkResponse);
     }
 
-//    @PostMapping("/{kindergartenid}/reviews")
-//    public List<Student> createReview(@PathVariable Long kindergartenid) {
-//
-//
-//        Optional<KinderGarten> byId1 = kinderGartenRepository.findById(kindergartenid);
-//        KinderGarten kinderGarten = byId1.orElseThrow(CKinderGartenNotFoundException::new);
-//
-//        if (byUser.isEmpty()) {
-//            log.error("========================================================================");
-//            log.error("리뷰작성불가" + user1);
-//            log.error("리뷰작성불가" + user2);
-//            log.error("========================================================================");
-//        } else if (!byUserAndKinderGartenAndAccessTrue.isEmpty()) {
-//            log.error("========================================================================");
-//            log.error("실 이용자 리뷰" + user1);
-//            log.error("리뷰작성불가" + user2);
-//            log.error("========================================================================");
-//        } else {
-//            log.error("========================================================================");
-//            log.error("확인되지 않은 이용자 리뷰" + user1);
-//            log.error("리뷰작성불가" + user2);
-//            log.error("========================================================================");
-//        }
-//
-//        return byUserAndKinderGartenAndAccessTrue;
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping //리뷰 작성
+    public CommonResult createReview(@RequestBody ReviewDTO.CreateReview createReview) {
+        ReviewDTO.CreateResponse createResponse = reviewService.reviewCreate(createReview);
+
+        return responseService.getSingleResult(createResponse);
+    }
 }

@@ -2,6 +2,7 @@ package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -17,8 +18,6 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //  부모 리뷰 id
-    private Long parentid;
 
     @Column(name = "accessInfo")
     @Enumerated(EnumType.STRING)
@@ -26,6 +25,7 @@ public class Review {
 
     @NotEmpty
     private String description;
+    //    전체만족도
     private int descScore;
     //    시설점수
     private int facilityScore;
@@ -37,7 +37,7 @@ public class Review {
     @NotNull
     private String goodThing;
     @NotNull
-    private String baddThing;
+    private String badThing;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KINDERGARTEN_ID")
@@ -51,4 +51,6 @@ public class Review {
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
+
+    private boolean anonymous;
 }

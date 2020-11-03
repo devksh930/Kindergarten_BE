@@ -2,9 +2,7 @@ package com.kindergarten.api.service;
 
 import com.kindergarten.api.common.exception.*;
 import com.kindergarten.api.model.dto.ReviewDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.model.entity.*;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.ReviewRepository;
 import com.kindergarten.api.repository.StudentRepository;
@@ -38,7 +36,7 @@ public class ReviewService {
         String name = authentication.getName();
         ReviewDTO.CheckResponse checkResponse = new ReviewDTO.CheckResponse();
 
-        if (ROLE.equals("ROLE_USER") && !name.isBlank()) {
+        if (ROLE.equals("ROLE_USER") && !name.isBlank()) { //권한 검사
             User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
             KinderGarten kinderGarten = kinderGartenRepository.findById(Long.valueOf(kindergarten_id)).orElseThrow(CKinderGartenNotFoundException::new);
             Student student = studentRepository.findById(Long.valueOf(student_id)).orElseThrow(CUserNotFoundException::new);
@@ -51,18 +49,56 @@ public class ReviewService {
             if (existReview) { //해당유치원에 작성한 리뷰가 없으면
                 throw new CReviewExistException();
 
-            } else if (!existReview) {
+            } else {// 해당유치원에 작성한 리뷰가 있을경우
                 if (student.getKinderGarten() == kinderGarten) {
                     checkResponse.setKindergarten_id(String.valueOf(kinderGarten.getId()));
                     checkResponse.setUser_id(String.valueOf(user.getId()));
                     checkResponse.setStatus("작성가능");
-                } else
+                } else //학생이 해당 학부모 소속이 아닌경우
                     throw new CNotOwnerException();
             }
         } else { // ROLE이 유저가 아닐경우
             throw new CAuthenticationEntryPointException();
         }
         return checkResponse;
+    }
+
+    public ReviewDTO.CreateResponse reviewCreate(ReviewDTO.CreateReview createReview) {
+        ReviewDTO.CreateResponse reviewResponse = new ReviewDTO.CreateResponse();
+
+        User user = userRepository.findByUserid(createReview.getUser_id()).orElseThrow(CUserNotFoundException::new);
+        KinderGarten kinderGarten = kinderGartenRepository.findById(Long.valueOf(createReview.getKinderGarten_id())).orElseThrow(CKinderGartenNotFoundException::new);
+
+        boolean userownstudent = studentRepository.existsByUserAndKinderGarten(user, kinderGarten);
+        boolean studentAccess = studentRepository.existsByUserAndKinderGartenAndAccessTrue(user, kinderGarten);
+        Review review = new Review();
+
+        if (userownstudent) {
+            review.setAccessInfo(AccessInfo.NOT_ACCESS);
+            if (studentAccess) {
+                review.setAccessInfo(AccessInfo.ACCESS);
+            }
+        } else {
+            throw new CNotOwnerException();
+        }
+        log.debug("===============================================");
+        log.debug("===============================================");
+        log.debug("===============================================");
+        log.debug(String.valueOf(userownstudent));
+        log.debug(String.valueOf(studentAccess));
+        log.debug("===============================================");
+        log.debug("===============================================");
+
+        review.setBadThing(createReview.getBadThing());
+        review.setGoodThing(createReview.getGoodThing());
+        review.setKinderGarten(kinderGarten);
+        review.setDescription(createReview.getDescription());
+        review.setUser(user);
+        Review save = reviewRepository.save(review);
+        reviewResponse.setReivewindex(save.getId());
+
+
+        return reviewResponse;
     }
 
 }
