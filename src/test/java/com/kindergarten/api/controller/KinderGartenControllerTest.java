@@ -48,7 +48,7 @@ public class KinderGartenControllerTest {
 
     }
 
-    KinderGartenDTO.UserCreate userCreateKinder;
+    KinderGartenDTO.KindergatenPage userCreateKinder;
     KinderGartenDTO.KinderGartenDetail detail;
 
     @Test

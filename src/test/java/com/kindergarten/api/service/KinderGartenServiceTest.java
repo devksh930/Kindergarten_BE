@@ -26,7 +26,7 @@ public class KinderGartenServiceTest {
     public void findByAddress() {
         PageRequest pageRequest = PageRequest.of(1, 20);
 
-        KinderGartenDTO.UserCreate kinderGartenServiceByAddress = kinderGartenService.findByAddress("", pageRequest);
+        KinderGartenDTO.KindergatenPage kinderGartenServiceByAddress = kinderGartenService.findByAddress("", pageRequest);
 
 
         Assertions.assertThat(kinderGartenServiceByAddress.getCurrentpage()).isEqualTo(1);
@@ -37,7 +37,7 @@ public class KinderGartenServiceTest {
     public void findByAllByName() {
         PageRequest pageRequest = PageRequest.of(1, 20);
 
-        KinderGartenDTO.UserCreate kinderGartenServiceByAddress = kinderGartenService.findByAllByName("", pageRequest);
+        KinderGartenDTO.KindergatenPage kinderGartenServiceByAddress = kinderGartenService.findByAllByName("", pageRequest);
 
 
         Assertions.assertThat(kinderGartenServiceByAddress.getCurrentpage()).isEqualTo(1);

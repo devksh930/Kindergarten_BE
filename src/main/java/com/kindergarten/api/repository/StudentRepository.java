@@ -12,6 +12,8 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByUser(User user);
 
+    boolean existsByKinderGarten(KinderGarten kinderGarten);
+
     boolean existsByUserAndAccessTrue(User user);
 
 
@@ -20,4 +22,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByKinderGarten(KinderGarten kinderGarten);
 
     List<Student> findByUserAndKinderGartenAndAccessTrue(User user, KinderGarten kinderGarten);
+
+
 }
