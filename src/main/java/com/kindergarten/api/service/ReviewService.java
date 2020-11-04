@@ -54,7 +54,7 @@ public class ReviewService {
 
             } else {// 해당유치원에 작성한 리뷰가 없을경우
                 if (student.getKinderGarten().equals(kinderGarten)) {
-                    checkResponse.setKindergarten_id(String.valueOf(kinderGarten.getId()));
+                    checkResponse.setKindergarten_id(kinderGarten.getId());
                     checkResponse.setUser_id(String.valueOf(user.getId()));
                     checkResponse.setStatus("작성가능");
                 } else
