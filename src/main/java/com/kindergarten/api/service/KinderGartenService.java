@@ -7,7 +7,6 @@ import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,7 @@ public class KinderGartenService {
         Page<KinderGarten> allByNameContaining = kinderGartenRepository.findByAddressContaining(addr, pageable);
         KinderGartenDTO.KindergatenPage createKinderUser = new KinderGartenDTO.KindergatenPage();
 
+        createKinderUser.setTotalElements(allByNameContaining.getTotalElements());
         createKinderUser.setKinderGartens(allByNameContaining.getContent());
         createKinderUser.setTotalPage(allByNameContaining.getTotalPages());
         createKinderUser.setCurrentpage(allByNameContaining.getPageable().getPageNumber());
@@ -51,7 +51,7 @@ public class KinderGartenService {
         }
 
         KinderGartenDTO.KindergatenPage createKinderUser = new KinderGartenDTO.KindergatenPage();
-
+        createKinderUser.setTotalElements(allByAdressContaining.getTotalElements());
         createKinderUser.setKinderGartens(allByAdressContaining.getContent());
         createKinderUser.setTotalPage(allByAdressContaining.getTotalPages());
         createKinderUser.setCurrentpage(allByAdressContaining.getPageable().getPageNumber());
@@ -64,6 +64,7 @@ public class KinderGartenService {
         Page<KinderGarten> allByNameContaining = kinderGartenRepository.findByNameContaining(name, pageable);
         KinderGartenDTO.KindergatenPage createKinderUser = new KinderGartenDTO.KindergatenPage();
 
+        createKinderUser.setTotalElements(allByNameContaining.getTotalElements());
         createKinderUser.setKinderGartens(allByNameContaining.getContent());
         createKinderUser.setTotalPage(allByNameContaining.getTotalPages());
         createKinderUser.setCurrentpage(allByNameContaining.getPageable().getPageNumber());
@@ -81,6 +82,7 @@ public class KinderGartenService {
         }
         KinderGartenDTO.KindergatenPage createKinderUser = new KinderGartenDTO.KindergatenPage();
 
+        createKinderUser.setTotalElements(allByNameContaining.getTotalElements());
         createKinderUser.setKinderGartens(allByNameContaining.getContent());
         createKinderUser.setTotalPage(allByNameContaining.getTotalPages());
         createKinderUser.setCurrentpage(allByNameContaining.getPageable().getPageNumber());

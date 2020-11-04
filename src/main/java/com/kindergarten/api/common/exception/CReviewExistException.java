@@ -9,7 +9,5 @@ public class CReviewExistException extends RuntimeException {
         super(msg);
     }
 
-    public CReviewExistException() {
-        super();
-    }
+    public CReviewExistException() { super();  }
 }

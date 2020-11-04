@@ -19,7 +19,7 @@ public class ReviewDTO {
 
     @Data
     public static class CheckResponse {
-        private String kindergarten_id;
+        private long kindergarten_id;
         private String user_id;
         private String status;
     }
@@ -27,8 +27,7 @@ public class ReviewDTO {
     @Data
     public static class CreateReview {
         @NotNull
-        private String kinderGarten_id;
-        @NotNull
+        private long kinderGarten_id;
         private String user_id;
         @NotNull
         private String description;
@@ -40,8 +39,7 @@ public class ReviewDTO {
         private int teacherScore;
         private int eduScore;
         private int descScore;
-        private String writer;
-        private boolean anonymous;
+        private Boolean anonymous;
 
         public void setFacilityScore(int facilityScore) {
             this.facilityScore = facilityScore * 2;
@@ -63,6 +61,6 @@ public class ReviewDTO {
 
     @Data
     public static class CreateResponse {
-        private long reivewindex;
+        private long reviewindex;
     }
 }

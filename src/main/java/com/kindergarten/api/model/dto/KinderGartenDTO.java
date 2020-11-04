@@ -13,6 +13,7 @@ public class KinderGartenDTO {
     public static class KindergatenPage {
         private int totalPage;
         private int currentpage;
+        private long totalElements;
 
         public void setTotalPage(int totalPage) {
             this.totalPage = totalPage - 1;

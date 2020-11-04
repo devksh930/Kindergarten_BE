@@ -62,7 +62,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CReviewExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult reviewExistException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+    public CommonResult reviewExistException(HttpServletRequest request, CReviewExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("existReview.code")), getMessage("existReview.msg"));
     }
 

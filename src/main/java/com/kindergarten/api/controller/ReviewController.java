@@ -54,7 +54,7 @@ public class ReviewController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/check/{kindergarten_id}/{student_id}")//리뷰 작성 가능여부
-    public CommonResult reviewPossibleStatus(@PathVariable String kindergarten_id, @PathVariable String student_id) {
+    public CommonResult reviewPossibleStatus(@PathVariable Long kindergarten_id, @PathVariable Long student_id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         ReviewDTO.CheckResponse checkResponse = reviewService.reviewstatusCheck(authentication, kindergarten_id, student_id);
@@ -62,11 +62,19 @@ public class ReviewController {
         return responseService.getSingleResult(checkResponse);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping //리뷰 작성
     public CommonResult createReview(@RequestBody ReviewDTO.CreateReview createReview) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        createReview.setUser_id(name);
+
         ReviewDTO.CreateResponse createResponse = reviewService.reviewCreate(createReview);
 
         return responseService.getSingleResult(createResponse);
     }
+
 }

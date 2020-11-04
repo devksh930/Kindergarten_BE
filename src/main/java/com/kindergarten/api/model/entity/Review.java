@@ -52,5 +52,5 @@ public class Review {
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    private boolean anonymous;
+    private Boolean anonymous;//익명인지 여부
 }
