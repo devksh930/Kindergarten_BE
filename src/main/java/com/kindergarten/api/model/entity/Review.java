@@ -2,7 +2,6 @@ package com.kindergarten.api.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -23,16 +22,16 @@ public class Review {
     @Enumerated(EnumType.STRING)
     private AccessInfo accessInfo;
 
-    @NotEmpty
+    @NotEmpty//총평
     private String description;
     //    전체만족도
-    private int descScore;
+    private double descScore;
     //    시설점수
-    private int facilityScore;
+    private double facilityScore;
     //    선생님점수
-    private int teacherScore;
+    private double teacherScore;
     //    교육점수
-    private int eduScore;
+    private double eduScore;
 
     @NotNull
     private String goodThing;

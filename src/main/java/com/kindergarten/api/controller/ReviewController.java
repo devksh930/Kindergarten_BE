@@ -1,8 +1,11 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.model.dto.ReviewDTO;
+import com.kindergarten.api.model.entity.KinderGarten;
+import com.kindergarten.api.model.entity.Review;
 import com.kindergarten.api.repository.KinderGartenRepository;
 import com.kindergarten.api.repository.ReviewRepository;
 import com.kindergarten.api.repository.StudentRepository;
@@ -14,6 +17,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,8 +80,21 @@ public class ReviewController {
         createReview.setUser_id(name);
 
         ReviewDTO.CreateResponse createResponse = reviewService.reviewCreate(createReview);
-
         return responseService.getSingleResult(createResponse);
     }
 
+    @GetMapping("/{kindergarten_id}")
+    public CommonResult getKinderGartenReview(@PathVariable long kindergarten_id, Pageable pageable) {
+        KinderGarten kinderGarten = kinderGartenRepository.findById(kindergarten_id).orElseThrow(CKinderGartenNotFoundException::new);
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
+
+        Page<Review> byKinderGarten = reviewRepository.findByKinderGarten(kinderGarten, pageable);
+        ReviewDTO.KindergartenReview kindergartenReview = new ReviewDTO.KindergartenReview();
+        kindergartenReview.setTotalElements(byKinderGarten.getTotalElements());
+        kindergartenReview.setFindReviews(byKinderGarten.getContent());
+        kindergartenReview.setCurrentpage(byKinderGarten.getPageable().getPageNumber());
+        kindergartenReview.setTotalPage(byKinderGarten.getTotalPages());
+
+        return responseService.getSingleResult(kindergartenReview);
+    }
 }
