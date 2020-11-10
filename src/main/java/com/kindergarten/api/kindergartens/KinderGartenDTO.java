@@ -1,6 +1,5 @@
-package com.kindergarten.api.model.dto;
+package com.kindergarten.api.kindergartens;
 
-import com.kindergarten.api.model.entity.KinderGarten;
 import lombok.Data;
 
 import java.time.LocalDate;

@@ -1,15 +1,12 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.users;
 
 import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.exception.CUserIncorrectPasswordException;
 import com.kindergarten.api.common.exception.CUserNotFoundException;
-import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.entity.UserRole;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
+import com.kindergarten.api.student.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;

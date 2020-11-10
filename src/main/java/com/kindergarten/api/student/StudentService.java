@@ -1,11 +1,12 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.student;
 
-import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.StudentRepository;
+import com.kindergarten.api.kindergartens.KinderGartenService;
+import com.kindergarten.api.users.UserDTO;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.student.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

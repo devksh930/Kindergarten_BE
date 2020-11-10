@@ -1,6 +1,6 @@
-package com.kindergarten.api.repository;
+package com.kindergarten.api.kindergartens;
 
-import com.kindergarten.api.model.entity.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGarten;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

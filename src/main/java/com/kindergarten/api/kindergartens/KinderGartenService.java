@@ -1,10 +1,7 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.kindergartens;
 
 import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
-import com.kindergarten.api.model.dto.KinderGartenDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.StudentRepository;
+import com.kindergarten.api.student.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

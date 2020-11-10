@@ -1,6 +1,6 @@
-package com.kindergarten.api.model.dto;
+package com.kindergarten.api.users;
 
-import com.kindergarten.api.model.entity.UserRole;
+import com.kindergarten.api.users.UserRole;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 

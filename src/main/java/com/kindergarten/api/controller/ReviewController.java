@@ -1,26 +1,20 @@
 package com.kindergarten.api.controller;
 
-import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
-import com.kindergarten.api.model.dto.ReviewDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.model.entity.Review;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.ReviewRepository;
-import com.kindergarten.api.repository.StudentRepository;
-import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.reviews.ReviewDTO;
+import com.kindergarten.api.reviews.ReviewRepository;
+import com.kindergarten.api.reviews.ReviewService;
+import com.kindergarten.api.student.StudentRepository;
+import com.kindergarten.api.users.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
-import com.kindergarten.api.service.ReviewService;
-import com.kindergarten.api.service.UserService;
+import com.kindergarten.api.users.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,18 +77,9 @@ public class ReviewController {
         return responseService.getSingleResult(createResponse);
     }
 
-    @GetMapping("/{kindergarten_id}")
+    @GetMapping("/{kindergarten_id}") // 유치원별 리뷰 조회
     public CommonResult getKinderGartenReview(@PathVariable long kindergarten_id, Pageable pageable) {
-        KinderGarten kinderGarten = kinderGartenRepository.findById(kindergarten_id).orElseThrow(CKinderGartenNotFoundException::new);
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
-
-        Page<Review> byKinderGarten = reviewRepository.findByKinderGarten(kinderGarten, pageable);
-        ReviewDTO.KindergartenReview kindergartenReview = new ReviewDTO.KindergartenReview();
-        kindergartenReview.setTotalElements(byKinderGarten.getTotalElements());
-        kindergartenReview.setFindReviews(byKinderGarten.getContent());
-        kindergartenReview.setCurrentpage(byKinderGarten.getPageable().getPageNumber());
-        kindergartenReview.setTotalPage(byKinderGarten.getTotalPages());
-
+        ReviewDTO.KindergartenReview kindergartenReview = reviewService.kindergartenrReview(kindergarten_id, pageable);
         return responseService.getSingleResult(kindergartenReview);
     }
 }

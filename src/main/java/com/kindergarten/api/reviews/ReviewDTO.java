@@ -1,7 +1,5 @@
-package com.kindergarten.api.model.dto;
+package com.kindergarten.api.reviews;
 
-import com.kindergarten.api.model.entity.AccessInfo;
-import com.kindergarten.api.model.entity.Review;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

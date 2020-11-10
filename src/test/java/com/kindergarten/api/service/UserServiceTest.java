@@ -1,10 +1,11 @@
 package com.kindergarten.api.service;
 
-import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.entity.UserRole;
-import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.users.UserDTO;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserRole;
+import com.kindergarten.api.users.UserRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
+import com.kindergarten.api.users.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;

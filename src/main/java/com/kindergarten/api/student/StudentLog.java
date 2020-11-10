@@ -1,5 +1,6 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.student;
 
+import com.kindergarten.api.kindergartens.KinderGarten;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,5 +1,7 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.reviews;
 
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -42,14 +46,17 @@ public class Review {
     @JoinColumn(name = "KINDERGARTEN_ID")
     private KinderGarten kinderGarten;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<ReviewComment> comments = new ArrayList<>();
+
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
-
     private Boolean anonymous;//익명인지 여부
+
+
 }

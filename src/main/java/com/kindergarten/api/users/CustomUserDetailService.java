@@ -1,8 +1,6 @@
-package com.kindergarten.api.security.service;
+package com.kindergarten.api.users;
 
 import com.kindergarten.api.common.exception.CUserNotFoundException;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,7 +1,5 @@
-package com.kindergarten.api.security.service;
+package com.kindergarten.api.users;
 
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.entity.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

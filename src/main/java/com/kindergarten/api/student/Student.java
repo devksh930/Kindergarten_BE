@@ -1,6 +1,8 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.student;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

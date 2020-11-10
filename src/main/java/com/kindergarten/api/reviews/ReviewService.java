@@ -1,13 +1,17 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.reviews;
 
 import com.kindergarten.api.common.exception.*;
-import com.kindergarten.api.model.dto.ReviewDTO;
-import com.kindergarten.api.model.entity.*;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.ReviewRepository;
-import com.kindergarten.api.repository.StudentRepository;
-import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.student.StudentRepository;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -43,7 +47,7 @@ public class ReviewService {
             KinderGarten kinderGarten = kinderGartenRepository.findById(kindergarten_id).orElseThrow(CKinderGartenNotFoundException::new);
             Student student = studentRepository.findById(student_id).orElseThrow(CUserNotFoundException::new);
 
-            if (user != student.getUser()){
+            if (user != student.getUser()) {
                 throw new CNotOwnerException();
             }
             boolean existReview = reviewRepository.existsByUserAndKinderGarten(user, kinderGarten);
@@ -91,13 +95,6 @@ public class ReviewService {
         } else {
             throw new CNotOwnerException();
         }
-        log.debug("===============================================");
-        log.debug("===============================================");
-        log.debug("===============================================");
-        log.debug(String.valueOf(userownstudent));
-        log.debug(String.valueOf(studentAccess));
-        log.debug("===============================================");
-        log.debug("===============================================");
 //        항목별 점수
         review.setDescScore(createReview.getDescScore());
         review.setEduScore(createReview.getEduScore());
@@ -118,6 +115,21 @@ public class ReviewService {
 
 
         return reviewResponse;
+    }
+
+    @Transactional
+    public ReviewDTO.KindergartenReview kindergartenrReview(Long kindergarten_id, Pageable pageable) {
+        KinderGarten kinderGarten = kinderGartenRepository.findById(kindergarten_id).orElseThrow(CKinderGartenNotFoundException::new);
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
+
+        Page<Review> byKinderGarten = reviewRepository.findByKinderGarten(kinderGarten, pageable);
+        ReviewDTO.KindergartenReview kindergartenReview = new ReviewDTO.KindergartenReview();
+        kindergartenReview.setTotalElements(byKinderGarten.getTotalElements());
+        kindergartenReview.setFindReviews(byKinderGarten.getContent());
+        kindergartenReview.setCurrentpage(byKinderGarten.getPageable().getPageNumber());
+        kindergartenReview.setTotalPage(byKinderGarten.getTotalPages());
+
+        return kindergartenReview;
     }
 
 }
