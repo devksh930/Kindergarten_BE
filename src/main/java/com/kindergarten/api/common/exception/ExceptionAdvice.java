@@ -78,6 +78,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("notOwnerException.code")), getMessage("notOwnerException.msg"));
     }
 
+    @ExceptionHandler(CResorceNotfoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult resouceNotfoundException(HttpServletRequest request, CResorceNotfoundException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotFound.code")), getMessage("resourceNotFound.msg"));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult methodNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {

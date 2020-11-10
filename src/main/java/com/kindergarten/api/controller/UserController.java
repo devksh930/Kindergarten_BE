@@ -3,12 +3,13 @@ package com.kindergarten.api.controller;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
-import com.kindergarten.api.users.UserDTO;
 import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserDTO;
 import com.kindergarten.api.users.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -27,18 +28,12 @@ import java.util.Collection;
 @Slf4j
 //@CrossOrigin(origins = "https://mommyogi.com")
 @CrossOrigin("*")
-
+@RequiredArgsConstructor
 public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-
-    public UserController(ResponseService responseService, UserService userService, ModelMapper modelMapper) {
-        this.responseService = responseService;
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-    }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -64,6 +59,7 @@ public class UserController {
         }
         return responseService.getSingleResult(msg);
     }
+
     @ApiOperation(value = "회원 가입", notes = "회원 가입을 한다")
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping//회원가입

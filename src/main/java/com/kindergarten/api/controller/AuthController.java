@@ -7,6 +7,7 @@ import com.kindergarten.api.users.UserDTO;
 import com.kindergarten.api.users.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +20,8 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/api/auth")
 @EnableSwagger2
+@RequiredArgsConstructor
 @Slf4j
-//
 @CrossOrigin("*")
 public class AuthController {
     private final ResponseService responseService;
@@ -28,10 +29,7 @@ public class AuthController {
     private final UserService userService;
 
 
-    public AuthController(ResponseService responseService, UserService userService) {
-        this.responseService = responseService;
-        this.userService = userService;
-    }
+
 
     @PostMapping("/login")
     public SingleResult<UserDTO.Login_response> loginUser(@RequestBody UserDTO.Login login) {

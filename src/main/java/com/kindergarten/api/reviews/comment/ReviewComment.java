@@ -1,10 +1,14 @@
-package com.kindergarten.api.reviews;
+package com.kindergarten.api.reviews.comment;
 
+import com.kindergarten.api.reviews.Review;
 import com.kindergarten.api.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +34,12 @@ public class ReviewComment {
     @JoinColumn(nullable = false)
     private Review review;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(updatable = false, nullable = true)
-    private ReviewComment parentComment;
+    @CreatedDate
+    @Column(name = "created_date")
+    private LocalDateTime createdDate = LocalDateTime.now();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment")
-    private List<ReviewComment> childComments = new ArrayList<>();
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastModifiedDate = LocalDateTime.now();
+
 }

@@ -3,10 +3,11 @@ package com.kindergarten.api.reviews;
 import com.kindergarten.api.common.exception.*;
 import com.kindergarten.api.kindergartens.KinderGarten;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
-import com.kindergarten.api.student.StudentRepository;
 import com.kindergarten.api.student.Student;
+import com.kindergarten.api.student.StudentRepository;
 import com.kindergarten.api.users.User;
 import com.kindergarten.api.users.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,19 +22,13 @@ import java.util.Collection;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ReviewService {
 
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final ReviewRepository reviewRepository;
     private final KinderGartenRepository kinderGartenRepository;
-
-    public ReviewService(UserRepository userRepository, StudentRepository studentRepository, ReviewRepository reviewRepository, KinderGartenRepository kinderGartenRepository) {
-        this.userRepository = userRepository;
-        this.studentRepository = studentRepository;
-        this.reviewRepository = reviewRepository;
-        this.kinderGartenRepository = kinderGartenRepository;
-    }
 
     @Transactional
     public ReviewDTO.CheckResponse reviewstatusCheck(Authentication authentication, Long kindergarten_id, Long student_id) {

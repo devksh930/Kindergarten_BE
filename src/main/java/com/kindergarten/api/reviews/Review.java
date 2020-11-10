@@ -1,6 +1,7 @@
 package com.kindergarten.api.reviews;
 
 import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.reviews.comment.ReviewComment;
 import com.kindergarten.api.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;

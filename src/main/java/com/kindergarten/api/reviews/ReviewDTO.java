@@ -72,6 +72,8 @@ public class ReviewDTO {
         private int totalPage;
         private int currentpage;
         private long totalElements;
+        private double avgScore = 3;
+
 
         public void setTotalPage(int totalPage) {
             this.totalPage = totalPage - 1;
