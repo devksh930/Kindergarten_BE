@@ -47,3 +47,14 @@ INSERT INTO KINDERGARTEN(NAME,TYPE,OPEN_DATE,ADDRESS,PHONE,WEBSITE,OPERATING_TIM
 INSERT INTO KINDERGARTEN(NAME,TYPE,OPEN_DATE,ADDRESS,PHONE,WEBSITE,OPERATING_TIME, IS_KINDER) VALUES ('영림유치원','사립(사인)','19821230','부산광역시 부산진구 냉정로 199','051-895-2500',NULL,'09시00분~18시00분',TRUE);
 INSERT INTO KINDERGARTEN(NAME,TYPE,OPEN_DATE,ADDRESS,PHONE,WEBSITE,OPERATING_TIME, IS_KINDER) VALUES ('해바라기자연유치원','사립(사인)','20110301','부산광역시 부산진구 개금본동로9번길 48','051-894-5400',NULL,'09시00분~19시00분',TRUE);
 INSERT INTO KINDERGARTEN(NAME,TYPE,OPEN_DATE,ADDRESS,PHONE,WEBSITE,OPERATING_TIME, IS_KINDER) VALUES ('해돋이유치원','사립(사인)','19881104','부산광역시 부산진구 국악로60번길 4','051-809-4924',NULL,'09시00분~18시00분',TRUE);
+
+INSERT INTO USER ( created_date, email, last_modified_date, name, password, phone, role, userid, kindergatent_id) VALUES ( '2020-11-12 01:42:36', 'test@test.com', '2020-11-12 01:42:36', '김성호', '{bcrypt}$2a$10$Zt1BsOas5rn.4iGyQYPbGOubinsP97L.Tm48yFeqamwxb3DVR0hja', '01012341234', 'ROLE_USER', 'ksh930', null);
+
+INSERT INTO USER ( created_date, email, last_modified_date, name, password, phone, role, userid, kindergatent_id) VALUES ( '2020-11-12 01:42:39', 'test@test.com', '2020-11-12 01:42:39', '김성호', '{bcrypt}$2a$10$SX4K76fwB6.CO47lhO2py.hGLppxUkRKWmVw030XtYUdkvXSozu8G', '01012341234', 'ROLE_NOT_PERMITTED_TEACHER', 'devksh930', 1);
+INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '정보미', 1, 1);
+INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '김성호', 1, 1);
+INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '테스트', 1, 1);
+
+INSERT INTO REVIEW ( access_info, anonymous, bad_thing, created_date, desc_score, description, edu_score, facility_score, good_thing, teacher_score, kindergarten_id, user_id) VALUES ( 'NOT_ACCESS', true, '이건단점', '2020-11-12 01:52:48', 4, '요것은 총평입니다', 6, 10, '이거슨 장점입니다', 10, 1, 1);
+INSERT INTO REVIEW_COMMENT ( created_date, description, last_modified_date, writer, user_id, review_id) VALUES ( '2020-11-12 01:54:33', '여기 유치원은 좋습니다 모던자바 인액션 스프링 마이크로서비스 코딩 공작소 토비의스프링 jpa 객체지향의 사실과오해 오브젝트 모던 자바스크립트 mysql aws 도커 ecs 쿠버네티스 개좋음', '2020-11-12 01:54:33', '익명리뷰', 1, 1);
+INSERT INTO REVIEW_COMMENT ( created_date, description, last_modified_date, writer, user_id, review_id) VALUES ( '2020-11-12 01:55:56', '맞습니다 저희 유치원을 다니게 되어 영광이며 사랑합니다 고객님은 맥북에서 오라클 사용하기 osx 카탈리나 다음으로 나온것은 bigsur입니다 bigsur는 섬이름입니다.', '2020-11-12 01:55:56', '선생 : devksh930', 2, 1);

@@ -23,6 +23,7 @@ public class ReviewComment {
 
     private String writer;
 
+    @Column(name = "description")
     private String desc;
 
 
