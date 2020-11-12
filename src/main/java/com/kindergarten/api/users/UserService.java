@@ -3,10 +3,11 @@ package com.kindergarten.api.users;
 import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.exception.CUserIncorrectPasswordException;
 import com.kindergarten.api.common.exception.CUserNotFoundException;
-import com.kindergarten.api.student.Student;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
+import com.kindergarten.api.student.Student;
 import com.kindergarten.api.student.StudentService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
@@ -25,14 +27,7 @@ public class UserService {
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
-    public UserService(UserRepository userRepository, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.kinderGartenRepository = kinderGartenRepository;
-        this.studentService = studentService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    
 
     //id가 중복된 회원이 있는지 검사
     public boolean isexistsByUserid(String userid) {

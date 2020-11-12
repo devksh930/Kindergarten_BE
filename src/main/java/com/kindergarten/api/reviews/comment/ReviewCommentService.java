@@ -10,6 +10,7 @@ import com.kindergarten.api.users.UserRepository;
 import com.kindergarten.api.users.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -59,5 +60,18 @@ public class ReviewCommentService {
         ReviewComment save = reviewCommentRepository.save(reviewComment);
         Long id = save.getId();
         return id;
+    }
+
+    public CommentDTO.CommentPaging getReviewComments(long reviewid, Pageable pageable) {
+
+        Review review = reviewRepository.findById(reviewid).orElseThrow(CResorceNotfoundException::new);
+        Page<ReviewComment> allByReview = reviewCommentRepository.findAllByReview(review, pageable);
+        CommentDTO.CommentPaging commentPaging = new CommentDTO.CommentPaging();
+        commentPaging.setTotalPage(allByReview.getTotalPages());
+        commentPaging.setCurrentpage(allByReview.getPageable().getPageNumber());
+        commentPaging.setTotalElements(allByReview.getTotalElements());
+        commentPaging.setFindComments(allByReview.getContent());
+
+        return commentPaging;
     }
 }

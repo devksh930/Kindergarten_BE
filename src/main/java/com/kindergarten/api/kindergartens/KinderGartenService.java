@@ -2,6 +2,7 @@ package com.kindergarten.api.kindergartens;
 
 import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.student.StudentRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -13,16 +14,12 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+
 public class KinderGartenService {
     private final KinderGartenRepository kinderGartenRepository;
     private final StudentRepository studentRepository;
     private final ModelMapper modelMapper;
-
-    public KinderGartenService(KinderGartenRepository kinderGartenRepository, StudentRepository studentRepository, ModelMapper modelMapper) {
-        this.kinderGartenRepository = kinderGartenRepository;
-        this.studentRepository = studentRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Transactional
     public KinderGartenDTO.KindergatenPage findByAddress(String addr, Pageable pageable) {
