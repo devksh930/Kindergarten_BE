@@ -69,7 +69,7 @@ public class UserServiceTest {
         create.setKindergarten_id("1");
 
         //when
-        userService.signUpTeacher(create);
+        userService.registerAccount(create);
         User finduser = userRepository.findByUserid(create.getUserid()).get();
 
         //then

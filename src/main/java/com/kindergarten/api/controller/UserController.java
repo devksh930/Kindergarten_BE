@@ -104,13 +104,13 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @PostMapping("/students")
+    @GetMapping("/students")
     public SingleResult<UserDTO.Response_User_Student> userStudentList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         UserDTO.Response_User_Student response_user_student = userService.parentStudents(authentication);
         return responseService.getSingleResult(response_user_student);
     }
+
 }
 
 

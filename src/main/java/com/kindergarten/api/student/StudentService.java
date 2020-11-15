@@ -1,12 +1,10 @@
 package com.kindergarten.api.student;
 
-import com.kindergarten.api.kindergartens.KinderGartenService;
-import com.kindergarten.api.users.UserDTO;
 import com.kindergarten.api.kindergartens.KinderGarten;
-import com.kindergarten.api.student.Student;
-import com.kindergarten.api.users.User;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
-import com.kindergarten.api.student.StudentRepository;
+import com.kindergarten.api.kindergartens.KinderGartenService;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +51,7 @@ public class StudentService {
         List<Student> byKinderGarten = studentRepository.findByKinderGarten(kindergraten);
         return byKinderGarten;
     }
+
+
 
 }

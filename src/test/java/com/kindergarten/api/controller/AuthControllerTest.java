@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,7 +23,8 @@ import javax.transaction.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -77,12 +79,13 @@ public class AuthControllerTest {
         final ResultActions resultActions = mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(loginUser)))
-                .andDo(print());
-        //then
-        resultActions
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(cookie().exists("accessToken"))
-                .andExpect(cookie().exists("refreshToken"));
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(0))
+                .andExpect(jsonPath("$.data.userid").exists())
+                .andExpect(jsonPath("$.data.name").exists())
+                .andExpect(jsonPath("$.data.token").exists());
     }
 
     @Test
@@ -122,4 +125,34 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.msg").exists());
     }
+
+    @Test
+    public void 로그인후_확인() throws Exception {
+        //given
+        userService.signUpParent(create);
+        UserDTO.Login loginUser = new UserDTO.Login();
+        loginUser.setUserid(create.getUserid());
+        loginUser.setPassword(create.getPassword());
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(loginUser)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.token").exists())
+                .andReturn();
+        String content = mvcResult.getResponse().getContentAsString();
+
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+        System.out.println(content);
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+        System.out.println("==========================================================================================");
+
+    }
+
 }

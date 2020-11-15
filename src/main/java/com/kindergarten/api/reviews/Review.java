@@ -3,6 +3,7 @@ package com.kindergarten.api.reviews;
 import com.kindergarten.api.kindergartens.KinderGarten;
 import com.kindergarten.api.reviews.comment.ReviewComment;
 import com.kindergarten.api.users.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "REVIEW")
 public class Review {
