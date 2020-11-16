@@ -34,8 +34,7 @@ public class ReviewController {
     @GetMapping("/check/{kindergarten_id}/{student_id}")//리뷰 작성 가능여부
     public CommonResult reviewPossibleStatus(@PathVariable Long kindergarten_id, @PathVariable Long student_id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        ReviewDTO.CheckResponse checkResponse = reviewService.reviewstatusCheck(authentication, kindergarten_id, student_id);
+        ReviewDTO.CheckResponse checkResponse = reviewService.reviewstatusCheck(authentication.getName(), authentication.getAuthorities().toString(), kindergarten_id, student_id);
 
         return responseService.getSingleResult(checkResponse);
     }

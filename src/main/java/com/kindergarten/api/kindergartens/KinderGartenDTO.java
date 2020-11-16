@@ -68,4 +68,5 @@ public class KinderGartenDTO {
         private String operatingTime;
         private double score;
     }
+
 }

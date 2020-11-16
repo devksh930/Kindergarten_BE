@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +22,8 @@ public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
     private final UserRepository userRepository;
 
-    public long createReviewComment(Authentication authentication, long reviewid, CommentDTO.CommentCreate response, Pageable pageable) {
-        String name = authentication.getName();
+    public long createReviewComment(String userid, long reviewid, CommentDTO.CommentCreate response, Pageable pageable) {
+        String name = userid;
         User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
         Review review = reviewRepository.findById(reviewid).orElseThrow(CResorceNotfoundException::new);
 //        권한이 유저일경

@@ -86,17 +86,17 @@ public class UserController {
 
 //        미인증 선생, 선생
         if (ROLE.equals("[ROLE_NOT_PERMITTED_TEACHER]") || ROLE.equals("[NOT_PERMITTED_DIRECTOR]")) {
-            userService.modifyUser(authentication, userModify);
+            userService.modifyUser(authentication.getName(), userModify);
         }
 //        인증된 선생, 원장
         if (ROLE.equals("[ROLE_TEACHER]") || ROLE.equals("[ROLE_DIRECTOR]")) {
             userModify.setKindergraten_id(null);
-            userService.modifyUser(authentication, userModify);
+            userService.modifyUser(authentication.getName(), userModify);
         }
 //        회원
         if (ROLE.equals("[ROLE_USER]")) {
             userModify.setKindergraten_id(null);
-            userService.modifyUser(authentication, userModify);
+            userService.modifyUser(authentication.getName(), userModify);
         }
         return responseService.getSuccessResult();
     }
@@ -107,7 +107,7 @@ public class UserController {
     @GetMapping("/students")
     public SingleResult<UserDTO.Response_User_Student> userStudentList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDTO.Response_User_Student response_user_student = userService.parentStudents(authentication);
+        UserDTO.Response_User_Student response_user_student = userService.parentStudents(authentication.getName());
         return responseService.getSingleResult(response_user_student);
     }
 

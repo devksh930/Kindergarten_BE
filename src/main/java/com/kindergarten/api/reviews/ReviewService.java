@@ -13,12 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 
 @Service
 @Slf4j
@@ -31,10 +27,9 @@ public class ReviewService {
     private final KinderGartenRepository kinderGartenRepository;
 
     @Transactional
-    public ReviewDTO.CheckResponse reviewstatusCheck(Authentication authentication, Long kindergarten_id, Long student_id) {
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String ROLE = authorities.toString().replace("[", "").replace("]", "");
-        String name = authentication.getName();
+    public ReviewDTO.CheckResponse reviewstatusCheck(String userid, String role, Long kindergarten_id, Long student_id) {
+        String ROLE = role.replace("[", "").replace("]", "");
+        String name = userid;
         ReviewDTO.CheckResponse checkResponse = new ReviewDTO.CheckResponse();
 
         if (ROLE.equals("ROLE_USER") && !name.isBlank()) { //권한 검사

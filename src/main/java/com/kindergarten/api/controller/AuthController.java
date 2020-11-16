@@ -29,8 +29,6 @@ public class AuthController {
     private final UserService userService;
 
 
-
-
     @PostMapping("/login")
     public SingleResult<UserDTO.Login_response> loginUser(@RequestBody UserDTO.Login login) {
         UserDTO.Login_response response = userService.loginUser(login.getUserid(), login.getPassword());
@@ -41,14 +39,11 @@ public class AuthController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/currentuser")
-    public SingleResult<String> currentUser() {
+    public SingleResult<UserDTO.currentUser> currentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String ROLE = authorities.toString().replace("[", "").replace("]", "");
 
-        if (authorities == null || ROLE.equals("ROLE_ANONYMOUS")) {
-            throw new CUserNotFoundException();
-        }
-        return responseService.getSingleResult(ROLE);
+        UserDTO.currentUser currentUser = userService.currentUser(authentication.getName());
+
+        return responseService.getSingleResult(currentUser);
     }
 }

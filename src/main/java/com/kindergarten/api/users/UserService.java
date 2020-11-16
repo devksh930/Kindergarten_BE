@@ -9,7 +9,6 @@ import com.kindergarten.api.student.Student;
 import com.kindergarten.api.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ public class UserService {
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    
+
 
     //id가 중복된 회원이 있는지 검사
     public boolean isexistsByUserid(String userid) {
@@ -98,8 +97,8 @@ public class UserService {
     }
 
     @Transactional // 회원정보 수정
-    public User modifyUser(Authentication authentication, UserDTO.UserModify userModify) {
-        String userId = authentication.getName();
+    public User modifyUser(String userid, UserDTO.UserModify userModify) {
+        String userId = userid;
         User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
         String phone = userModify.getPhone();
         String email = userModify.getEmail();
@@ -138,9 +137,8 @@ public class UserService {
     }
 
     // 유저의 학생 불러오기
-    public UserDTO.Response_User_Student parentStudents(Authentication authentication) {
-        String name = authentication.getName();
-        User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
+    public UserDTO.Response_User_Student parentStudents(String userid) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
         response_user_student.setUserid(user.getUserid());
 
@@ -158,5 +156,15 @@ public class UserService {
             students1.add(responseStudent);
         }
         return response_user_student;
+    }
+
+    public UserDTO.currentUser currentUser(String userid) {
+        UserDTO.currentUser currentUser = new UserDTO.currentUser();
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        currentUser.setUserid(user.getUserid());
+        currentUser.setName(user.getName());
+        currentUser.setRole(user.getRole().name());
+
+        return currentUser;
     }
 }
