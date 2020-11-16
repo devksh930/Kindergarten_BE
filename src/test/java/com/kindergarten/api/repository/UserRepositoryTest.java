@@ -1,6 +1,7 @@
 package com.kindergarten.api.repository;
 
-import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;

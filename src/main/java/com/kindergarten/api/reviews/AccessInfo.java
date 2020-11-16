@@ -1,4 +1,4 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.reviews;
 
 public enum AccessInfo {
     //    현재 유치원 다니는 학생 CURRENT, 다녔었던 학생 NOT_CURRENT

@@ -1,4 +1,4 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.users;
 
 public enum UserRole {
     //USER=일반, PARENT=학생을 등록한 학부모, TEACHER=선생님, DIRECTOR= 원장, NOT_PERMITTED인증안됨

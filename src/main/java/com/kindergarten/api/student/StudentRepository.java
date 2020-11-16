@@ -1,8 +1,7 @@
-package com.kindergarten.api.repository;
+package com.kindergarten.api.student;
 
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,10 +13,13 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     boolean existsByKinderGarten(KinderGarten kinderGarten);
 
+    boolean existsByUserAndKinderGarten(User user, KinderGarten kinderGarten);
+
+    boolean existsByUserAndKinderGartenAndAccessTrue(User user, KinderGarten kinderGarten);
+
     boolean existsByUserAndAccessTrue(User user);
 
-
-    List<Student> findByUserAndKinderGarten(User user, KinderGarten kinderGarten);
+    List<Student> findByUser(User user);
 
     List<Student> findByKinderGarten(KinderGarten kinderGarten);
 

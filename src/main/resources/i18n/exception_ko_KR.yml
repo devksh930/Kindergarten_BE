@@ -33,3 +33,7 @@ notfoundStudent:
 notOwnerException:
   code: "-6"
   msg: "해당 자원의 소유자가 아니거나 소속된 유치원이 아닙니다."
+
+resourceNotFound:
+  code: "-7"
+  msg: "해당 자원을 찾을수 없습니다."

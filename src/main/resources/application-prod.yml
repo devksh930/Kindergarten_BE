@@ -15,10 +15,8 @@ spring:
       ddl-auto: create
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    generate-ddl: false
+    generate-ddl: true
     show-sql: true
-
-
   messages:
     basename: i18n/exception
     encoding: UTF-8

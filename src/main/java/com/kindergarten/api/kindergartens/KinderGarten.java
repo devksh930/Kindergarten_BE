@@ -1,5 +1,6 @@
-package com.kindergarten.api.model.entity;
+package com.kindergarten.api.kindergartens;
 
+import com.kindergarten.api.reviews.Review;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;

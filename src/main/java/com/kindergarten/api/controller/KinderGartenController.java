@@ -2,9 +2,10 @@ package com.kindergarten.api.controller;
 
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
-import com.kindergarten.api.model.dto.KinderGartenDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.service.KinderGartenService;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenDTO;
+import com.kindergarten.api.kindergartens.KinderGartenService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
@@ -15,17 +16,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @RequestMapping("/api/kindergartens")
 @EnableSwagger2
 @Slf4j
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class KinderGartenController {
     private final KinderGartenService kinderGartenService;
     private final ResponseService responseService;
     private final ModelMapper modelMapper;
 
-    public KinderGartenController(KinderGartenService kinderGartenService, ResponseService responseService, ModelMapper modelMapper) {
-        this.kinderGartenService = kinderGartenService;
-        this.responseService = responseService;
-        this.modelMapper = modelMapper;
-    }
 
     //유치원 이름으로 검색
     @GetMapping("/name") //GET:/api/kindergartens&name

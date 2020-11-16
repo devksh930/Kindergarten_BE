@@ -1,8 +1,9 @@
 package com.kindergarten.api.service;
 
 import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
-import com.kindergarten.api.model.dto.KinderGartenDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenDTO;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

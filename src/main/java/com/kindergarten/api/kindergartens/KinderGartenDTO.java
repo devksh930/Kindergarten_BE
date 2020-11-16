@@ -1,6 +1,5 @@
-package com.kindergarten.api.model.dto;
+package com.kindergarten.api.kindergartens;
 
-import com.kindergarten.api.model.entity.KinderGarten;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,6 +12,7 @@ public class KinderGartenDTO {
     public static class KindergatenPage {
         private int totalPage;
         private int currentpage;
+        private long totalElements;
 
         public void setTotalPage(int totalPage) {
             this.totalPage = totalPage - 1;
@@ -68,4 +68,5 @@ public class KinderGartenDTO {
         private String operatingTime;
         private double score;
     }
+
 }

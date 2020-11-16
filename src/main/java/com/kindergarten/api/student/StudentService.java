@@ -1,11 +1,10 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.student;
 
-import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.model.entity.KinderGarten;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.StudentRepository;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.kindergartens.KinderGartenService;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ public class StudentService {
         this.kinderGartenService = kinderGartenService;
     }
 
-    @Transactional
+    @Transactional// 회원가입시 유치원 회원검사
     public List<Student> addStudent(List<UserDTO.ADD_Student> student, User user) {
 
         List<Student> students = new ArrayList<>();
@@ -52,5 +51,7 @@ public class StudentService {
         List<Student> byKinderGarten = studentRepository.findByKinderGarten(kindergraten);
         return byKinderGarten;
     }
+
+
 
 }

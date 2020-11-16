@@ -1,7 +1,7 @@
 package com.kindergarten.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kindergarten.api.model.dto.KinderGartenDTO;
+import com.kindergarten.api.kindergartens.KinderGartenDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

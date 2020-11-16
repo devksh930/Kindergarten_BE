@@ -1,6 +1,5 @@
-package com.kindergarten.api.model.dto;
+package com.kindergarten.api.users;
 
-import com.kindergarten.api.model.entity.UserRole;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -96,5 +95,13 @@ public class UserDTO {
     @Data
     public static class UserPasswordModify {
         private String password;
+    }
+
+    @Data
+    public static class currentUser {
+        private String userid;
+        private String name;
+        private String role;
+
     }
 }

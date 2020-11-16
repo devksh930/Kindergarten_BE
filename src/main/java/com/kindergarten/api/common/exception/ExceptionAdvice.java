@@ -62,7 +62,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CReviewExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult reviewExistException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+    public CommonResult reviewExistException(HttpServletRequest request, CReviewExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("existReview.code")), getMessage("existReview.msg"));
     }
 
@@ -76,6 +76,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
     public CommonResult notOwnerException(HttpServletRequest request, CNotOwnerException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("notOwnerException.code")), getMessage("notOwnerException.msg"));
+    }
+
+    @ExceptionHandler(CResorceNotfoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult resouceNotfoundException(HttpServletRequest request, CResorceNotfoundException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotFound.code")), getMessage("resourceNotFound.msg"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

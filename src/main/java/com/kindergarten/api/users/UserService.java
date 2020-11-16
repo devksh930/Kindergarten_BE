@@ -1,17 +1,14 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.users;
 
 import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.exception.CUserIncorrectPasswordException;
 import com.kindergarten.api.common.exception.CUserNotFoundException;
-import com.kindergarten.api.model.dto.UserDTO;
-import com.kindergarten.api.model.entity.Student;
-import com.kindergarten.api.model.entity.User;
-import com.kindergarten.api.model.entity.UserRole;
-import com.kindergarten.api.repository.KinderGartenRepository;
-import com.kindergarten.api.repository.UserRepository;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.student.StudentService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +17,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
@@ -29,14 +27,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public UserService(UserRepository userRepository, KinderGartenRepository kinderGartenRepository, StudentService studentService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.kinderGartenRepository = kinderGartenRepository;
-        this.studentService = studentService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
+    //id가 중복된 회원이 있는지 검사
     public boolean isexistsByUserid(String userid) {
         Boolean byUserid = userRepository.existsByUserid(userid);
         if (byUserid) {
@@ -45,7 +37,7 @@ public class UserService {
         return false;
     }
 
-    @Transactional
+    @Transactional //회원가입전 가입하려고 하는 회원의 Role, 중복 회원검사
     public User registerAccount(UserDTO.Create userdto) {
         userRepository.findByUserid(userdto.getUserid()).ifPresent(user -> {
             throw new CUserExistException();
@@ -61,7 +53,7 @@ public class UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional // 선생님 회원가입
     public User signUpTeacher(UserDTO.Create userdto) {
         User newuser = new User();
         newuser.setUserid(userdto.getUserid());
@@ -80,7 +72,7 @@ public class UserService {
         return newuser;
     }
 
-    @Transactional
+    @Transactional// 학부모 회원가입
     public User signUpParent(UserDTO.Create userdto) {
 
         User newuser = new User();
@@ -104,9 +96,9 @@ public class UserService {
         return newuser;
     }
 
-    @Transactional
-    public User modifyUser(Authentication authentication, UserDTO.UserModify userModify) {
-        String userId = authentication.getName();
+    @Transactional // 회원정보 수정
+    public User modifyUser(String userid, UserDTO.UserModify userModify) {
+        String userId = userid;
         User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
         String phone = userModify.getPhone();
         String email = userModify.getEmail();
@@ -127,7 +119,7 @@ public class UserService {
         return updateUser;
     }
 
-    @Transactional
+    @Transactional //로그인
     public UserDTO.Login_response loginUser(String userid, String password) {
 
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
@@ -144,9 +136,9 @@ public class UserService {
         return response;
     }
 
-    public UserDTO.Response_User_Student parentStudents(Authentication authentication) {
-        String name = authentication.getName();
-        User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
+    // 유저의 학생 불러오기
+    public UserDTO.Response_User_Student parentStudents(String userid) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
         response_user_student.setUserid(user.getUserid());
 
@@ -164,5 +156,15 @@ public class UserService {
             students1.add(responseStudent);
         }
         return response_user_student;
+    }
+
+    public UserDTO.currentUser currentUser(String userid) {
+        UserDTO.currentUser currentUser = new UserDTO.currentUser();
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        currentUser.setUserid(user.getUserid());
+        currentUser.setName(user.getName());
+        currentUser.setRole(user.getRole().name());
+
+        return currentUser;
     }
 }
