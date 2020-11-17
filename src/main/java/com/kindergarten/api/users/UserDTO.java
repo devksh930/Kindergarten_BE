@@ -40,7 +40,12 @@ public class UserDTO {
         private int year;
         private int month;
         private int day;
-        private String kindergarten_id;
+        private Long kindergarten_id;
+    }
+
+    @Data
+    public static class ADD_Students {
+        private List<ADD_Student> students = new ArrayList<>();
     }
 
     @Data

@@ -1,5 +1,6 @@
 package com.kindergarten.api.student;
 
+import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.kindergartens.KinderGarten;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.kindergartens.KinderGartenService;
@@ -33,7 +34,7 @@ public class StudentService {
         for (UserDTO.ADD_Student create : student) {
 
             Student newstudent = new Student();
-            KinderGarten kinderGarten = kinderGartenRepository.findById(Long.valueOf(create.getKindergarten_id())).get();
+            KinderGarten kinderGarten = kinderGartenRepository.findById(create.getKindergarten_id()).orElseThrow(CKinderGartenNotFoundException::new);
             newstudent.setName(create.getName());
             newstudent.setBirthday(LocalDate.of(create.getYear(), create.getMonth(), create.getDay()));
             newstudent.setKinderGarten(kinderGarten);
@@ -51,7 +52,6 @@ public class StudentService {
         List<Student> byKinderGarten = studentRepository.findByKinderGarten(kindergraten);
         return byKinderGarten;
     }
-
 
 
 }
