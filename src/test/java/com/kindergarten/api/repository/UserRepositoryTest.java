@@ -3,6 +3,7 @@ package com.kindergarten.api.repository;
 import com.kindergarten.api.users.User;
 import com.kindergarten.api.users.UserRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -59,7 +60,8 @@ public class UserRepositoryTest {
         inituser.setName("테스트");
         inituser.setPhone("010-1234-1234");
         inituser.setEmail("test@test.com");
-        userRepository.save(inituser);;
+        userRepository.save(inituser);
+        ;
 
         //when
         String changeName = "이름변경";
@@ -75,37 +77,21 @@ public class UserRepositoryTest {
     @Test
     public void deleteUser() throws Exception {
         //given
-        User inituser1 = new User();
-
-        inituser1.setUserid("user1");
-        inituser1.setPassword("password");
-        inituser1.setName("테스트");
-        inituser1.setPhone("010-1234-1234");
-        inituser1.setEmail("test@test.com");
-        userRepository.save(inituser1);
-
-        User inituser2 = new User();
-
-        inituser2.setUserid("user2");
-        inituser2.setPassword("password");
-        inituser2.setName("테스트");
-        inituser2.setPhone("010-1234-1234");
-        inituser2.setEmail("test@test.com");
-        userRepository.save(inituser2);
+        User deleteUser = new User();
+        deleteUser.setId(99999L);
+        deleteUser.setUserid("user2");
+        deleteUser.setPassword("password");
+        deleteUser.setName("테스트");
+        deleteUser.setPhone("010-1234-1234");
+        deleteUser.setEmail("test@test.com");
+        userRepository.save(deleteUser);
 
         //when
+        userRepository.delete(deleteUser);
 
         //지우기전 User List
-        List<User> beforeDelete = userRepository.findAll();
-
-        Assertions.assertThat(beforeDelete.size()).isEqualTo(2);
-
-        User user = userRepository.findByUserid("user1").get();
-        userRepository.delete(user);
-        //지운후 User List
-        List<User> afterDelete = userRepository.findAll();
-        //then
-        Assertions.assertThat(afterDelete.size()).isEqualTo(1);
+        Optional<User> delete = userRepository.findById(99999L);
+        Assert.assertFalse(delete.isPresent());
 
 
     }

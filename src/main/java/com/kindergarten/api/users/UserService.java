@@ -1,5 +1,6 @@
 package com.kindergarten.api.users;
 
+import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.common.exception.CUserExistException;
 import com.kindergarten.api.common.exception.CUserIncorrectPasswordException;
 import com.kindergarten.api.common.exception.CUserNotFoundException;
@@ -111,7 +112,7 @@ public class UserService {
             updateUser.setEmail(email);
         }
         if (!userModify.getKindergraten_id().isBlank()) {
-            updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).get());
+            updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).orElseThrow(CKinderGartenNotFoundException::new));
         }
 
         userRepository.save(updateUser);
@@ -147,7 +148,7 @@ public class UserService {
 
         for (Student student : students) {
             UserDTO.Response_Student responseStudent = new UserDTO.Response_Student();
-            responseStudent.setStudent_id(student.getId());
+            responseStudent.setStudentId(student.getId());
             responseStudent.setName(student.getName());
             responseStudent.setAccess(student.getAccess());
             responseStudent.setBirthday(student.getBirthday());

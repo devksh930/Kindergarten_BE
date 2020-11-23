@@ -5,6 +5,7 @@ import com.kindergarten.api.kindergartens.KinderGarten;
 import com.kindergarten.api.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -39,4 +40,9 @@ public class Student {
 
     @OneToMany(mappedBy = "students")
     private List<StudentLog> studentLogs;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private LocalDate createdDate = LocalDate.now();
+
 }

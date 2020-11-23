@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +24,18 @@ public class ReviewRepositoryTest {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @BeforeEach
     @AfterEach
     public void cleanup() { // 데이터 섞임 방지
         reviewRepository.deleteAll();
     }
 
+
     @Test
     public void createReview() {
         Review review = new Review();
 
+        review.setId(1L);
         review.setBadThing("나쁜점");
         review.setGoodThing("좋은점");
         review.setEduScore(5);
@@ -44,8 +48,10 @@ public class ReviewRepositoryTest {
         reviewRepository.save(review);
 
         Review findReview = reviewRepository.findById(1L).orElseThrow(CResorceNotfoundException::new);
-        Assertions.assertThat(findReview.getId()).isEqualTo(review.getId());
+
+        Assertions.assertThat(review.getId()).isEqualTo(findReview.getId());
     }
+
 
     @Test
     public void updateReview() {
@@ -72,6 +78,7 @@ public class ReviewRepositoryTest {
     public void deleteReview() {
         Review review = new Review();
 
+        review.setId(9999999999L);
         review.setBadThing("나쁜점");
         review.setGoodThing("좋은점");
         review.setEduScore(5);
@@ -86,12 +93,8 @@ public class ReviewRepositoryTest {
 
         reviewRepository.delete(review);
 
-        Optional<Review> deleteReview = reviewRepository.findById(1L);
-        if(deleteReview.isPresent()){
-            System.out.println("데이터 있음 "+deleteReview.get());
-        }else{
-            System.out.println("데이터없음");
-        }
+        Optional<Review> deleteReview = reviewRepository.findById(9999999999L);
+
         Assert.assertFalse(deleteReview.isPresent());
     }
 }

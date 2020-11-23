@@ -5,7 +5,10 @@ import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.student.Student;
+import com.kindergarten.api.student.StudentLogRepository;
+import com.kindergarten.api.student.StudentRepository;
 import com.kindergarten.api.student.StudentService;
 import com.kindergarten.api.users.User;
 import com.kindergarten.api.users.UserDTO;
@@ -40,8 +43,10 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final StudentService studentService;
-
+    private final KinderGartenRepository kinderGartenRepository;
+    private final StudentLogRepository studentLogRepository;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -137,22 +142,29 @@ public class UserController {
         return responseService.getListResult(students);
     }
 
+    //    권한 유저
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/students")
-    public CommonResult modifyStudent() {
-//       학부모 밑으로 소속된 원생정보 수정
-        return null;
+    public CommonResult modifyStudent(@RequestBody UserDTO.Modify_Student modify_student) {
+        //       학부모 밑으로 소속된 원생정보 수정
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String s = studentService.modifyStudent(modify_student, authentication.getName());
+        return responseService.getSingleResult(s);
     }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @DeleteMapping("/students")
-    public CommonResult deleteStudent() {
+    @DeleteMapping("/students/{studentId}")
+    public CommonResult deleteStudent(@PathVariable Long studentId) {
         //       학부모 밑으로 소속된 원생정보 삭제
-        return null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String deleteStudent = studentService.deleteStudent(authentication.getName(), studentId);
+        deleteStudent = deleteStudent + " 학생의 정보를 삭젱하였습니다.";
+        return responseService.getSingleResult(deleteStudent);
     }
 
 }
