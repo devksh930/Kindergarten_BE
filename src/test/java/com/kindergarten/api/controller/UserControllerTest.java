@@ -78,7 +78,7 @@ public class UserControllerTest {
 
         //then
         resultActions
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(0))
                 .andExpect(jsonPath("$.msg").exists())

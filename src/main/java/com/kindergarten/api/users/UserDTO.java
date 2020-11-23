@@ -40,7 +40,12 @@ public class UserDTO {
         private int year;
         private int month;
         private int day;
-        private String kindergarten_id;
+        private Long kindergarten_id;
+    }
+
+    @Data
+    public static class ADD_Students {
+        private List<ADD_Student> students = new ArrayList<>();
     }
 
     @Data
@@ -51,13 +56,23 @@ public class UserDTO {
 
     @Data
     public static class Response_Student {
-        private Long student_id;
+        private Long studentId;
         private String name;
         @DateTimeFormat(pattern = "yyyyMMdd")
         private LocalDate birthday;
         private Long kindergarten_id;
         private String kindergarten_name;
         private boolean access;
+    }
+
+    @Data
+    public static class Modify_Student {
+        private Long studentId;
+        private Long kindergartenId;
+        private String studentName;
+        private int year;
+        private int month;
+        private int day;
     }
 
     @Data

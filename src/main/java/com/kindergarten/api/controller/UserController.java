@@ -1,10 +1,18 @@
 package com.kindergarten.api.controller;
 
+import com.kindergarten.api.common.exception.CNotOwnerException;
+import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.student.StudentLogRepository;
+import com.kindergarten.api.student.StudentRepository;
+import com.kindergarten.api.student.StudentService;
 import com.kindergarten.api.users.User;
 import com.kindergarten.api.users.UserDTO;
+import com.kindergarten.api.users.UserRepository;
 import com.kindergarten.api.users.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,6 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +42,11 @@ public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
     private final ModelMapper modelMapper;
-
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final StudentService studentService;
+    private final KinderGartenRepository kinderGartenRepository;
+    private final StudentLogRepository studentLogRepository;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -109,6 +122,49 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDTO.Response_User_Student response_user_student = userService.parentStudents(authentication.getName());
         return responseService.getSingleResult(response_user_student);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/students")
+    public CommonResult addStudent(@RequestBody UserDTO.ADD_Students add_students) {
+//        로그인 유저 권한검사
+        if (add_students.getStudents().isEmpty()) {
+            throw new CNotOwnerException();
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userid = authentication.getName();
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+
+        List<Student> students = studentService.addStudent(add_students.getStudents(), user);
+        return responseService.getListResult(students);
+    }
+
+    //    권한 유저
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/students")
+    public CommonResult modifyStudent(@RequestBody UserDTO.Modify_Student modify_student) {
+        //       학부모 밑으로 소속된 원생정보 수정
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String s = studentService.modifyStudent(modify_student, authentication.getName());
+        return responseService.getSingleResult(s);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/students/{studentId}")
+    public CommonResult deleteStudent(@PathVariable Long studentId) {
+        //       학부모 밑으로 소속된 원생정보 삭제
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String deleteStudent = studentService.deleteStudent(authentication.getName(), studentId);
+        deleteStudent = deleteStudent + " 학생의 정보를 삭젱하였습니다.";
+        return responseService.getSingleResult(deleteStudent);
     }
 
 }

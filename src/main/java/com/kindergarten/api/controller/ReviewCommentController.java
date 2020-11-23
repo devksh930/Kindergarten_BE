@@ -37,7 +37,6 @@ public class ReviewCommentController {
     public SingleResult<String> createReviewComment(@PathVariable long reviewid, @RequestBody CommentDTO.CommentCreate response, Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long reviewComment = reviewCommentService.createReviewComment(authentication.getName(), reviewid, response, pageable);
-
         return responseService.getSingleResult(reviewComment.toString());
     }
 

@@ -68,7 +68,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CStudentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CommonResult studentNotFoundException(HttpServletRequest request, CKinderGartenNotFoundException e) {
+    public CommonResult studentNotFoundException(HttpServletRequest request, CStudentNotFoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("notfoundStudent.code")), getMessage("notfoundStudent.msg"));
     }
 
@@ -80,7 +80,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CResorceNotfoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CommonResult resouceNotfoundException(HttpServletRequest request, CResorceNotfoundException e) {
+    public CommonResult resourceNotfoundException(HttpServletRequest request, CResorceNotfoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotFound.code")), getMessage("resourceNotFound.msg"));
     }
 

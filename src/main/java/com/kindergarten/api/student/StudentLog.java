@@ -17,12 +17,12 @@ public class StudentLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    다니기 시작했던 날짜
+    //    학생등록 날짜
     @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate startDate;
-    //    퇴원을 했던 날짜
+    //    학생등록을변경 했던 날짜
     @DateTimeFormat(pattern = "yyyyMMdd")
-    private LocalDate endDate;
+    private LocalDate endDate = LocalDate.now();
     //  승인이 되어 있었는지 확인
     private boolean access;
 
