@@ -1,7 +1,5 @@
-package com.kindergarten.api.repository;
+package com.kindergarten.api.users;
 
-import com.kindergarten.api.users.User;
-import com.kindergarten.api.users.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;

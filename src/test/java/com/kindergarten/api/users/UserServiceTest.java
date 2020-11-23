@@ -1,4 +1,4 @@
-package com.kindergarten.api.service;
+package com.kindergarten.api.users;
 
 import com.kindergarten.api.common.exception.CUserNotFoundException;
 import com.kindergarten.api.security.util.JwtTokenProvider;
