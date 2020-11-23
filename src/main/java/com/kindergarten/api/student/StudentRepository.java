@@ -15,10 +15,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     boolean existsByUserAndKinderGartenAndAccessTrue(User user, KinderGarten kinderGarten);
 
-    boolean existsByUserAndAccessTrue(User user);
-
-    List<Student> findByUser(User user);
-
     List<Student> findByKinderGarten(KinderGarten kinderGarten);
 
 
