@@ -1,6 +1,13 @@
 package com.kindergarten.api.reviews;
 
+import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.common.exception.CResorceNotfoundException;
+import com.kindergarten.api.common.exception.CUserNotFoundException;
+import com.kindergarten.api.kindergartens.KinderGarten;
+import com.kindergarten.api.kindergartens.KinderGartenRepository;
+import com.kindergarten.api.student.Student;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,10 +16,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -23,6 +34,10 @@ public class ReviewRepositoryTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private KinderGartenRepository kinderGartenRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     @AfterEach
@@ -96,5 +111,26 @@ public class ReviewRepositoryTest {
         Optional<Review> deleteReview = reviewRepository.findById(9999999999L);
 
         Assert.assertFalse(deleteReview.isPresent());
+    }
+
+    @Test
+    public void existsByUserAndKinderGarten() {
+        User user = userRepository.findById(1L).orElseThrow(CUserNotFoundException::new);
+        List<Student> student = user.getStudent();
+        KinderGarten kinderGarten = student.get(1).getKinderGarten();
+        boolean b = reviewRepository.existsByUserAndKinderGarten(user, kinderGarten);
+        Assertions.assertThat(b).isEqualTo(b);
+    }
+
+    @Test
+    public void findByKinderGarten() {
+        KinderGarten kinderGarten = kinderGartenRepository.findById(1L).orElseThrow(CKinderGartenNotFoundException::new);
+        Pageable page = PageRequest.of(1, 10);
+        Page<Review> byKinderGarten = reviewRepository.findByKinderGarten(kinderGarten, page);
+        byKinderGarten.getSize();
+        byKinderGarten.getContent().isEmpty();
+        Assertions.assertThat(byKinderGarten.getSize()).isEqualTo(10);
+        Assertions.assertThat(byKinderGarten.getContent().isEmpty()).isEqualTo(true);
+
     }
 }

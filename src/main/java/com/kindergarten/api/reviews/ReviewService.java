@@ -122,4 +122,14 @@ public class ReviewService {
         return kindergartenReview;
     }
 
+    public long deleteReview(long reviewid, String userid) {
+        Review review = reviewRepository.findById(reviewid).orElseThrow(CResorceNotfoundException::new);
+        if (!userid.equals(review.getUser().getUserid())) {
+            throw new CNotOwnerException();
+        }
+
+        reviewRepository.delete(review);
+        return review.getId();
+    }
+
 }

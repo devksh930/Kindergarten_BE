@@ -3,6 +3,7 @@ package com.kindergarten.api.controller;
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.reviews.ReviewDTO;
+import com.kindergarten.api.reviews.ReviewRepository;
 import com.kindergarten.api.reviews.ReviewService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class ReviewController {
     private final ResponseService responseService;
     private final ReviewService reviewService;
-
+    private final ReviewRepository reviewRepository;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -57,5 +58,15 @@ public class ReviewController {
     public CommonResult getKinderGartenReview(@PathVariable long kindergarten_id, Pageable pageable) {
         ReviewDTO.KindergartenReview kindergartenReview = reviewService.kindergartenrReview(kindergarten_id, pageable);
         return responseService.getSingleResult(kindergartenReview);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("{reviewid}")
+    public CommonResult deleteReview(@PathVariable long reviewid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        reviewService.deleteReview(reviewid, authentication.getName());
+        return responseService.getSuccessResult();
     }
 }
