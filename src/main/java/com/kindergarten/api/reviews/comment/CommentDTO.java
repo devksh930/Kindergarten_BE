@@ -3,6 +3,7 @@ package com.kindergarten.api.reviews.comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,10 @@ public class CommentDTO {
                 this.findComments.add(commentResponse);
             });
         }
+    }
+
+    @Data
+    public static class CommentModify {
+        private String desc;
     }
 }

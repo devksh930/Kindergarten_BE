@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -48,9 +50,7 @@ public class ReviewCommentService {
             }
         }
 
-
         ReviewComment reviewComment = new ReviewComment();
-
 
         reviewComment.setUser(user);
         reviewComment.setReview(review);
@@ -72,5 +72,28 @@ public class ReviewCommentService {
         commentPaging.setFindComments(allByReview.getContent());
 
         return commentPaging;
+    }
+
+    public long modifyComment(long reviewcomment, String authid, CommentDTO.CommentModify commentModify) {
+        ReviewComment reviewComment = reviewCommentRepository.findById(reviewcomment).orElseThrow(CResorceNotfoundException::new);
+        String userid = reviewComment.getUser().getUserid();
+        if (!userid.equals(authid)) {
+            throw new CNotOwnerException();
+        }
+        reviewComment.setLastModifiedDate(LocalDateTime.now());
+        reviewComment.setDesc(commentModify.getDesc());
+        reviewCommentRepository.save(reviewComment);
+
+        return reviewcomment;
+    }
+
+    public long deleteComment(long reviewcomment, String authid) {
+        ReviewComment reviewComment = reviewCommentRepository.findById(reviewcomment).orElseThrow(CResorceNotfoundException::new);
+
+        if (!authid.equals(reviewComment.getUser().getUserid())) {
+            throw new CNotOwnerException();
+        }
+        reviewCommentRepository.delete(reviewComment);
+        return reviewcomment;
     }
 }
