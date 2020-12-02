@@ -1,9 +1,6 @@
 package com.kindergarten.api.users;
 
-import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
-import com.kindergarten.api.common.exception.CUserExistException;
-import com.kindergarten.api.common.exception.CUserIncorrectPasswordException;
-import com.kindergarten.api.common.exception.CUserNotFoundException;
+import com.kindergarten.api.common.exception.*;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.student.Student;
@@ -99,25 +96,44 @@ public class UserService {
 
     @Transactional // 회원정보 수정
     public User modifyUser(String userid, UserDTO.UserModify userModify) {
-        String userId = userid;
-        User updateUser = userRepository.findByUserid(userId).orElseThrow(CUserNotFoundException::new);
-        String phone = userModify.getPhone();
-        String email = userModify.getEmail();
-        String kindergarten_id = userModify.getKindergraten_id();
-
-        if (!userModify.getPhone().isBlank()) {
-            updateUser.setPhone(phone);
+        User updateUser = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        String password = userModify.getPassword();
+        String newPassword = userModify.getNewpassword();
+        if (!passwordEncoder.matches(password, updateUser.getPassword())) {
+            throw new CUserIncorrectPasswordException();
         }
-        if (!userModify.getEmail().isBlank()) {
-            updateUser.setEmail(email);
+        if (!userModify.getNewpassword().isBlank()) {
+            updateUser.setPassword(passwordEncoder.encode(newPassword));
         }
-        if (!userModify.getKindergraten_id().isBlank()) {
-            updateUser.setKinderGarten(kinderGartenRepository.findById(Long.valueOf((kindergarten_id))).orElseThrow(CKinderGartenNotFoundException::new));
-        }
+        updateUser.setPhone(userModify.getPhone());
+        updateUser.setEmail(userModify.getEmail());
 
         userRepository.save(updateUser);
 
         return updateUser;
+    }
+
+    @Transactional
+    public User modifyTeacherKinder(String userid, UserDTO.TeacherModify teacherModify) {
+        User teacher = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        //        user의 권한이 user인경우 exception
+        if (teacher.getRole().equals(UserRole.ROLE_USER)) {
+            throw new CNotOwnerException();
+        }
+//        user의 유치원과 modify의 유치원 비교
+        if (!teacher.getKinderGarten().getId().equals(teacherModify.getKindergraten_id())) {
+            teacher.setKinderGarten(kinderGartenRepository.findById(teacherModify.getKindergraten_id()).orElseThrow(CKinderGartenNotFoundException::new));
+            if (teacher.getRole().equals(UserRole.ROLE_TEACHER)) {
+                teacher.setRole(UserRole.ROLE_NOT_PERMITTED_TEACHER);
+            }
+            if (teacher.getRole().equals(UserRole.ROLE_DIRECTOR)) {
+                teacher.setRole(UserRole.ROLE_NOT_PERMITTED_DIRECTOR);
+            }
+            userRepository.save(teacher);
+        } else {
+            throw new CResorceNotfoundException();
+        }
+        return teacher;
     }
 
     @Transactional //로그인

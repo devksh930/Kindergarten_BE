@@ -102,8 +102,20 @@ public class UserDTO {
         private String phone;
         @NotNull(message = "Null일수는 없습니다")
         private String email;
+        @NotNull
+        private String password;
+        private String newpassword;
+    }
+
+    @Data
+    public static class TeacherKinderModify {
+        private Long kindergartensid;
+    }
+
+    @Data
+    public static class TeacherModify {
         @NotNull(message = "Null일수는 없습니다")
-        private String kindergraten_id;
+        private long kindergraten_id;
     }
 
     @Data
