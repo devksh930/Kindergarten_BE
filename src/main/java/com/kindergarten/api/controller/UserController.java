@@ -94,24 +94,26 @@ public class UserController {
     public CommonResult userModify(@RequestBody UserDTO.UserModify userModify) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String ROLE = authorities.toString();
-
 //        미인증 선생, 선생
-        if (ROLE.equals("[ROLE_NOT_PERMITTED_TEACHER]") || ROLE.equals("[NOT_PERMITTED_DIRECTOR]")) {
-            userService.modifyUser(authentication.getName(), userModify);
-        }
-//        인증된 선생, 원장
-        if (ROLE.equals("[ROLE_TEACHER]") || ROLE.equals("[ROLE_DIRECTOR]")) {
-            userModify.setKindergraten_id(null);
-            userService.modifyUser(authentication.getName(), userModify);
-        }
-//        회원
-        if (ROLE.equals("[ROLE_USER]")) {
-            userModify.setKindergraten_id(null);
-            userService.modifyUser(authentication.getName(), userModify);
-        }
+        userService.modifyUser(authentication.getName(), userModify);
+
         return responseService.getSuccessResult();
+    }
+
+    //    선생님 유치원 정보변경
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원의 유치원 수정", notes = "회원의 유치원 수정.")
+
+    @PutMapping("/kindergarten")
+    public CommonResult teacherKinderGartenModify(@RequestBody UserDTO.TeacherModify teacherModify) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+
+        User user = userService.modifyTeacherKinder(name, teacherModify);
+
+        return responseService.getSingleResult(user.getId());
     }
 
     @ApiImplicitParams({
