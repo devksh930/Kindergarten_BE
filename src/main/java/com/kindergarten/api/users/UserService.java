@@ -168,6 +168,7 @@ public class UserService {
             responseStudent.setName(student.getName());
             responseStudent.setAccess(student.getAccess());
             responseStudent.setBirthday(student.getBirthday());
+            responseStudent.setCreated_date(student.getCreatedDate());
             responseStudent.setKindergarten_id(student.getKinderGarten().getId());
             responseStudent.setKindergarten_name(student.getKinderGarten().getName());
             students1.add(responseStudent);

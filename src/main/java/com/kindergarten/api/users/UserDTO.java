@@ -60,6 +60,8 @@ public class UserDTO {
         private String name;
         @DateTimeFormat(pattern = "yyyyMMdd")
         private LocalDate birthday;
+        @DateTimeFormat(pattern = "yyyyMMdd")
+        private LocalDate created_date;
         private Long kindergarten_id;
         private String kindergarten_name;
         private boolean access;
@@ -97,6 +99,13 @@ public class UserDTO {
     }
 
     @Data
+    public static class Teacher_response {
+        private String userid;
+        private String name;
+        private String ROLE;
+    }
+
+    @Data
     public static class UserModify {
         @NotNull(message = "Null일수는 없습니다")
         private String phone;
@@ -128,6 +137,5 @@ public class UserDTO {
         private String userid;
         private String name;
         private String role;
-
     }
 }
