@@ -104,7 +104,7 @@ public class UserService {
         //비밀번호 변경시 새로운번호와 원래비밀번호는 비어있지 않아야한다
         if (!userModify.getNewpassword().isBlank() && !userModify.getPassword().isBlank()) {
             //paasword가 검증되었을경우
-            if (passwordEncoder.matches( userModify.getPassword(),updateUser.getPassword())) {
+            if (passwordEncoder.matches(userModify.getPassword(), updateUser.getPassword())) {
                 updateUser.setPassword(newPassword);
             } else {
                 throw new CUserIncorrectPasswordException();
@@ -198,7 +198,7 @@ public class UserService {
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         currentUser.setUserid(user.getUserid());
         currentUser.setName(user.getName());
-        if (!user.getRole().equals(UserRole.ROLE_USER) || !user.getRole().equals(UserRole.ROLE_ADMIN)) {
+        if (user.getRole().equals(UserRole.ROLE_TEACHER) || user.getRole().equals(UserRole.ROLE_DIRECTOR)) {
             currentUser.setKindergartenid(user.getKinderGarten().getId());
         }
         currentUser.setRole(user.getRole().name());
