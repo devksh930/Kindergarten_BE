@@ -2,6 +2,9 @@ package com.kindergarten.api.kindergartens;
 
 import com.kindergarten.api.common.exception.CKinderGartenNotFoundException;
 import com.kindergarten.api.student.StudentRepository;
+import com.kindergarten.api.users.User;
+import com.kindergarten.api.users.UserDTO;
+import com.kindergarten.api.users.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -10,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -89,6 +94,7 @@ public class KinderGartenService {
 
         return kinderGartenRepository.findById(id).orElseThrow(CKinderGartenNotFoundException::new);
     }
+
 
 
 }

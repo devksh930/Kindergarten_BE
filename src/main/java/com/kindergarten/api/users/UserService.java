@@ -1,6 +1,7 @@
 package com.kindergarten.api.users;
 
 import com.kindergarten.api.common.exception.*;
+import com.kindergarten.api.kindergartens.KinderGarten;
 import com.kindergarten.api.kindergartens.KinderGartenRepository;
 import com.kindergarten.api.security.util.JwtTokenProvider;
 import com.kindergarten.api.student.Student;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -154,6 +156,8 @@ public class UserService {
     }
 
     // 유저의 학생 불러오기
+    @Transactional
+
     public UserDTO.Response_User_Student parentStudents(String userid) {
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         UserDTO.Response_User_Student response_user_student = new UserDTO.Response_User_Student();
@@ -176,13 +180,49 @@ public class UserService {
         return response_user_student;
     }
 
+    @Transactional
+
     public UserDTO.currentUser currentUser(String userid) {
         UserDTO.currentUser currentUser = new UserDTO.currentUser();
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         currentUser.setUserid(user.getUserid());
         currentUser.setName(user.getName());
+        if (!user.getRole().equals(UserRole.ROLE_USER) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+            currentUser.setKindergartenid(user.getKinderGarten().getId());
+        }
         currentUser.setRole(user.getRole().name());
 
         return currentUser;
+    }
+
+    //유치원소속 선생님가져오기(ROLE에 따라서)
+    @Transactional
+    public List<UserDTO.Teacher_response> getTeacher(Long kindergartensID, UserRole role) {
+        KinderGarten kinderGarten = kinderGartenRepository.findById(kindergartensID).orElseThrow(CKinderGartenNotFoundException::new);
+        List<User> byKinderGartenTecaher = userRepository.findByKinderGartenAndRole(kinderGarten, role);
+        List<UserDTO.Teacher_response> teacher_responses = new ArrayList<>();
+        for (User user : byKinderGartenTecaher) {
+            UserDTO.Teacher_response teacher_response = new UserDTO.Teacher_response();
+            teacher_response.setName(user.getName());
+            teacher_response.setROLE(user.getRole().name());
+            teacher_response.setUserid(user.getUserid());
+            teacher_responses.add(teacher_response);
+        }
+        return teacher_responses;
+    }
+
+    //인증권한 변경
+    @Transactional
+    public void modifyRole(String userid, long modifyUserid, UserRole role) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        User modifyUserRole = userRepository.findById(modifyUserid).orElseThrow(CUserNotFoundException::new);
+        //권한이 ADMIN, DIRECTOR일것
+        if (user.getRole().equals(UserRole.ROLE_DIRECTOR) && modifyUserRole.getKinderGarten().getId().equals(user.getKinderGarten().getId()) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+            //DIRECTOR일경우 유치원이 같을것
+            modifyUserRole.setRole(role);
+        } else {
+            throw new CNotOwnerException();
+        }
+        userRepository.save(modifyUserRole);
     }
 }

@@ -136,6 +136,7 @@ public class UserDTO {
     public static class currentUser {
         private String userid;
         private String name;
+        private long kindergartenid;
         private String role;
     }
 }
