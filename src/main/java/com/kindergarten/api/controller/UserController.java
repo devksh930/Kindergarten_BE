@@ -51,6 +51,18 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "회원 정보 조회", notes = "로그인된 회원의 정보를 조회한다")
+    @GetMapping
+    public CommonResult getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUserid(authentication.getName()).orElseThrow(CUserNotFoundException::new);
+        UserDTO.UserResponse map = modelMapper.map(user, UserDTO.UserResponse.class);
+        return responseService.getSingleResult(map);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping("/list")
     public SingleResult findAll() {

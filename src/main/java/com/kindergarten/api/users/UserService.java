@@ -99,13 +99,17 @@ public class UserService {
     @Transactional // 회원정보 수정
     public User modifyUser(String userid, UserDTO.UserModify userModify) {
         User updateUser = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
-        String password = userModify.getPassword();
         String newPassword = userModify.getNewpassword();
-        if (!passwordEncoder.matches(password, updateUser.getPassword())) {
-            throw new CUserIncorrectPasswordException();
-        }
-        if (!userModify.getNewpassword().isBlank()) {
-            updateUser.setPassword(passwordEncoder.encode(newPassword));
+
+        //비밀번호 변경시 새로운번호와 원래비밀번호는 비어있지 않아야한다
+        if (!userModify.getNewpassword().isBlank() && !userModify.getPassword().isBlank()) {
+            //paasword가 검증되었을경우
+            if (passwordEncoder.matches( userModify.getPassword(),updateUser.getPassword())) {
+                updateUser.setPassword(newPassword);
+            } else {
+                throw new CUserIncorrectPasswordException();
+            }
+
         }
         updateUser.setPhone(userModify.getPhone());
         updateUser.setEmail(userModify.getEmail());

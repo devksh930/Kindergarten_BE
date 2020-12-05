@@ -140,4 +140,12 @@ public class UserDTO {
         private String role;
     }
 
+    @Data
+    public static class UserResponse {
+        private String userid;
+        private String name;
+        private String phone;
+        private String email;
+    }
+
 }
