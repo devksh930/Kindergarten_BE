@@ -99,24 +99,28 @@ public class UserService {
     @Transactional // 회원정보 수정
     public User modifyUser(String userid, UserDTO.UserModify userModify) {
         User updateUser = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
-        String newPassword = userModify.getNewpassword();
-
-        //비밀번호 변경시 새로운번호와 원래비밀번호는 비어있지 않아야한다
-        if (!userModify.getNewpassword().isBlank() && !userModify.getPassword().isBlank()) {
-            //paasword가 검증되었을경우
-            if (passwordEncoder.matches(userModify.getPassword(), updateUser.getPassword())) {
-                updateUser.setPassword(newPassword);
-            } else {
-                throw new CUserIncorrectPasswordException();
-            }
-
-        }
         updateUser.setPhone(userModify.getPhone());
         updateUser.setEmail(userModify.getEmail());
 
         userRepository.save(updateUser);
 
         return updateUser;
+    }
+
+    @Transactional
+    public boolean modifyPassword(String userid, UserDTO.UserPasswordModify userPasswordModify) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        if (passwordEncoder.matches(userPasswordModify.getPassword(), user.getPassword())) {
+            if (passwordEncoder.matches(userPasswordModify.getNewPassword(), user.getPassword())) {
+                throw new CPassworChangeException();
+            }
+            user.setPassword(passwordEncoder.encode(userPasswordModify.getNewPassword()));
+        } else {
+            throw new CUserIncorrectPasswordException();
+        }
+
+        userRepository.save(user);
+        return true;
     }
 
     @Transactional

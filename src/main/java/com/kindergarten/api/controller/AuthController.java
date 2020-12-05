@@ -48,7 +48,7 @@ public class AuthController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/passwordvalid")
-    public CommonResult passwordVaild(@RequestBody UserDTO.UserPasswordModify pasword) {
+    public CommonResult passwordVaild(@RequestBody UserDTO.userPasswordValid pasword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Boolean passwordValid = userService.passwordValid(authentication.getName(), pasword.getPassword());
         return responseService.getSingleResult(passwordValid);

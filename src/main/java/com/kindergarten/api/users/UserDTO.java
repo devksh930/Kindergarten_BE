@@ -128,8 +128,14 @@ public class UserDTO {
     }
 
     @Data
+    public static class userPasswordValid {
+        private String password;
+    }
+
+    @Data
     public static class UserPasswordModify {
         private String password;
+        private String newPassword;
     }
 
     @Data

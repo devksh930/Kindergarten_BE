@@ -37,3 +37,7 @@ notOwnerException:
 resourceNotFound:
   code: "-7"
   msg: "해당 자원을 찾을수 없습니다."
+
+passwordChangeError:
+  code: "-8"
+  msg: "변경하려는 비밀번호가 현재 비밀번호와 같습니다"

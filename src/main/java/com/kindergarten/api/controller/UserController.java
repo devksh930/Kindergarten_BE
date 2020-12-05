@@ -112,6 +112,17 @@ public class UserController {
         return responseService.getSuccessResult();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/password")
+    public CommonResult userPasswordModify(@RequestBody UserDTO.UserPasswordModify userPasswordModify) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean b = userService.modifyPassword(authentication.getName(), userPasswordModify);
+
+        return responseService.getSingleResult(b);
+    }
+
     //    선생님 유치원 정보변경
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")

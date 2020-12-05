@@ -83,7 +83,11 @@ public class ExceptionAdvice {
     public CommonResult resourceNotfoundException(HttpServletRequest request, CResorceNotfoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotFound.code")), getMessage("resourceNotFound.msg"));
     }
-
+    @ExceptionHandler(CPassworChangeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public CommonResult passwordChangeException(HttpServletRequest request, CPassworChangeException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("passwordChangeError.code")), getMessage("passwordChangeError.msg"));
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult methodNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
