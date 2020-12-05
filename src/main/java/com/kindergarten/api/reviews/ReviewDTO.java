@@ -136,12 +136,5 @@ public class ReviewDTO {
         }
 
 
-        public void setWriter(String writer) {
-            if (this.getAnonymous()) {
-                this.writer = "익명리뷰";
-            } else {
-                this.writer = writer;
-            }
-        }
     }
 }

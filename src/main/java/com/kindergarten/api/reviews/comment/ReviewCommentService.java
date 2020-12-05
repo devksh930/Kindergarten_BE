@@ -24,7 +24,7 @@ public class ReviewCommentService {
     private final ReviewCommentRepository reviewCommentRepository;
     private final UserRepository userRepository;
 
-    public long createReviewComment(String userid, long reviewid, CommentDTO.CommentCreate response, Pageable pageable) {
+    public long createReviewComment(String userid, long reviewid, CommentDTO.CommentCreate response) {
         String name = userid;
         User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
         Review review = reviewRepository.findById(reviewid).orElseThrow(CResorceNotfoundException::new);

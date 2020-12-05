@@ -2,9 +2,12 @@ package com.kindergarten.api.controller;
 
 import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
+import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.reviews.ReviewDTO;
 import com.kindergarten.api.reviews.ReviewRepository;
 import com.kindergarten.api.reviews.ReviewService;
+import com.kindergarten.api.reviews.comment.CommentDTO;
+import com.kindergarten.api.reviews.comment.ReviewCommentService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,7 @@ public class ReviewController {
     private final ResponseService responseService;
     private final ReviewService reviewService;
     private final ReviewRepository reviewRepository;
+    private final ReviewCommentService reviewCommentService;
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -54,7 +58,7 @@ public class ReviewController {
         return responseService.getSingleResult(createResponse);
     }
 
-    @GetMapping("/{kindergarten_id}") // 유치원별 리뷰 조회
+    @GetMapping("/kindergartens/{kindergarten_id}") // 유치원별 리뷰 조회
     public CommonResult getKinderGartenReview(@PathVariable long kindergarten_id, Pageable pageable) {
         ReviewDTO.KindergartenReview kindergartenReview = reviewService.kindergartenrReview(kindergarten_id, pageable);
         return responseService.getSingleResult(kindergartenReview);
@@ -69,4 +73,45 @@ public class ReviewController {
         reviewService.deleteReview(reviewid, authentication.getName());
         return responseService.getSuccessResult();
     }
+
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/{reviewid}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public SingleResult<String> createReviewComment(@PathVariable long reviewid, @RequestBody CommentDTO.CommentCreate response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long reviewComment = reviewCommentService.createReviewComment(authentication.getName(), reviewid, response);
+        return responseService.getSingleResult(reviewComment.toString());
+    }
+
+    @GetMapping("/{reviewid}/comments")
+    public SingleResult<CommentDTO.CommentPaging> getReviewComment(@PathVariable long reviewid, Pageable pageable) {
+        CommentDTO.CommentPaging response = reviewCommentService.getReviewComments(reviewid, pageable);
+        return responseService.getSingleResult(response);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/comments/{commentid}")
+    public CommonResult modifyReviewComment(@PathVariable long commentid, @RequestBody CommentDTO.CommentModify commentModify) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        reviewCommentService.modifyComment(commentid, authentication.getName(), commentModify);
+
+        return responseService.getSuccessResult();
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/comments/{commentid}")
+    public CommonResult deleteRevieComment(@PathVariable long commentid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        reviewCommentService.deleteComment(commentid, authentication.getName());
+        return responseService.getSuccessResult();
+    }
+
 }

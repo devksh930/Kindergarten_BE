@@ -10,6 +10,7 @@ import com.kindergarten.api.kindergartens.KinderGartenService;
 import com.kindergarten.api.users.User;
 import com.kindergarten.api.users.UserDTO;
 import com.kindergarten.api.users.UserRepository;
+import com.kindergarten.api.users.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,35 @@ public class StudentService {
             throw new CNotOwnerException();
         }
         return deleteStudentName;
+    }
+
+    public List<UserDTO.Response_Student> findKinderStudents(String userid, long kindergartensID) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+        List<UserDTO.Response_Student> students = new ArrayList<>();
+        if (!user.getKinderGarten().getId().equals(kindergartensID)) {
+            throw new CNotOwnerException();
+        }
+        if (user.getRole().equals(UserRole.ROLE_TEACHER) || user.getRole().equals(UserRole.ROLE_DIRECTOR) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+
+            KinderGarten kinderGarten = kinderGartenRepository.findById(kindergartensID).orElseThrow(CKinderGartenNotFoundException::new);
+            List<Student> byKinderGarten = studentRepository.findByKinderGarten(kinderGarten);
+            for (Student student : byKinderGarten) {
+                UserDTO.Response_Student response_student = new UserDTO.Response_Student();
+                response_student.setStudentId(student.getId());
+                response_student.setAccess(student.getAccess());
+                response_student.setStudentId(student.getId());
+                response_student.setBirthday(student.getBirthday());
+                response_student.setKindergarten_id(student.getKinderGarten().getId());
+                response_student.setKindergarten_name(student.getKinderGarten().getName());
+                response_student.setCreated_date(student.getCreatedDate());
+                students.add(response_student);
+            }
+
+        } else {
+            throw new CNotOwnerException();
+        }
+        return students;
+
     }
 
 }
