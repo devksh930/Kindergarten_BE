@@ -155,6 +155,13 @@ public class UserService {
         return response;
     }
 
+    @Transactional
+    public Boolean passwordValid(String userid, String password) {
+        User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
+
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
     // 유저의 학생 불러오기
     @Transactional
 
@@ -187,7 +194,7 @@ public class UserService {
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
         currentUser.setUserid(user.getUserid());
         currentUser.setName(user.getName());
-        if (!user.getRole().equals(UserRole.ROLE_USER) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+        if (!user.getRole().equals(UserRole.ROLE_USER) || !user.getRole().equals(UserRole.ROLE_ADMIN)) {
             currentUser.setKindergartenid(user.getKinderGarten().getId());
         }
         currentUser.setRole(user.getRole().name());

@@ -1,6 +1,6 @@
 package com.kindergarten.api.controller;
 
-import com.kindergarten.api.common.exception.CUserNotFoundException;
+import com.kindergarten.api.common.result.CommonResult;
 import com.kindergarten.api.common.result.ResponseService;
 import com.kindergarten.api.common.result.SingleResult;
 import com.kindergarten.api.users.UserDTO;
@@ -10,12 +10,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,5 +42,15 @@ public class AuthController {
         UserDTO.currentUser currentUser = userService.currentUser(authentication.getName());
 
         return responseService.getSingleResult(currentUser);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/passwordvalid")
+    public CommonResult passwordVaild(@RequestBody UserDTO.UserPasswordModify pasword) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Boolean passwordValid = userService.passwordValid(authentication.getName(), pasword.getPassword());
+        return responseService.getSingleResult(passwordValid);
     }
 }
