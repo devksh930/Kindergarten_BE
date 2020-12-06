@@ -17,6 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByKinderGarten(KinderGarten kinderGarten);
 
+    List<Student> findByAccess(Boolean access);
 
 
 }

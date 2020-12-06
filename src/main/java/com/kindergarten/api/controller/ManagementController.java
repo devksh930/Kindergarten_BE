@@ -99,4 +99,21 @@ public class ManagementController {
 
         return responseService.getSingleResult(student.getName() + "student" + save.getAccess());
     }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/student/access/{access}")
+    public CommonResult getStudentByAccess(@PathVariable Boolean access) {
+
+        List<UserDTO.Response_Student> accessStudent = manageMentService.findAccessStudent(access);
+        return responseService.getSingleResult(accessStudent);
+
+    }
+
+    @GetMapping("/users/role/{role}")
+    public CommonResult getStudentByRole(@PathVariable UserRole role) {
+        List<UserDTO.UserRoleFind> byRoleUser = manageMentService.findByRoleUser(role);
+        return responseService.getSingleResult(byRoleUser);
+    }
 }

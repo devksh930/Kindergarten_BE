@@ -2,7 +2,7 @@ spring:
   jwt:
     key: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiJkZXZrc2g5MzAiLCJpYXQiOjE2MDM3MDU1ODYsImV4cCI6MTYwMzcwODQ2Nn0.a719qFwN6hvERx7AqVHVkmxxfe6TMvwlY_kQgjGly7o
   profiles:
-    active: dev
+    active: prod
 
 server:
   servlet:

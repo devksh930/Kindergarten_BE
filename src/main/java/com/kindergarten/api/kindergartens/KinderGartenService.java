@@ -22,8 +22,7 @@ import java.util.List;
 
 public class KinderGartenService {
     private final KinderGartenRepository kinderGartenRepository;
-    private final StudentRepository studentRepository;
-    private final ModelMapper modelMapper;
+
 
     @Transactional
     public KinderGartenDTO.KindergatenPage findByAddress(String addr, Pageable pageable) {

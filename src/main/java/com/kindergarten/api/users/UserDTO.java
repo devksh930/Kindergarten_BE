@@ -147,11 +147,20 @@ public class UserDTO {
     }
 
     @Data
+    public static class UserRoleFind {
+        private long id;
+        private String userid;
+        private String name;
+        private UserRole role;
+        private long kindergartenid;
+        private String kindergartenname;
+    }
+
+    @Data
     public static class UserResponse {
         private String userid;
         private String name;
         private String phone;
         private String email;
     }
-
 }
