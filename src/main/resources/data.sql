@@ -51,6 +51,8 @@ INSERT INTO KINDERGARTEN(NAME,TYPE,OPEN_DATE,ADDRESS,PHONE,WEBSITE,OPERATING_TIM
 INSERT INTO USER ( created_date, email, last_modified_date, name, password, phone, role, userid, kindergatent_id) VALUES ( '2020-11-12 01:42:36', 'test@test.com', '2020-11-12 01:42:36', '김성호', '{bcrypt}$2a$10$Zt1BsOas5rn.4iGyQYPbGOubinsP97L.Tm48yFeqamwxb3DVR0hja', '01012341234', 'ROLE_USER', 'ksh930', null);
 
 INSERT INTO USER ( created_date, email, last_modified_date, name, password, phone, role, userid, kindergatent_id) VALUES ( '2020-11-12 01:42:39', 'test@test.com', '2020-11-12 01:42:39', '김성호', '{bcrypt}$2a$10$SX4K76fwB6.CO47lhO2py.hGLppxUkRKWmVw030XtYUdkvXSozu8G', '01012341234', 'ROLE_NOT_PERMITTED_TEACHER', 'devksh930', 1);
+INSERT INTO USER ( created_date, email, last_modified_date, name, password, phone, role, userid, kindergatent_id) VALUES ( '2020-11-12 01:42:36', 'test@test.com', '2020-11-12 01:42:36', '관리자', '{bcrypt}$2a$10$Zt1BsOas5rn.4iGyQYPbGOubinsP97L.Tm48yFeqamwxb3DVR0hja', '01012341234', 'ROLE_ADMIN', 'test119', null);
+
 INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '정보미', 1, 1);
 INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '김성호', 1, 1);
 INSERT INTO STUDENT ( access, birthday, name, kindergartent_id, user_id) VALUES ( false, '1993-09-16', '테스트', 1, 1);
