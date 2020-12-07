@@ -170,6 +170,7 @@ public class UserDTO {
     public static class UserRoleFind {
         private long id;
         private String userid;
+        private String phone;
         private String name;
         private UserRole role;
         private long kindergartenid;

@@ -71,6 +71,7 @@ public class ManageMentService {
             UserDTO.UserRoleFind userRoleFind = new UserDTO.UserRoleFind();
             userRoleFind.setId(user.getId());
             userRoleFind.setUserid(user.getUserid());
+            userRoleFind.setPhone(user.getPhone());
             userRoleFind.setName(user.getName());
             userRoleFind.setRole(user.getRole());
             userRoleFind.setKindergartenid(user.getKinderGarten().getId());
