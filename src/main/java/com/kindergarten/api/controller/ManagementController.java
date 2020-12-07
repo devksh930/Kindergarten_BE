@@ -44,6 +44,7 @@ public class ManagementController {
         //설정할수 있는 권한
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<String> role = manageMentService.getRole(authentication.getName());
+
         return responseService.getSingleResult(role);
 
     }
@@ -55,8 +56,11 @@ public class ManagementController {
     })
     @GetMapping("/kindergartens/{kindergartensID}/users")
     public CommonResult getTeacher(@PathVariable Long kindergartensID, @RequestParam UserRole role) {
-        List<UserDTO.Teacher_response> teacher = userService.getTeacher(kindergartensID, role);
-        return responseService.getSingleResult(teacher);
+
+        List<UserDTO.Teacher_response> teachers = userService.getTeacher(kindergartensID, role);
+
+        return responseService.getSingleResult(teachers);
+
     }
 
     @ApiImplicitParams({
