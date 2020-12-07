@@ -95,7 +95,7 @@ public class ManagementController {
         User user = userRepository.findByUserid(authentication.getName()).orElseThrow(CUserNotFoundException::new);
         Student student = studentRepository.findById(studentid).orElseThrow(CStudentNotFoundException::new);
 
-        if (student.getKinderGarten().getId().equals(user.getKinderGarten().getId())||user.getRole().equals(UserRole.ROLE_ADMIN)) {
+        if (user.getRole().equals(UserRole.ROLE_ADMIN)||student.getKinderGarten().getId().equals(user.getKinderGarten().getId())) {
             student.setAccess(access);
         } else {
             throw new CNotOwnerException();
