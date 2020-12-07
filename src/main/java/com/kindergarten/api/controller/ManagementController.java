@@ -56,7 +56,7 @@ public class ManagementController {
     @GetMapping("/kindergartens/{kindergartensID}/users")
     public CommonResult getTeacher(@PathVariable Long kindergartensID, @RequestParam UserRole role) {
         List<UserDTO.Teacher_response> teacher = userService.getTeacher(kindergartensID, role);
-        return responseService.getListResult(teacher);
+        return responseService.getSingleResult(teacher);
     }
 
     @ApiImplicitParams({
