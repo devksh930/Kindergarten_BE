@@ -68,6 +68,21 @@ public class UserDTO {
     }
 
     @Data
+    public static class findKinderStudents {
+
+        private Long studentId;
+        private String userName;
+        private String name;
+        @DateTimeFormat(pattern = "yyyyMMdd")
+        private LocalDate birthday;
+        @DateTimeFormat(pattern = "yyyyMMdd")
+        private LocalDate created_date;
+        private Long kindergarten_id;
+        private String kindergarten_name;
+        private boolean access;
+    }
+
+    @Data
     public static class Modify_Student {
         private Long studentId;
         private Long kindergartenId;

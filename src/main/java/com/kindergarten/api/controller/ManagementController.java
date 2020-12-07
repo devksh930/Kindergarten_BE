@@ -66,7 +66,7 @@ public class ManagementController {
     @GetMapping("/kindergartens/{kindergartensID}/students")
     public CommonResult getStudent(@PathVariable Long kindergartensID) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<UserDTO.Response_Student> students = studentService.findKinderStudents(authentication.getName(), kindergartensID);
+        List<UserDTO.findKinderStudents> students = studentService.findKinderStudents(authentication.getName(), kindergartensID);
         return responseService.getSingleResult(students);
     }
 
@@ -74,6 +74,7 @@ public class ManagementController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     //선생 원장에 대한 권한변경
+
     @PutMapping("/users/{userid}/role")
     public CommonResult modifyRole(@PathVariable Long userid, @RequestParam UserRole role) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -112,7 +113,7 @@ public class ManagementController {
     }
 
     @GetMapping("/users/role/{role}")
-    public CommonResult getStudentByRole(@PathVariable UserRole role) {
+    public CommonResult getUserByRole(@PathVariable UserRole role) {
         List<UserDTO.UserRoleFind> byRoleUser = manageMentService.findByRoleUser(role);
         return responseService.getSingleResult(byRoleUser);
     }

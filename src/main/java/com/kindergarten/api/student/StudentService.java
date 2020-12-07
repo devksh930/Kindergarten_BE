@@ -62,6 +62,7 @@ public class StudentService {
         User user = userRepository.findByUserid(name).orElseThrow(CUserNotFoundException::new);
         Student student = studentRepository.findById(modify_student.getStudentId()).orElseThrow(CStudentNotFoundException::new);
         if (user.getId().equals(student.getUser().getId())) {
+
             student.setBirthday(LocalDate.of(modify_student.getYear(), modify_student.getMonth(), modify_student.getDay()));
             KinderGarten kinderGarten = kinderGartenRepository.findById(modify_student.getKindergartenId()).orElseThrow(CKinderGartenNotFoundException::new);
 //            유치원의 정보를 수정하려고 변경전 상황을 studentLog에 저장하고  인증권한을 false로 바꾼다.
@@ -103,19 +104,21 @@ public class StudentService {
         return deleteStudentName;
     }
 
-    public List<UserDTO.Response_Student> findKinderStudents(String userid, long kindergartensID) {
+    public List<UserDTO.findKinderStudents> findKinderStudents(String userid, long kindergartensID) {
         User user = userRepository.findByUserid(userid).orElseThrow(CUserNotFoundException::new);
-        List<UserDTO.Response_Student> students = new ArrayList<>();
-        if (!user.getKinderGarten().getId().equals(kindergartensID)) {
-            throw new CNotOwnerException();
-        }
-        if (user.getRole().equals(UserRole.ROLE_TEACHER) || user.getRole().equals(UserRole.ROLE_DIRECTOR) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+        List<UserDTO.findKinderStudents> students = new ArrayList<>();
 
+        if (user.getRole().equals(UserRole.ROLE_TEACHER) || user.getRole().equals(UserRole.ROLE_DIRECTOR) || user.getRole().equals(UserRole.ROLE_ADMIN)) {
+            if (user.getRole().equals(UserRole.ROLE_TEACHER) && !user.getKinderGarten().getId().equals(kindergartensID) || user.getRole().equals(UserRole.ROLE_DIRECTOR) && !user.getKinderGarten().getId().equals(kindergartensID)) {
+                throw new CNotOwnerException();
+            }
             KinderGarten kinderGarten = kinderGartenRepository.findById(kindergartensID).orElseThrow(CKinderGartenNotFoundException::new);
             List<Student> byKinderGarten = studentRepository.findByKinderGarten(kinderGarten);
             for (Student student : byKinderGarten) {
-                UserDTO.Response_Student response_student = new UserDTO.Response_Student();
+                UserDTO.findKinderStudents response_student = new UserDTO.findKinderStudents();
+                response_student.setUserName(student.getUser().getName());
                 response_student.setStudentId(student.getId());
+                response_student.setName(student.getName());
                 response_student.setAccess(student.getAccess());
                 response_student.setStudentId(student.getId());
                 response_student.setBirthday(student.getBirthday());
