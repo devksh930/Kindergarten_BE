@@ -56,6 +56,8 @@ public class UserDTO {
 
     @Data
     public static class Response_Student {
+        private String username;
+        private String userphone;
         private Long studentId;
         private String name;
         @DateTimeFormat(pattern = "yyyyMMdd")
@@ -72,6 +74,7 @@ public class UserDTO {
 
         private Long studentId;
         private String userName;
+        private String userPhone;
         private String name;
         @DateTimeFormat(pattern = "yyyyMMdd")
         private LocalDate birthday;
@@ -117,6 +120,7 @@ public class UserDTO {
     public static class Teacher_response {
         private String userid;
         private String name;
+        private String userPhone;
         private String ROLE;
     }
 

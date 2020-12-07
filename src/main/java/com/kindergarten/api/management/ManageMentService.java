@@ -50,6 +50,8 @@ public class ManageMentService {
 
         for (Student student : byAccessTrue) {
             UserDTO.Response_Student response_student = new UserDTO.Response_Student();
+            response_student.setUsername(student.getUser().getName());
+            response_student.setUserphone(student.getUser().getPhone());
             response_student.setStudentId(student.getId());
             response_student.setName(student.getName());
             response_student.setBirthday(student.getBirthday());

@@ -117,6 +117,7 @@ public class StudentService {
             for (Student student : byKinderGarten) {
                 UserDTO.findKinderStudents response_student = new UserDTO.findKinderStudents();
                 response_student.setUserName(student.getUser().getName());
+                response_student.setUserPhone(student.getUser().getPhone());
                 response_student.setStudentId(student.getId());
                 response_student.setName(student.getName());
                 response_student.setAccess(student.getAccess());

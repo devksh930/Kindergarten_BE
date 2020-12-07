@@ -219,6 +219,7 @@ public class UserService {
         for (User user : byKinderGartenTecaher) {
             UserDTO.Teacher_response teacher_response = new UserDTO.Teacher_response();
             teacher_response.setName(user.getName());
+            teacher_response.setUserPhone(user.getPhone());
             teacher_response.setROLE(user.getRole().name());
             teacher_response.setUserid(user.getUserid());
             teacher_responses.add(teacher_response);
